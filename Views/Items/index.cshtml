@@ -1,0 +1,29 @@
+@model IEnumerable<OnlineShoppingSite.Models.Item>
+
+@{
+    ViewData["Title"] = "Shop";
+}
+
+<h2>Our Products</h2>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <!-- Use the ImageUrl property -->
+                <img src="@item.ImageUrl" class="card-img-top" alt="@item.Name" />
+                <div class="card-body">
+                    <h5 class="card-title">@item.Name</h5>
+                    <p class="card-text">@item.Description</p>
+                    <p class="card-text font-weight-bold">@item.Price.ToString("C")</p>
+                    <form asp-action="AddToCart" method="post">
+                        <input type="hidden" name="id" value="@item.ItemId" />
+                        <button type="submit" class="btn btn-primary">Add to Cart</button>
+                        <a href="@Url.Action("Details", "Items", new { id = item.ItemId })" class="btn btn-secondary">View Details</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>
