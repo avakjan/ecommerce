@@ -175,11 +175,24 @@
                 form.addEventListener('submit', function (event) {
                     event.preventDefault();
 
+                    // Disable the submit button to prevent multiple clicks
+                    var submitButton = form.querySelector('button[type="submit"]');
+                    if (submitButton) {
+                        submitButton.disabled = true;
+                        submitButton.textContent = 'Processing...'; // Optional: Change button text
+                    }
+
                     stripe.createToken(card).then(function (result) {
                         if (result.error) {
                             // Inform the user if there was an error.
                             var errorElement = document.getElementById('card-errors');
                             errorElement.textContent = result.error.message;
+
+                            // Re-enable the submit button
+                            if (submitButton) {
+                                submitButton.disabled = false;
+                                submitButton.textContent = 'Place Order'; // Reset button text
+                            }
                         } else {
                             // Send the token to your server.
                             stripeTokenHandler(result.token);
