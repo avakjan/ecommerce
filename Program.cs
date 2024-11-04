@@ -1,12 +1,18 @@
 using OnlineShoppingSite.Models;
 using Microsoft.EntityFrameworkCore;
-using OnlineShoppingSite.Extensions; // Ensure this namespace is correct
+using OnlineShoppingSite.Extensions;
+using Stripe; // Ensure this namespace is correct
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews()
     .AddNewtonsoftJson();
+
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+
+var stripeSettings = builder.Configuration.GetSection("Stripe").Get<StripeSettings>();
+StripeConfiguration.ApiKey = stripeSettings.SecretKey;
 
 // Configure SQLite with connection string
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -29,7 +35,10 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error"); // Use custom error page in production
+    app.UseHsts();
 }
+
+app.UseHttpsRedirection();
 
 app.UseStaticFiles(); // Serve static files
 

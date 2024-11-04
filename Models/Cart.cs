@@ -6,6 +6,5 @@ namespace OnlineShoppingSite.Models
     {
         [Key]
         public int CartId { get; set; }
-        //public List<CartItem> Items { get; set; }
     }
 }

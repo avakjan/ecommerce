@@ -1,6 +1,208 @@
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@model OnlineShoppingSite.Models.Order
+
 @{
     ViewData["Title"] = "Checkout";
 }
 
-<h2>Thank You for Your Purchase!</h2>
-<p>Your order has been placed successfully.</p>
+<h2>Checkout</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <form id="payment-form" asp-action="Checkout" method="post">
+            @Html.AntiForgeryToken()
+            <h4>Shipping Details</h4>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Shipping Details Fields -->
+            <div class="form-group">
+                <label asp-for="ShippingDetails.FullName"></label>
+                <input asp-for="ShippingDetails.FullName" class="form-control" />
+                <span asp-validation-for="ShippingDetails.FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShippingDetails.AddressLine1"></label>
+                <input asp-for="ShippingDetails.AddressLine1" class="form-control" />
+                <span asp-validation-for="ShippingDetails.AddressLine1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShippingDetails.AddressLine2"></label>
+                <input asp-for="ShippingDetails.AddressLine2" class="form-control" />
+                <span asp-validation-for="ShippingDetails.AddressLine2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShippingDetails.City"></label>
+                <input asp-for="ShippingDetails.City" class="form-control" />
+                <span asp-validation-for="ShippingDetails.City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShippingDetails.State"></label>
+                <input asp-for="ShippingDetails.State" class="form-control" />
+                <span asp-validation-for="ShippingDetails.State" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShippingDetails.PostalCode"></label>
+                <input asp-for="ShippingDetails.PostalCode" class="form-control" />
+                <span asp-validation-for="ShippingDetails.PostalCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShippingDetails.Country"></label>
+                <input asp-for="ShippingDetails.Country" class="form-control" />
+                <span asp-validation-for="ShippingDetails.Country" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShippingDetails.PhoneNumber"></label>
+                <input asp-for="ShippingDetails.PhoneNumber" class="form-control" />
+                <span asp-validation-for="ShippingDetails.PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <h4>Payment Details</h4>
+            <hr />
+
+            <!-- Payment Method -->
+            <div class="form-group">
+                <label asp-for="PaymentMethod"></label>
+                <select asp-for="PaymentMethod" class="form-control">
+                    <option value="">Select Payment Method</option>
+                    <option>Credit Card</option>
+                    <!-- Add other payment methods if applicable -->
+                </select>
+                <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+            </div>
+
+            <!-- Stripe Elements Placeholder -->
+            <div class="form-group">
+                <label>Card Details</label>
+                <div id="card-element" class="form-control">
+                    <!-- A Stripe Element will be inserted here. -->
+                </div>
+                <div id="card-errors" role="alert" class="text-danger"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Place Order</button>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <h4>Your Order</h4>
+        <hr />
+        <!-- Order Summary Table -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th class="text-right">Quantity</th>
+                    <th class="text-right">Price</th>
+                    <th class="text-right">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.OrderItems != null && Model.OrderItems.Any())
+                {
+                    @foreach (var item in Model.OrderItems)
+                    {
+                        <tr>
+                            <td>@(item.Item != null ? item.Item.Name : "Item not found")</td>
+                            <td class="text-right">@item.Quantity</td>
+                            <td class="text-right">@item.UnitPrice.ToString("C")</td>
+                            <td class="text-right">@(item.UnitPrice * item.Quantity).ToString("C")</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center">No items in your order.</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-right"><strong>Total:</strong></td>
+                    <td class="text-right"><strong>@Model.TotalAmount.ToString("C")</strong></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Initialize Stripe
+            var stripe = Stripe('@Configuration["Stripe:PublishableKey"]');
+            var elements = stripe.elements();
+
+            // Custom styling can be passed to options when creating an Element.
+            var style = {
+                base: {
+                    color: '#32325d',
+                    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                    fontSmoothing: 'antialiased',
+                    fontSize: '16px',
+                    '::placeholder': {
+                        color: '#aab7c4'
+                    }
+                },
+                invalid: {
+                    color: '#fa755a',
+                    iconColor: '#fa755a'
+                }
+            };
+
+            // Create an instance of the card Element.
+            var card = elements.create('card', { style: style });
+
+            // Add an instance of the card Element into the `card-element` <div>.
+            card.mount('#card-element');
+
+            // Handle real-time validation errors from the card Element.
+            card.on('change', function (event) {
+                var displayError = document.getElementById('card-errors');
+                if (event.error) {
+                    displayError.textContent = event.error.message;
+                } else {
+                    displayError.textContent = '';
+                }
+            });
+
+            // Handle form submission.
+            var form = document.getElementById('payment-form');
+            if (form) {
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+
+                    stripe.createToken(card).then(function (result) {
+                        if (result.error) {
+                            // Inform the user if there was an error.
+                            var errorElement = document.getElementById('card-errors');
+                            errorElement.textContent = result.error.message;
+                        } else {
+                            // Send the token to your server.
+                            stripeTokenHandler(result.token);
+                        }
+                    });
+                });
+            } else {
+                console.error("Form with ID 'payment-form' not found.");
+            }
+
+            // Submit the form with the token ID.
+            function stripeTokenHandler(token) {
+                // Insert the token ID into the form so it gets submitted to the server
+                var form = document.getElementById('payment-form');
+                var hiddenInput = document.createElement('input');
+                hiddenInput.setAttribute('type', 'hidden');
+                hiddenInput.setAttribute('name', 'StripeToken');
+                hiddenInput.setAttribute('value', token.id);
+                form.appendChild(hiddenInput);
+
+                // Submit the form
+                form.submit();
+            }
+        });
+    </script>
+}

@@ -11,7 +11,7 @@
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "8.0.10",
           "Microsoft.EntityFrameworkCore.Sqlite": "8.0.10",
           "Microsoft.EntityFrameworkCore.Tools": "8.0.10",
-          "Stripe.net": "46.2.1"
+          "Stripe.net": "47.0.0"
         },
         "runtime": {
           "OnlineShoppingSite.dll": {}
@@ -622,15 +622,15 @@
           }
         }
       },
-      "Stripe.net/46.2.1": {
+      "Stripe.net/47.0.0": {
         "dependencies": {
           "Newtonsoft.Json": "13.0.3",
           "System.Configuration.ConfigurationManager": "8.0.0"
         },
         "runtime": {
           "lib/net8.0/Stripe.net.dll": {
-            "assemblyVersion": "46.2.1.0",
-            "fileVersion": "46.2.1.0"
+            "assemblyVersion": "47.0.0.0",
+            "fileVersion": "47.0.0.0"
           }
         }
       },
@@ -1002,12 +1002,12 @@
       "path": "sqlitepclraw.provider.e_sqlite3/2.1.6",
       "hashPath": "sqlitepclraw.provider.e_sqlite3.2.1.6.nupkg.sha512"
     },
-    "Stripe.net/46.2.1": {
+    "Stripe.net/47.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-lOtIJRi/5Ct6AvhDug1d+F4zLX4dFIaWiIqG7vQ3DVOiclF/UMSKd0s8jVevNLyKO0d7q1SdfZ43x2t4+9+VeA==",
-      "path": "stripe.net/46.2.1",
-      "hashPath": "stripe.net.46.2.1.nupkg.sha512"
+      "sha512": "sha512-GPGZPYtxGd/T/DbOdn8YY4rTVuC6yt7Jbc4SwrJJzWnMFlB4eU4uukpj8P7QEdEqxbwLvFWM9QnCIUKR8pAD1Q==",
+      "path": "stripe.net/47.0.0",
+      "hashPath": "stripe.net.47.0.0.nupkg.sha512"
     },
     "System.CodeDom/4.4.0": {
       "type": "package",

@@ -138,3 +138,4 @@ C:\Users\German\Desktop\OnlineShoppingSite\obj\Debug\net8.0\ref\OnlineShoppingSi
 C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
 C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+C:\Users\German\Desktop\OnlineShoppingSite\obj\Debug\net8.0\OnlineShoppingSite.sourcelink.json

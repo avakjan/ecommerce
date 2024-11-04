@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "yys221MJ3dP+VRcoXcvwubJ+pxLIJSjudzMdTq4I3V2FnLSZiBQwD3qWVTwqe5kwRmlN9ldKRTG+A2PGu8LKOQ==",
+  "dgSpecHash": "Yj1uY2nCGkwvBuZr98DGerThL5O7ilMvrMJ/eGlbt2WLvX2PZTYT0ZCzYQRl9NWQMQ/Zur2qAl+ITSwU8Vh4LQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\OnlineShoppingSite.csproj",
   "expectedPackageFiles": [
@@ -40,7 +40,7 @@
     "C:\\Users\\German\\.nuget\\packages\\sqlitepclraw.core\\2.1.6\\sqlitepclraw.core.2.1.6.nupkg.sha512",
     "C:\\Users\\German\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.1.6\\sqlitepclraw.lib.e_sqlite3.2.1.6.nupkg.sha512",
     "C:\\Users\\German\\.nuget\\packages\\sqlitepclraw.provider.e_sqlite3\\2.1.6\\sqlitepclraw.provider.e_sqlite3.2.1.6.nupkg.sha512",
-    "C:\\Users\\German\\.nuget\\packages\\stripe.net\\46.2.1\\stripe.net.46.2.1.nupkg.sha512",
+    "C:\\Users\\German\\.nuget\\packages\\stripe.net\\47.0.0\\stripe.net.47.0.0.nupkg.sha512",
     "C:\\Users\\German\\.nuget\\packages\\system.codedom\\4.4.0\\system.codedom.4.4.0.nupkg.sha512",
     "C:\\Users\\German\\.nuget\\packages\\system.collections.immutable\\6.0.0\\system.collections.immutable.6.0.0.nupkg.sha512",
     "C:\\Users\\German\\.nuget\\packages\\system.composition\\6.0.0\\system.composition.6.0.0.nupkg.sha512",
