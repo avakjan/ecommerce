@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using OnlineShoppingSite.Models;
 using OnlineShoppingSite.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Stripe;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -271,6 +269,7 @@ namespace OnlineShoppingSite.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Remove(int id)
         {
             var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart") ?? new List<CartItem>();

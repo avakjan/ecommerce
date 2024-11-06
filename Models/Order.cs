@@ -14,11 +14,12 @@ namespace OnlineShoppingSite.Models
         public int ShippingDetailsId { get; set; }
         public ShippingDetails ShippingDetails { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Payment method is required.")]
         [Display(Name = "Payment Method")]
         public string PaymentMethod { get; set; }
 
         // Collection of OrderItems
+        [Required]
         public List<OrderItem> OrderItems { get; set; }
 
         public decimal TotalAmount { get; set; }

@@ -18,6 +18,7 @@
                     <p class="card-text">@item.Description</p>
                     <p class="card-text font-weight-bold">@item.Price.ToString("C")</p>
                     <form asp-action="AddToCart" method="post">
+                        @Html.AntiForgeryToken()
                         <input type="hidden" name="id" value="@item.ItemId" />
                         <button type="submit" class="btn btn-primary">Add to Cart</button>
                         <a href="@Url.Action("Details", "Items", new { id = item.ItemId })" class="btn btn-secondary">View Details</a>

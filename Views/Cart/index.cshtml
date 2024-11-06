@@ -6,6 +6,9 @@
 
 <h2>Your Cart</h2>
 
+@* Display Validation Summary *@
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
 @if (!Model.Any())
 {
     <p>Your cart is empty.</p>
@@ -32,6 +35,7 @@ else
                     <td>@(cartItem.Item.Price * cartItem.Quantity).ToString("C")</td>
                     <td>
                         <form asp-action="Remove" method="post">
+                            @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@cartItem.Item.ItemId" />
                             <button type="submit" class="btn btn-danger btn-sm">Remove</button>
                         </form>
