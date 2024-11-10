@@ -7,6 +7,8 @@ C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\OnlineShoppingSite.r
 C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\OnlineShoppingSite.dll
 C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\OnlineShoppingSite.pdb
 C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\Humanizer.dll
+C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
 C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
@@ -27,6 +29,7 @@ C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\Microsoft.Extensions
 C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
 C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\Mono.TextTemplating.dll
 C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
 C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\SQLitePCLRaw.batteries_v2.dll
 C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\SQLitePCLRaw.core.dll
 C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\SQLitePCLRaw.provider.e_sqlite3.dll
@@ -119,6 +122,7 @@ C:\Users\German\Desktop\OnlineShoppingSite\obj\Debug\net8.0\OnlineShoppingSite.c
 C:\Users\German\Desktop\OnlineShoppingSite\obj\Debug\net8.0\OnlineShoppingSite.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\German\Desktop\OnlineShoppingSite\obj\Debug\net8.0\OnlineShoppingSite.RazorAssemblyInfo.cache
 C:\Users\German\Desktop\OnlineShoppingSite\obj\Debug\net8.0\OnlineShoppingSite.RazorAssemblyInfo.cs
+C:\Users\German\Desktop\OnlineShoppingSite\obj\Debug\net8.0\OnlineShoppingSite.sourcelink.json
 C:\Users\German\Desktop\OnlineShoppingSite\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\German\Desktop\OnlineShoppingSite\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\German\Desktop\OnlineShoppingSite\obj\Debug\net8.0\staticwebassets\msbuild.OnlineShoppingSite.Microsoft.AspNetCore.StaticWebAssets.props
@@ -135,7 +139,3 @@ C:\Users\German\Desktop\OnlineShoppingSite\obj\Debug\net8.0\refint\OnlineShoppin
 C:\Users\German\Desktop\OnlineShoppingSite\obj\Debug\net8.0\OnlineShoppingSite.pdb
 C:\Users\German\Desktop\OnlineShoppingSite\obj\Debug\net8.0\OnlineShoppingSite.genruntimeconfig.cache
 C:\Users\German\Desktop\OnlineShoppingSite\obj\Debug\net8.0\ref\OnlineShoppingSite.dll
-C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
-C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
-C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
-C:\Users\German\Desktop\OnlineShoppingSite\obj\Debug\net8.0\OnlineShoppingSite.sourcelink.json

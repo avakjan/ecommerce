@@ -1,3 +1,4 @@
+// Extensions/SessionExtensions.cs
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 

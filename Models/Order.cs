@@ -1,3 +1,4 @@
+// Models/Order.cs
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,7 +7,8 @@ namespace OnlineShoppingSite.Models
 {
     public class Order
     {
-        public int OrderId { get; set; } // Primary key
+        [Key]
+        public int OrderId { get; set; }
 
         public DateTime OrderDate { get; set; } = DateTime.Now;
 
@@ -24,6 +26,7 @@ namespace OnlineShoppingSite.Models
 
         public decimal TotalAmount { get; set; }
 
-        public string ChargeId { get; set; }
+        public string PaymentIntentId { get; set; } // Stores the Payment Intent ID
+
     }
 }

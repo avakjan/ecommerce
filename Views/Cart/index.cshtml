@@ -1,4 +1,4 @@
-@model List<OnlineShoppingSite.Models.CartItem>
+@model OnlineShoppingSite.Models.CartViewModel
 
 @{
     ViewData["Title"] = "Your Cart";
@@ -9,7 +9,7 @@
 @* Display Validation Summary *@
 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-@if (!Model.Any())
+@if (!Model.CartItems.Any())
 {
     <p>Your cart is empty.</p>
 }
@@ -26,17 +26,18 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var cartItem in Model)
+            @foreach (var cartItem in Model.CartItems)
             {
+                var item = Model.Items.FirstOrDefault(i => i.ItemId == cartItem.ItemId);
                 <tr>
-                    <td>@cartItem.Item.Name</td>
-                    <td>@cartItem.Item.Price.ToString("C")</td>
+                    <td>@(item != null ? item.Name : "Item not found")</td>
+                    <td>@(item != null ? item.Price.ToString("C") : "N/A")</td>
                     <td>@cartItem.Quantity</td>
-                    <td>@(cartItem.Item.Price * cartItem.Quantity).ToString("C")</td>
+                    <td>@(item != null ? (item.Price * cartItem.Quantity).ToString("C") : "N/A")</td>
                     <td>
                         <form asp-action="Remove" method="post">
                             @Html.AntiForgeryToken()
-                            <input type="hidden" name="id" value="@cartItem.Item.ItemId" />
+                            <input type="hidden" name="id" value="@cartItem.ItemId" />
                             <button type="submit" class="btn btn-danger btn-sm">Remove</button>
                         </form>
                     </td>
@@ -46,7 +47,7 @@ else
     </table>
     <div class="text-right">
         <h4>
-            Total: @Model.Sum(item => item.Item.Price * item.Quantity).ToString("C")
+            Total: @Model.TotalAmount.ToString("C")
         </h4>
         <a href="@Url.Action("Checkout", "Cart")" class="btn btn-success">Proceed to Checkout</a>
     </div>

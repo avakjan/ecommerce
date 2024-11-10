@@ -11,25 +11,14 @@ using OnlineShoppingSite.Models;
 namespace OnlineShoppingSite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241104153814_UpdateOrderCheckout")]
-    partial class UpdateOrderCheckout
+    [Migration("20241107174244_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
-
-            modelBuilder.Entity("OnlineShoppingSite.Models.Cart", b =>
-                {
-                    b.Property<int>("CartId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("CartId");
-
-                    b.ToTable("Carts");
-                });
 
             modelBuilder.Entity("OnlineShoppingSite.Models.Item", b =>
                 {
@@ -89,11 +78,11 @@ namespace OnlineShoppingSite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("ChargeId")
-                        .IsRequired()
+                    b.Property<DateTime>("OrderDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("OrderDate")
+                    b.Property<string>("PaymentIntentId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PaymentMethod")
@@ -149,22 +138,27 @@ namespace OnlineShoppingSite.Migrations
 
                     b.Property<string>("AddressLine1")
                         .IsRequired()
+                        .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("AddressLine2")
                         .IsRequired()
+                        .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("City")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Country")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FullName")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PhoneNumber")
@@ -173,10 +167,12 @@ namespace OnlineShoppingSite.Migrations
 
                     b.Property<string>("PostalCode")
                         .IsRequired()
+                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("State")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.HasKey("ShippingDetailsId");

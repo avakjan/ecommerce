@@ -10,7 +10,6 @@ namespace OnlineShoppingSite.Models
         }
 
         public DbSet<Item> Items { get; set; }
-        public DbSet<Cart> Carts { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<ShippingDetails> ShippingDetails { get; set; }

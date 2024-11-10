@@ -1,4 +1,3 @@
-// Controllers/ItemsController.cs
 using Microsoft.AspNetCore.Mvc;
 using OnlineShoppingSite.Extensions;
 using OnlineShoppingSite.Models;
@@ -42,7 +41,7 @@ namespace OnlineShoppingSite.Controllers
             var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart") ?? new List<CartItem>();
 
             // Check if item is already in cart
-            var cartItem = cart.FirstOrDefault(c => c.Item.ItemId == id);
+            var cartItem = cart.FirstOrDefault(c => c.ItemId == id);
             if (cartItem != null)
             {
                 // Increase quantity
@@ -52,7 +51,7 @@ namespace OnlineShoppingSite.Controllers
             else
             {
                 // Add new cart item
-                cart.Add(new CartItem { Item = item, Quantity = 1 });
+                cart.Add(new CartItem { ItemId = id, Quantity = 1 });
                 _logger.LogInformation("Added ItemId {ItemId} to cart.", id);
             }
 
@@ -65,6 +64,7 @@ namespace OnlineShoppingSite.Controllers
             // Redirect back to the items index page
             return RedirectToAction("Index");
         }
+
 
         // Other action methods...
     }
