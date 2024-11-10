@@ -28,5 +28,8 @@ namespace OnlineShoppingSite.Models
 
         public string PaymentIntentId { get; set; } // Stores the Payment Intent ID
 
+        [Required]
+        public string Status { get; set; } = "Pending";
+
     }
 }

@@ -1,7 +1,9 @@
 using OnlineShoppingSite.Models;
 using Microsoft.EntityFrameworkCore;
 using OnlineShoppingSite.Extensions;
-using Stripe; // Ensure this namespace is correct
+using Stripe;
+using Microsoft.AspNetCore.Identity;
+using OnlineShoppingSite;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,16 @@ builder.Services.AddControllersWithViews()
     .AddNewtonsoftJson();
 
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+});
 
 var stripeSettings = builder.Configuration.GetSection("Stripe").Get<StripeSettings>();
 StripeConfiguration.ApiKey = stripeSettings.SecretKey;
@@ -31,6 +43,15 @@ builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+    await SeedData.InitializeAsync(userManager, roleManager);
+}
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -45,6 +66,8 @@ app.UseStaticFiles(); // Serve static files
 app.UseRouting(); // Enable routing
 
 app.UseSession(); // Enable session before authorization
+
+app.UseAuthentication();
 
 app.UseAuthorization(); // Enable authorization
 

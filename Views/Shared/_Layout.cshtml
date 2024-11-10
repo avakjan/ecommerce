@@ -29,7 +29,38 @@
                     <a class="nav-link" href="@Url.Action("Index", "Cart")">Cart</a>
                 </li>
             </ul>
+            <ul class="navbar-nav ml-auto">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <span class="navbar-text">Hello, @User.Identity.Name</span>
+                    </li>
+                    <li class="nav-item">
+                        <form asp-controller="Account" asp-action="Logout" method="post" class="form-inline">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-link nav-link">Logout</button>
+                        </form>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Account" asp-action="Register">Register</a>
+                    </li>
+                }
+            </ul>
         </div>
+        @if (User.IsInRole("Admin"))
+        {
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Admin" asp-action="Dashboard">Admin Dashboard</a>
+                </li>
+            </ul>
+        }
     </nav>
 
     <!-- Main Content -->

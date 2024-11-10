@@ -1,0 +1,45 @@
+@model OnlineShoppingSite.Models.Item
+
+@{
+    var isEdit = ViewContext.RouteData.Values["action"].ToString() == "EditProduct";
+    ViewData["Title"] = isEdit ? "Edit Product" : "Create Product";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="@ViewContext.RouteData.Values["action"].ToString()" method="post">
+    @Html.AntiForgeryToken()
+    @if (isEdit)
+    {
+        <input type="hidden" asp-for="ItemId" />
+    }
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Price"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ImageUrl"></label>
+        <input asp-for="ImageUrl" class="form-control" />
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    </div>
+
+    <!-- Add other fields as necessary -->
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="ManageProducts" class="btn btn-secondary">Cancel</a>
+</form>

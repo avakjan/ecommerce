@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Bulk Upload Products";
+}
+
+<h2>Bulk Upload Products</h2>
+
+<form asp-action="BulkUploadProducts" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <label>Select CSV File</label>
+        <input type="file" name="file" class="form-control-file" />
+    </div>
+    <button type="submit" class="btn btn-primary">Upload</button>
+    <a asp-action="ManageProducts" class="btn btn-secondary">Cancel</a>
+</form>
