@@ -1,4 +1,11 @@
-﻿@using OnlineShoppingSite.Extensions
+﻿@using OnlineShoppingSite.Models
+@using OnlineShoppingSite.Extensions
+
+@{
+    var categories = ViewBag.Categories as List<Category> ?? new List<Category>();
+    int selectedCategoryId = ViewBag.SelectedCategoryId ?? 0;
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,6 +32,20 @@
                 </li>
                 <li class="nav-item @(ViewContext.RouteData.Values["controller"].ToString() == "Items" ? "active" : "")">
                     <a class="nav-link" href="@Url.Action("Index", "Items")">Shop</a>
+                </li>
+                <li class="nav-item dropdown @(selectedCategoryId == 0 ? "active" : "")">
+                    <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Categories
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="categoriesDropdown">
+                        <a class="dropdown-item @(selectedCategoryId == 0 ? "active" : "")" href="@Url.Action("Index", "Items")">All</a>
+                        @foreach (var category in categories)
+                        {
+                            <a class="dropdown-item @(selectedCategoryId == category.CategoryId ? "active" : "")" href="@Url.Action("Index", "Items", new { categoryId = category.CategoryId })">
+                                @category.Name
+                            </a>
+                        }
+                    </div>
                 </li>
                 <li class="nav-item @(ViewContext.RouteData.Values["controller"].ToString() == "Cart" ? "active" : "")">
                     @* Display cart item count *@
@@ -112,6 +133,8 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

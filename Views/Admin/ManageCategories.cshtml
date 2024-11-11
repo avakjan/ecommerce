@@ -1,0 +1,30 @@
+@model IEnumerable<OnlineShoppingSite.Models.Category>
+
+@{
+    ViewData["Title"] = "Manage Categories";
+}
+
+<h2>Manage Categories</h2>
+
+<a asp-action="CreateCategory" class="btn btn-primary">Add New Category</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var category in Model)
+    {
+        <tr>
+            <td>@category.Name</td>
+            <td>
+                <a asp-action="EditCategory" asp-route-id="@category.CategoryId" class="btn btn-sm btn-warning">Edit</a>
+                <a asp-action="DeleteCategory" asp-route-id="@category.CategoryId" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

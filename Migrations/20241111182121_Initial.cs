@@ -53,19 +53,16 @@ namespace OnlineShoppingSite.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Items",
+                name: "Categories",
                 columns: table => new
                 {
-                    ItemId = table.Column<int>(type: "INTEGER", nullable: false)
+                    CategoryId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Price = table.Column<decimal>(type: "TEXT", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: false),
-                    ImageUrl = table.Column<string>(type: "TEXT", nullable: false)
+                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Items", x => x.ItemId);
+                    table.PrimaryKey("PK_Categories", x => x.CategoryId);
                 });
 
             migrationBuilder.CreateTable(
@@ -195,6 +192,28 @@ namespace OnlineShoppingSite.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Items",
+                columns: table => new
+                {
+                    ItemId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    ImageUrl = table.Column<string>(type: "TEXT", nullable: false),
+                    CategoryId = table.Column<int>(type: "INTEGER", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Items", x => x.ItemId);
+                    table.ForeignKey(
+                        name: "FK_Items_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "CategoryId");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
@@ -247,13 +266,23 @@ namespace OnlineShoppingSite.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Items",
-                columns: new[] { "ItemId", "Description", "ImageUrl", "Name", "Price" },
+                table: "Categories",
+                columns: new[] { "CategoryId", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Description for Item 1", "https://pngimg.com/uploads/tshirt/tshirt_PNG5435.png", "Item 1", 9.99m },
-                    { 2, "Description for Item 2", "https://static.vecteezy.com/system/resources/previews/034/969/304/large_2x/ai-generated-t-shirt-mockup-clip-art-free-png.png", "Item 2", 19.99m },
-                    { 3, "Description for Item 3", "https://www.racerworldwide.net/cdn/shop/files/front_white_1_31a53b32-c70b-48ef-8612-d869fc6d5877_750x.jpg?v=1723733410", "Item 3", 29.99m }
+                    { 1, "T-Shirts" },
+                    { 2, "Hoodies" },
+                    { 3, "Accessories" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Items",
+                columns: new[] { "ItemId", "CategoryId", "Description", "ImageUrl", "Name", "Price" },
+                values: new object[,]
+                {
+                    { 1, 1, "A basic t-shirt.", "https://pngimg.com/uploads/tshirt/tshirt_PNG5435.png", "Basic T-Shirt", 9.99m },
+                    { 2, 1, "A cool hoodie.", "https://static.vecteezy.com/system/resources/previews/034/969/304/large_2x/ai-generated-t-shirt-mockup-clip-art-free-png.png", "Cool Hoodie", 19.99m },
+                    { 3, 2, "A stylish cap.", "https://www.racerworldwide.net/cdn/shop/files/front_white_1_31a53b32-c70b-48ef-8612-d869fc6d5877_750x.jpg?v=1723733410", "Stylish Cap", 29.99m }
                 });
 
             migrationBuilder.CreateIndex(
@@ -292,6 +321,11 @@ namespace OnlineShoppingSite.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Items_CategoryId",
+                table: "Items",
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderItems_ItemId",
@@ -342,6 +376,9 @@ namespace OnlineShoppingSite.Migrations
 
             migrationBuilder.DropTable(
                 name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "ShippingDetails");

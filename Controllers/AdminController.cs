@@ -2,6 +2,9 @@ using OnlineShoppingSite.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using OnlineShoppingSite.ViewModels;
+
 
 namespace OnlineShoppingSite.Controllers
 {
@@ -27,21 +30,32 @@ namespace OnlineShoppingSite.Controllers
         // GET: Admin/CreateProduct
         public IActionResult CreateProduct()
         {
-            return View();
+            var categories = new SelectList(_context.Categories, "CategoryId", "Name");
+            var viewModel = new ItemViewModel
+            {
+                Item = new Item(),
+                Categories = categories
+            };
+            return View(viewModel);
         }
+
 
         // POST: Admin/CreateProduct
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateProduct(Item item)
+        public async Task<IActionResult> CreateProduct(ItemViewModel viewModel)
         {
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
-                _context.Items.Add(item);
+                _context.Items.Add(viewModel.Item);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(ManageProducts));
             }
-            return View(item);
+
+            // Repopulate the categories in case of an error
+            viewModel.Categories = new SelectList(_context.Categories, "CategoryId", "Name");
+            return View(viewModel);
         }
 
         // GET: Admin/EditProduct/5
@@ -57,15 +71,23 @@ namespace OnlineShoppingSite.Controllers
             {
                 return NotFound();
             }
-            return View(item);
+
+            // Create the ViewModel and populate it
+            var viewModel = new ItemViewModel
+            {
+                Item = item,
+                Categories = new SelectList(_context.Categories, "CategoryId", "Name", item.CategoryId)
+            };
+
+            return View(viewModel);
         }
 
         // POST: Admin/EditProduct/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditProduct(int id, Item item)
+        public async Task<IActionResult> EditProduct(int id, ItemViewModel viewModel)
         {
-            if (id != item.ItemId)
+            if (id != viewModel.Item.ItemId)
             {
                 return NotFound();
             }
@@ -74,12 +96,12 @@ namespace OnlineShoppingSite.Controllers
             {
                 try
                 {
-                    _context.Update(item);
+                    _context.Update(viewModel.Item);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ItemExists(item.ItemId))
+                    if (!ItemExists(viewModel.Item.ItemId))
                     {
                         return NotFound();
                     }
@@ -90,7 +112,10 @@ namespace OnlineShoppingSite.Controllers
                 }
                 return RedirectToAction(nameof(ManageProducts));
             }
-            return View(item);
+
+            // Repopulate the categories in case of an error
+            viewModel.Categories = new SelectList(_context.Categories, "CategoryId", "Name");
+            return View(viewModel);
         }
 
         // GET: Admin/DeleteProduct/5
@@ -231,6 +256,116 @@ namespace OnlineShoppingSite.Controllers
         public IActionResult Dashboard()
         {
             return View();
+        }
+
+        // GET: Admin/ManageCategories
+        public async Task<IActionResult> ManageCategories()
+        {
+            var categories = await _context.Categories.ToListAsync();
+            return View(categories);
+        }
+
+        // GET: Admin/CreateCategory
+        public IActionResult CreateCategory()
+        {
+            return View();
+        }
+
+        // POST: Admin/CreateCategory
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateCategory(Category category)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Categories.Add(category);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(ManageCategories));
+            }
+            return View(category);
+        }
+
+        // GET: Admin/EditCategory/5
+        public async Task<IActionResult> EditCategory(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            return View(category);
+        }
+
+        // POST: Admin/EditCategory/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditCategory(int id, Category category)
+        {
+            if (id != category.CategoryId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(category);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CategoryExists(category.CategoryId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(ManageCategories));
+            }
+            return View(category);
+        }
+
+        // GET: Admin/DeleteCategory/5
+        public async Task<IActionResult> DeleteCategory(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var category = await _context.Categories
+                .FirstOrDefaultAsync(m => m.CategoryId == id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            return View(category);
+        }
+
+        // POST: Admin/DeleteCategory/5
+        [HttpPost, ActionName("DeleteCategory")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteCategoryConfirmed(int id)
+        {
+            var category = await _context.Categories.FindAsync(id);
+            _context.Categories.Remove(category);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(ManageCategories));
+        }
+
+        private bool CategoryExists(int id)
+        {
+            return _context.Categories.Any(e => e.CategoryId == id);
         }
 
     }

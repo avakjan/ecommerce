@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Shop";
+    var categories = ViewBag.Categories as List<OnlineShoppingSite.Models.Category>;
+    int selectedCategory = ViewBag.SelectedCategory ?? 0;
 }
 
 <h2>Our Products</h2>
@@ -11,10 +13,10 @@
     {
         <div class="col-md-4 mb-4">
             <div class="card h-100">
-                <!-- Use the ImageUrl property -->
                 <img src="@item.ImageUrl" class="card-img-top" alt="@item.Name" />
                 <div class="card-body">
                     <h5 class="card-title">@item.Name</h5>
+                    <p class="card-text"><strong>Category:</strong> @item.Category.Name</p>
                     <p class="card-text">@item.Description</p>
                     <p class="card-text font-weight-bold">@item.Price.ToString("C")</p>
                     <form asp-action="AddToCart" method="post">

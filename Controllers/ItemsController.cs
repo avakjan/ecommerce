@@ -19,10 +19,22 @@ namespace OnlineShoppingSite.Controllers
         }
 
         // GET: Items
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int? categoryId)
         {
-            var items = _context.Items.ToList();
-            return View(items);
+            var items = _context.Items.Include(i => i.Category).AsQueryable();
+
+            if (categoryId.HasValue)
+            {
+                items = items.Where(i => i.CategoryId == categoryId.Value);
+                ViewBag.SelectedCategoryId = categoryId.Value;
+            }
+            else
+            {
+                ViewBag.SelectedCategoryId = 0; // All categories
+            }
+
+            var itemList = await items.ToListAsync();
+            return View(itemList);
         }
 
         // GET: Items/Details/5
@@ -35,6 +47,7 @@ namespace OnlineShoppingSite.Controllers
             }
 
             var item = await _context.Items
+                .Include(i => i.Category)
                 .FirstOrDefaultAsync(m => m.ItemId == id);
 
             if (item == null)

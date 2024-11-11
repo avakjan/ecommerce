@@ -1,4 +1,4 @@
-@model OnlineShoppingSite.Models.Item
+@model OnlineShoppingSite.ViewModels.ItemViewModel
 
 @{
     var isEdit = ViewContext.RouteData.Values["action"].ToString() == "EditProduct";
@@ -7,38 +7,48 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<form asp-action="@ViewContext.RouteData.Values["action"]" method="post">
+<form asp-action="@ViewContext.RouteData.Values["action"].ToString()" method="post">
     @Html.AntiForgeryToken()
     @if (isEdit)
     {
-        <input type="hidden" asp-for="ItemId" />
+        <input type="hidden" asp-for="Item.ItemId" />
     }
 
     <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+        <label asp-for="Item.Name"></label>
+        <input asp-for="Item.Name" class="form-control" />
+        <span asp-validation-for="Item.Name" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="Price"></label>
-        <input asp-for="Price" class="form-control" />
-        <span asp-validation-for="Price" class="text-danger"></span>
+        <label asp-for="Item.Price"></label>
+        <input asp-for="Item.Price" class="form-control" />
+        <span asp-validation-for="Item.Price" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="Description"></label>
-        <textarea asp-for="Description" class="form-control"></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
+        <label asp-for="Item.Description"></label>
+        <textarea asp-for="Item.Description" class="form-control"></textarea>
+        <span asp-validation-for="Item.Description" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="ImageUrl"></label>
-        <input asp-for="ImageUrl" class="form-control" />
-        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+        @Html.LabelFor(model => model.Item.CategoryId)
+        @Html.DropDownListFor(
+            model => model.Item.CategoryId,
+            Model.Categories,
+            "Select Category",
+            new { @class = "form-control" }
+        )
     </div>
 
-    <!-- Add other fields as necessary -->
+    <div class="form-group">
+        <label asp-for="Item.ImageUrl"></label>
+        <input asp-for="Item.ImageUrl" class="form-control" />
+        <span asp-validation-for="Item.ImageUrl" class="text-danger"></span>
+    </div>
+
+    <!-- Add other fields as necessary, always prefixed with "Item." -->
 
     <button type="submit" class="btn btn-primary">Save</button>
     <a asp-action="ManageProducts" class="btn btn-secondary">Cancel</a>

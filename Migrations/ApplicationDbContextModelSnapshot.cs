@@ -209,10 +209,46 @@ namespace OnlineShoppingSite.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("OnlineShoppingSite.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            Name = "T-Shirts"
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            Name = "Hoodies"
+                        },
+                        new
+                        {
+                            CategoryId = 3,
+                            Name = "Accessories"
+                        });
+                });
+
             modelBuilder.Entity("OnlineShoppingSite.Models.Item", b =>
                 {
                     b.Property<int>("ItemId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
@@ -225,12 +261,15 @@ namespace OnlineShoppingSite.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("ItemId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Items");
 
@@ -238,25 +277,28 @@ namespace OnlineShoppingSite.Migrations
                         new
                         {
                             ItemId = 1,
-                            Description = "Description for Item 1",
+                            CategoryId = 1,
+                            Description = "A basic t-shirt.",
                             ImageUrl = "https://pngimg.com/uploads/tshirt/tshirt_PNG5435.png",
-                            Name = "Item 1",
+                            Name = "Basic T-Shirt",
                             Price = 9.99m
                         },
                         new
                         {
                             ItemId = 2,
-                            Description = "Description for Item 2",
+                            CategoryId = 1,
+                            Description = "A cool hoodie.",
                             ImageUrl = "https://static.vecteezy.com/system/resources/previews/034/969/304/large_2x/ai-generated-t-shirt-mockup-clip-art-free-png.png",
-                            Name = "Item 2",
+                            Name = "Cool Hoodie",
                             Price = 19.99m
                         },
                         new
                         {
                             ItemId = 3,
-                            Description = "Description for Item 3",
+                            CategoryId = 2,
+                            Description = "A stylish cap.",
                             ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/front_white_1_31a53b32-c70b-48ef-8612-d869fc6d5877_750x.jpg?v=1723733410",
-                            Name = "Item 3",
+                            Name = "Stylish Cap",
                             Price = 29.99m
                         });
                 });
@@ -424,6 +466,15 @@ namespace OnlineShoppingSite.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("OnlineShoppingSite.Models.Item", b =>
+                {
+                    b.HasOne("OnlineShoppingSite.Models.Category", "Category")
+                        .WithMany("Items")
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("OnlineShoppingSite.Models.Order", b =>
                 {
                     b.HasOne("OnlineShoppingSite.Models.ShippingDetails", "ShippingDetails")
@@ -452,6 +503,11 @@ namespace OnlineShoppingSite.Migrations
                     b.Navigation("Item");
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("OnlineShoppingSite.Models.Category", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("OnlineShoppingSite.Models.Order", b =>

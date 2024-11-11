@@ -1,6 +1,5 @@
 using OnlineShoppingSite.Models;
 using Microsoft.EntityFrameworkCore;
-using OnlineShoppingSite.Extensions;
 using Stripe;
 using Microsoft.AspNetCore.Identity;
 using OnlineShoppingSite;
@@ -9,9 +8,11 @@ using Microsoft.AspNetCore.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews()
-    .AddNewtonsoftJson();
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<OnlineShoppingSite.Filters.CategoriesActionFilter>();
+})
+.AddNewtonsoftJson();
 
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
@@ -25,8 +26,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Account/AccessDenied";
 });
 
-var stripeSettings = builder.Configuration.GetSection("Stripe").Get<StripeSettings>();
-StripeConfiguration.ApiKey = stripeSettings.SecretKey;
+builder.Services.AddMemoryCache();
 
 // Configure SQLite with connection string
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -45,6 +45,9 @@ builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
+var stripeSettings = builder.Configuration.GetSection("Stripe").Get<StripeSettings>();
+StripeConfiguration.ApiKey = stripeSettings.SecretKey;
+
 var defaultCulture = new CultureInfo("fr-FR");
 
 var localizationOptions = new RequestLocalizationOptions
@@ -54,15 +57,16 @@ var localizationOptions = new RequestLocalizationOptions
     SupportedUICultures = new List<CultureInfo> { defaultCulture }
 };
 
-app.UseRequestLocalization(localizationOptions);
-
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    var context = services.GetRequiredService<ApplicationDbContext>();
 
     await SeedData.InitializeAsync(userManager, roleManager);
+    await SeedData.SeedCategoriesAndItems(context);
+
 }
 
 // Configure the HTTP request pipeline.
@@ -75,6 +79,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles(); // Serve static files
+
+app.UseRequestLocalization(localizationOptions);
 
 app.UseRouting(); // Enable routing
 
