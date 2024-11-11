@@ -206,10 +206,10 @@ namespace OnlineShoppingSite.Controllers
             }
             _logger.LogInformation("Calculated Total Amount: {CalculatedTotal}", calculatedTotal);
 
-            // Validate that TotalAmount is at least $0.50 (Stripe requirement for Payment Intents)
+            // Validate that TotalAmount is at least 0.50€ (Stripe requirement for Payment Intents)
             if (calculatedTotal < 0.50m)
             {
-                ModelState.AddModelError("", "Order total must be at least $0.50.");
+                ModelState.AddModelError("", "Order total must be at least 0.50€.");
                 _logger.LogWarning("Checkout POST action: Order total {TotalAmount} is invalid.", calculatedTotal);
 
                 // Reconstruct OrderItems with Items
@@ -361,10 +361,10 @@ namespace OnlineShoppingSite.Controllers
         /// <summary>
         /// Creates a Stripe Payment Intent for the specified amount and currency.
         /// </summary>
-        /// <param name="amount">Total amount in USD.</param>
-        /// <param name="currency">Currency code (default is "usd").</param>
+        /// <param name="amount">Total amount in EUR.</param>
+        /// <param name="currency">Currency code (default is "eur").</param>
         /// <returns>Client secret of the Payment Intent if successful; otherwise, null.</returns>
-        private async Task<string> CreateStripePaymentIntentAsync(decimal amount, string currency = "usd")
+        private async Task<string> CreateStripePaymentIntentAsync(decimal amount, string currency = "eur")
         {
             try
             {

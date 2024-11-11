@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OnlineShoppingSite.Extensions;
 using OnlineShoppingSite.Models;
 using System.Collections.Generic;
@@ -24,10 +25,31 @@ namespace OnlineShoppingSite.Controllers
             return View(items);
         }
 
+        // GET: Items/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                _logger.LogWarning("Details: Item ID is null.");
+                return NotFound();
+            }
+
+            var item = await _context.Items
+                .FirstOrDefaultAsync(m => m.ItemId == id);
+
+            if (item == null)
+            {
+                _logger.LogWarning("Details: Item not found with ID {ItemId}.", id);
+                return NotFound();
+            }
+
+            return View(item);
+        }
+
         // POST: Items/AddToCart
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddToCart(int id)
+        public IActionResult AddToCart(int id, int quantity = 1)
         {
             // Retrieve the item by id
             var item = _context.Items.FirstOrDefault(i => i.ItemId == id);
@@ -45,27 +67,24 @@ namespace OnlineShoppingSite.Controllers
             if (cartItem != null)
             {
                 // Increase quantity
-                cartItem.Quantity++;
-                _logger.LogInformation("Increased quantity of ItemId {ItemId} in cart.", id);
+                cartItem.Quantity += quantity;
+                _logger.LogInformation("Increased quantity of ItemId {ItemId} in cart by {Quantity}.", id, quantity);
             }
             else
             {
                 // Add new cart item
-                cart.Add(new CartItem { ItemId = id, Quantity = 1 });
-                _logger.LogInformation("Added ItemId {ItemId} to cart.", id);
+                cart.Add(new CartItem { ItemId = id, Quantity = quantity });
+                _logger.LogInformation("Added ItemId {ItemId} to cart with quantity {Quantity}.", id, quantity);
             }
 
             // Save cart back to session
             HttpContext.Session.SetObjectAsJson("Cart", cart);
 
-            // Optionally, add a success message
-            TempData["Success"] = $"{item.Name} has been added to your cart.";
+            // Add a success message
+            TempData["Success"] = $"{item.Name} (Quantity: {quantity}) has been added to your cart.";
 
-            // Redirect back to the items index page
+            // Redirect back to the item details page or the index
             return RedirectToAction("Index");
         }
-
-
-        // Other action methods...
     }
 }

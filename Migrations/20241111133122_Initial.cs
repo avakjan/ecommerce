@@ -253,7 +253,7 @@ namespace OnlineShoppingSite.Migrations
                 {
                     { 1, "Description for Item 1", "https://pngimg.com/uploads/tshirt/tshirt_PNG5435.png", "Item 1", 9.99m },
                     { 2, "Description for Item 2", "https://static.vecteezy.com/system/resources/previews/034/969/304/large_2x/ai-generated-t-shirt-mockup-clip-art-free-png.png", "Item 2", 19.99m },
-                    { 3, "Description for Item 3", "https://pics.clipartpng.com/Green_T_Shirt_PNG_Clip_Art-3106.png", "Item 3", 29.99m }
+                    { 3, "Description for Item 3", "https://www.racerworldwide.net/cdn/shop/files/front_white_1_31a53b32-c70b-48ef-8612-d869fc6d5877_750x.jpg?v=1723733410", "Item 3", 29.99m }
                 });
 
             migrationBuilder.CreateIndex(

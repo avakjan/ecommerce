@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using OnlineShoppingSite.Extensions
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -26,7 +27,18 @@
                     <a class="nav-link" href="@Url.Action("Index", "Items")">Shop</a>
                 </li>
                 <li class="nav-item @(ViewContext.RouteData.Values["controller"].ToString() == "Cart" ? "active" : "")">
-                    <a class="nav-link" href="@Url.Action("Index", "Cart")">Cart</a>
+                    @* Display cart item count *@
+                    @{
+                        var cart = Context.Session.GetObjectFromJson<List<CartItem>>("Cart") ?? new List<CartItem>();
+                        int cartItemCount = cart.Sum(c => c.Quantity);
+                        if (cartItemCount > 0)
+                        {
+                            <a class="nav-link" href="@Url.Action("Index", "Cart")">Cart (@cartItemCount)</a>
+                        } else
+                        {
+                            <a class="nav-link" href="@Url.Action("Index", "Cart")">Cart</a>
+                        }
+                    }
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">

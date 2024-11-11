@@ -255,7 +255,7 @@ namespace OnlineShoppingSite.Migrations
                         {
                             ItemId = 3,
                             Description = "Description for Item 3",
-                            ImageUrl = "https://pics.clipartpng.com/Green_T_Shirt_PNG_Clip_Art-3106.png",
+                            ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/front_white_1_31a53b32-c70b-48ef-8612-d869fc6d5877_750x.jpg?v=1723733410",
                             Name = "Item 3",
                             Price = 29.99m
                         });
