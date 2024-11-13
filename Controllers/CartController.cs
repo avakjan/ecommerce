@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Authorization;
 
 namespace OnlineShoppingSite.Controllers
 {
@@ -350,20 +351,38 @@ namespace OnlineShoppingSite.Controllers
         /// <param name="id">Order ID.</param>
         /// <returns>OrderConfirmation view with Order model.</returns>
         // GET: Cart/OrderConfirmation
-        public IActionResult OrderConfirmation(int id)
+        [Authorize]
+        public async Task<IActionResult> OrderConfirmation(int id)
         {
             _logger.LogInformation("OrderConfirmation action called with OrderId: {OrderId}", id);
 
-            var order = _context.Orders
+            // Retrieve the current user's ID
+            var currentUserId = _userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(currentUserId))
+            {
+                _logger.LogWarning("OrderConfirmation: Unable to retrieve current user ID.");
+                return Unauthorized(); // or Redirect to login
+            }
+
+            // Fetch the order, including related data
+            var order = await _context.Orders
                 .Include(o => o.ShippingDetails)
                 .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.Item)
-                .FirstOrDefault(o => o.OrderId == id);
+                .FirstOrDefaultAsync(o => o.OrderId == id);
 
             if (order == null)
             {
                 _logger.LogWarning("OrderConfirmation: Order not found with ID: {OrderId}", id);
                 return NotFound();
+            }
+
+            // Check if the order belongs to the current user
+            if (order.UserId != currentUserId)
+            {
+                _logger.LogWarning("OrderConfirmation: User {UserId} attempted to access Order {OrderId} belonging to User {OrderUserId}.",
+                    currentUserId, id, order.UserId);
+                return Forbid(); // Returns 403 Forbidden
             }
 
             return View(order);
