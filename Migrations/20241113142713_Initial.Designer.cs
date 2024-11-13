@@ -11,7 +11,7 @@ using OnlineShoppingSite.Models;
 namespace OnlineShoppingSite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241111182121_Initial")]
+    [Migration("20241113142713_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -333,10 +333,16 @@ namespace OnlineShoppingSite.Migrations
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("OrderId");
 
                     b.HasIndex("ShippingDetailsId")
                         .IsUnique();
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -486,7 +492,15 @@ namespace OnlineShoppingSite.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("OnlineShoppingSite.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("ShippingDetails");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OnlineShoppingSite.Models.OrderItem", b =>

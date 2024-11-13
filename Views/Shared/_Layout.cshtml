@@ -68,6 +68,21 @@
                     <li class="nav-item">
                         <span class="navbar-text">Hello, @User.Identity.Name</span>
                     </li>
+
+                    @* Check if the user is an Admin *@
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Admin" asp-action="Dashboard">Admin Dashboard</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Account" asp-action="MyOrders">My Orders</a>
+                        </li>
+                    }
+
                     <li class="nav-item">
                         <form asp-controller="Account" asp-action="Logout" method="post" class="form-inline">
                             @Html.AntiForgeryToken()
@@ -85,15 +100,8 @@
                     </li>
                 }
             </ul>
+
         </div>
-        @if (User.IsInRole("Admin"))
-        {
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Admin" asp-action="Dashboard">Admin Dashboard</a>
-                </li>
-            </ul>
-        }
     </nav>
 
     <!-- Main Content -->

@@ -1,6 +1,8 @@
 // Controllers/AccountController.cs
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using OnlineShoppingSite.Models;
 using OnlineShoppingSite.ViewModels;
@@ -13,15 +15,18 @@ namespace OnlineShoppingSite.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<AccountController> _logger;
+        private readonly ApplicationDbContext _context;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _context = context;
         }
 
         // GET: Account/Register
@@ -120,6 +125,21 @@ namespace OnlineShoppingSite.Controllers
             _logger.LogInformation("User logged out.");
 
             return RedirectToAction("Index", "Home");
+        }
+
+        // GET: Account/MyOrders
+        [Authorize]
+        public async Task<IActionResult> MyOrders()
+        {
+            var userId = _userManager.GetUserId(User);
+            var orders = await _context.Orders
+                .Where(o => o.UserId == userId)
+                .Include(o => o.ShippingDetails)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Item)
+                .ToListAsync();
+
+            return View(orders);
         }
 
         // Optional: Access Denied page

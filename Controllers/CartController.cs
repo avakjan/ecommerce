@@ -3,12 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 using OnlineShoppingSite.Models;
 using OnlineShoppingSite.Extensions;
 using Microsoft.EntityFrameworkCore;
+using OnlineShoppingSite.ViewModels;
 using Stripe;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace OnlineShoppingSite.Controllers
 {
@@ -17,12 +20,14 @@ namespace OnlineShoppingSite.Controllers
         private readonly ApplicationDbContext _context;
         private readonly ILogger<CartController> _logger;
         private readonly IConfiguration _configuration;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CartController(ApplicationDbContext context, ILogger<CartController> logger, IConfiguration configuration)
+        public CartController(ApplicationDbContext context, ILogger<CartController> logger, IConfiguration configuration, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _logger = logger;
             _configuration = configuration;
+            _userManager = userManager;
 
             // Initialize Stripe with the Secret Key from configuration
             StripeConfiguration.ApiKey = _configuration["Stripe:SecretKey"];
@@ -89,6 +94,8 @@ namespace OnlineShoppingSite.Controllers
             // Fetch all corresponding Items from the database
             var items = await _context.Items.Where(i => itemIds.Contains(i.ItemId)).ToListAsync();
 
+            var userId = _userManager.GetUserId(User);
+
             // Check if any Items are missing
             var missingItemIds = itemIds.Except(items.Select(i => i.ItemId)).ToList();
             if (missingItemIds.Any())
@@ -101,6 +108,14 @@ namespace OnlineShoppingSite.Controllers
             // Calculate TotalAmount
             decimal totalAmount = cart.Sum(c => (items.FirstOrDefault(i => i.ItemId == c.ItemId)?.Price ?? 0) * c.Quantity);
 
+            // Validate that TotalAmount is at least 0.50€ (Stripe requirement for Payment Intents)
+            if (totalAmount < 0.50m)
+            {
+                _logger.LogWarning("Checkout GET action: Order total {TotalAmount} is below minimum.", totalAmount);
+                TempData["Error"] = "Order total must be at least 0.50€.";
+                return RedirectToAction("Index");
+            }
+
             // Create Payment Intent
             var paymentIntentClientSecret = await CreateStripePaymentIntentAsync(totalAmount);
 
@@ -110,10 +125,11 @@ namespace OnlineShoppingSite.Controllers
                 return RedirectToAction("Index");
             }
 
-            // Create the Order object with OrderItems
-            var order = new Order
+            // Create the ViewModel
+            var viewModel = new CheckoutViewModel
             {
                 ShippingDetails = new ShippingDetails(),
+                PaymentMethod = string.Empty,
                 OrderItems = cart.Select(c => new OrderItem
                 {
                     ItemId = c.ItemId,
@@ -121,44 +137,38 @@ namespace OnlineShoppingSite.Controllers
                     Quantity = c.Quantity,
                     UnitPrice = items.FirstOrDefault(i => i.ItemId == c.ItemId)?.Price ?? 0
                 }).ToList(),
-                TotalAmount = totalAmount
+                TotalAmount = totalAmount,
+                PaymentIntentClientSecret = paymentIntentClientSecret
             };
 
-            _logger.LogInformation("Checkout GET action called. Order total amount: {TotalAmount}", order.TotalAmount);
+            _logger.LogInformation("Checkout GET action called. Order total amount: {TotalAmount}", viewModel.TotalAmount);
 
-            // Pass the client secret to the view
-            ViewBag.PaymentIntentClientSecret = paymentIntentClientSecret;
-
-            return View(order);
+            return View(viewModel);
         }
 
         /// <summary>
         /// Handles the checkout form submission, confirms the payment, and processes the order.
         /// </summary>
-        /// <param name="order">Order model containing shipping details.</param>
-        /// <param name="paymentIntentId">Payment Intent ID received from the client.</param>
+        /// <param name="model">CheckoutViewModel containing form data.</param>
         /// <returns>Redirects to OrderConfirmation on success; otherwise, returns to Checkout view with errors.</returns>
         // POST: Cart/Checkout
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Checkout(Order order, string paymentIntentId)
+        public async Task<IActionResult> Checkout(CheckoutViewModel model)
         {
             _logger.LogInformation("Checkout POST action called.");
 
+            // Retrieve cart from session
             var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart") ?? new List<CartItem>();
+            var userId = _userManager.GetUserId(User);
             _logger.LogInformation("Cart retrieved from session. Cart has {ItemCount} items.", cart.Count);
 
             if (!cart.Any())
             {
                 ModelState.AddModelError("", "Your cart is empty.");
                 _logger.LogWarning("Checkout POST action: cart is empty.");
-                return View(order);
+                return View(model);
             }
-
-            // Remove OrderItems, PaymentIntentId, and TotalAmount from model binding since they come from the cart and processing
-            ModelState.Remove(nameof(Order.OrderItems));
-            ModelState.Remove(nameof(Order.PaymentIntentId));
-            ModelState.Remove(nameof(Order.TotalAmount)); // Remove TotalAmount to prevent client-side tampering
 
             // Extract all ItemIds from the cart
             var itemIds = cart.Select(c => c.ItemId).ToList();
@@ -174,7 +184,7 @@ namespace OnlineShoppingSite.Controllers
                 _logger.LogWarning("Checkout POST action: Items with IDs {MissingItemIds} not found.", string.Join(", ", missingItemIds));
 
                 // Reconstruct OrderItems with available items
-                order.OrderItems = cart
+                model.OrderItems = cart
                     .Where(c => items.Any(i => i.ItemId == c.ItemId))
                     .Select(c => new OrderItem
                     {
@@ -182,11 +192,11 @@ namespace OnlineShoppingSite.Controllers
                         Quantity = c.Quantity,
                         UnitPrice = items.FirstOrDefault(i => i.ItemId == c.ItemId)?.Price ?? 0
                     }).ToList();
-                order.TotalAmount = order.OrderItems.Sum(c => c.UnitPrice * c.Quantity);
+                model.TotalAmount = model.OrderItems.Sum(c => c.UnitPrice * c.Quantity);
 
-                _logger.LogInformation("After removing missing items, OrderTotalAmount: {TotalAmount}", order.TotalAmount);
+                _logger.LogInformation("After removing missing items, OrderTotalAmount: {TotalAmount}", model.TotalAmount);
 
-                return View(order);
+                return View(model);
             }
 
             // Calculate TotalAmount and log each item's details
@@ -213,20 +223,31 @@ namespace OnlineShoppingSite.Controllers
                 _logger.LogWarning("Checkout POST action: Order total {TotalAmount} is invalid.", calculatedTotal);
 
                 // Reconstruct OrderItems with Items
-                order.OrderItems = cart.Select(c => new OrderItem
+                model.OrderItems = cart.Select(c => new OrderItem
                 {
                     ItemId = c.ItemId,
                     Quantity = c.Quantity,
                     UnitPrice = items.FirstOrDefault(i => i.ItemId == c.ItemId)?.Price ?? 0
                 }).ToList();
-                order.TotalAmount = calculatedTotal;
+                model.TotalAmount = calculatedTotal;
 
-                return View(order);
+                return View(model);
             }
 
-            // Assign calculated total to order
-            order.TotalAmount = calculatedTotal;
+            // Assign calculated total to model
+            model.TotalAmount = calculatedTotal;
 
+            // **Populate OrderItems from the cart**
+            model.OrderItems = cart
+                .Select(c => new OrderItem
+                {
+                    ItemId = c.ItemId,
+                    Quantity = c.Quantity,
+                    UnitPrice = items.FirstOrDefault(i => i.ItemId == c.ItemId)?.Price ?? 0
+                })
+                .ToList();
+
+            // **Proceed with Model Validation**
             if (ModelState.IsValid)
             {
                 _logger.LogInformation("ModelState is valid. Proceeding to confirm payment and save order.");
@@ -236,38 +257,55 @@ namespace OnlineShoppingSite.Controllers
                 PaymentIntent paymentIntent = null;
                 try
                 {
-                    paymentIntent = await service.GetAsync(paymentIntentId);
+                    paymentIntent = await service.GetAsync(model.PaymentIntentId);
                 }
                 catch (StripeException ex)
                 {
                     _logger.LogError("Stripe Error while retrieving PaymentIntent: {Message}", ex.Message);
                     ModelState.AddModelError("", "Payment retrieval failed. Please try again.");
-                    return View(order);
+                    return View(model);
                 }
 
                 if (paymentIntent == null)
                 {
                     ModelState.AddModelError("", "Invalid Payment Intent.");
-                    _logger.LogError("PaymentIntent with ID {PaymentIntentId} not found.", paymentIntentId);
-                    return View(order);
+                    _logger.LogError("PaymentIntent with ID {PaymentIntentId} not found.", model.PaymentIntentId);
+                    return View(model);
+                }
+
+                if (paymentIntent.Status != "succeeded")
+                {
+                    ModelState.AddModelError("", "Payment was not successful.");
+                    _logger.LogError("PaymentIntent {PaymentIntentId} status: {Status}.", paymentIntent.Id, paymentIntent.Status);
+                    return View(model);
                 }
 
                 _logger.LogInformation("PaymentIntent {PaymentIntentId} succeeded.", paymentIntent.Id);
+
+                // Create the Order object with OrderItems
+                var order = new Order
+                {
+                    ShippingDetails = model.ShippingDetails,
+                    PaymentMethod = model.PaymentMethod,
+                    OrderItems = model.OrderItems.Select(oi => new OrderItem
+                    {
+                        ItemId = oi.ItemId,
+                        Quantity = oi.Quantity,
+                        UnitPrice = oi.UnitPrice
+                    }).ToList(),
+                    TotalAmount = model.TotalAmount,
+                    PaymentIntentId = paymentIntent.Id,
+                    UserId = userId,
+                    Status = "Pending" // or another appropriate status
+                };
 
                 // Save shipping details
                 _context.ShippingDetails.Add(order.ShippingDetails);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("Shipping details saved with ID: {ShippingDetailsId}", order.ShippingDetails.ShippingDetailsId);
 
-                // Assign the Item properties to OrderItems
-                order.OrderItems = cart.Select(c => new OrderItem
-                {
-                    ItemId = c.ItemId,
-                    Item = items.FirstOrDefault(i => i.ItemId == c.ItemId),
-                    Quantity = c.Quantity,
-                    UnitPrice = items.FirstOrDefault(i => i.ItemId == c.ItemId)?.Price ?? 0
-                }).ToList();
-                order.PaymentIntentId = paymentIntent.Id; // Set PaymentIntentId
+                // Assign the ShippingDetailsId to the order
+                order.ShippingDetailsId = order.ShippingDetails.ShippingDetailsId;
 
                 // Create and save the order
                 _context.Orders.Add(order);
@@ -290,19 +328,20 @@ namespace OnlineShoppingSite.Controllers
             // Recalculate total and items in case of validation errors
             var itemsInCart = await _context.Items.Where(i => itemIds.Contains(i.ItemId)).ToListAsync();
 
-            order.OrderItems = cart
+            model.OrderItems = cart
                 .Where(c => itemsInCart.Any(i => i.ItemId == c.ItemId))
                 .Select(c => new OrderItem
                 {
                     ItemId = c.ItemId,
                     Quantity = c.Quantity,
                     UnitPrice = itemsInCart.FirstOrDefault(i => i.ItemId == c.ItemId)?.Price ?? 0
-                }).ToList();
-            order.TotalAmount = order.OrderItems.Sum(c => c.UnitPrice * c.Quantity);
+                })
+                .ToList();
+            model.TotalAmount = model.OrderItems.Sum(c => c.UnitPrice * c.Quantity);
 
-            _logger.LogInformation("After ModelState invalid, OrderTotalAmount: {TotalAmount}", order.TotalAmount);
+            _logger.LogInformation("After ModelState invalid, OrderTotalAmount: {TotalAmount}", model.TotalAmount);
 
-            return View(order);
+            return View(model);
         }
 
         /// <summary>

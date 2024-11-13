@@ -11,6 +11,31 @@ body {
   width: 100%;
 }
 
+.order-details {
+  display: flex;
+  justify-content: space-between;
+}
+
+.order-details-shipping {
+  width: 20vw;
+}
+
+.order-details-shipping dt{
+  width: 10vw;
+}
+
+.col-sm-2, .col-sm-10 {
+  flex: none !important;
+  max-width: 100% !important;
+}
+
+.order-details-shipping dd{
+  width: 10vw;
+}
+
+.order-details-items {
+  width: 30vw;
+}
 
 @media (min-width: 768px) {
   html {

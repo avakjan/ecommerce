@@ -1,6 +1,6 @@
 @using Microsoft.Extensions.Configuration
 @inject IConfiguration Configuration
-@model OnlineShoppingSite.Models.Order
+@model OnlineShoppingSite.ViewModels.CheckoutViewModel
 
 @{
     ViewData["Title"] = "Checkout";
@@ -82,8 +82,8 @@
                 <div id="card-errors" role="alert" class="text-danger"></div>
             </div>
 
-            <!-- Hidden field to store PaymentIntent's ID -->
-            <input type="hidden" id="payment-intent-client-secret" value="@ViewBag.PaymentIntentClientSecret" />
+            <!-- Hidden fields -->
+            <input type="hidden" asp-for="PaymentIntentClientSecret" />
 
             <!-- Submit Button -->
             <button type="submit" class="btn btn-primary">Place Order</button>
@@ -190,7 +190,7 @@
                     }
 
                     // Retrieve the PaymentIntent's client secret from the hidden input
-                    var clientSecret = document.getElementById('payment-intent-client-secret').value;
+                    var clientSecret = document.getElementById('PaymentIntentClientSecret').value;
 
                     // Confirm the card payment
                     stripe.confirmCardPayment(clientSecret, {

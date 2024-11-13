@@ -224,11 +224,18 @@ namespace OnlineShoppingSite.Migrations
                     PaymentMethod = table.Column<string>(type: "TEXT", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "TEXT", nullable: false),
                     PaymentIntentId = table.Column<string>(type: "TEXT", nullable: false),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
                     Status = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.OrderId);
+                    table.ForeignKey(
+                        name: "FK_Orders_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Orders_ShippingDetails_ShippingDetailsId",
                         column: x => x.ShippingDetailsId,
@@ -342,6 +349,11 @@ namespace OnlineShoppingSite.Migrations
                 table: "Orders",
                 column: "ShippingDetailsId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_UserId",
+                table: "Orders",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -369,9 +381,6 @@ namespace OnlineShoppingSite.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Items");
 
             migrationBuilder.DropTable(
@@ -379,6 +388,9 @@ namespace OnlineShoppingSite.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "ShippingDetails");

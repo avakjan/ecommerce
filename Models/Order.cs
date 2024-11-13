@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace OnlineShoppingSite.Models
 {
@@ -28,8 +29,13 @@ namespace OnlineShoppingSite.Models
 
         public string PaymentIntentId { get; set; } // Stores the Payment Intent ID
 
+        [BindNever]
+        public string UserId { get; set; } // Foreign key to ApplicationUser
+
+        [BindNever]
+        public ApplicationUser User { get; set; }
+
         [Required]
         public string Status { get; set; } = "Pending";
-
     }
 }
