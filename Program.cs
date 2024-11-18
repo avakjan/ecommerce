@@ -65,8 +65,6 @@ using (var scope = app.Services.CreateScope())
     var context = services.GetRequiredService<ApplicationDbContext>();
 
     await SeedData.InitializeAsync(userManager, roleManager);
-    await SeedData.SeedCategoriesAndItems(context);
-
 }
 
 // Configure the HTTP request pipeline.

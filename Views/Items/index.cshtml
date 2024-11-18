@@ -18,7 +18,7 @@
                     <h5 class="card-title">@item.Name</h5>
                     <p class="card-text"><strong>Category:</strong> @item.Category.Name</p>
                     <p class="card-text">@item.Description</p>
-                    <p class="card-text font-weight-bold">@item.Price.ToString("C")</p>
+                    <p class="card-text font-weight-bold">@item.Price.ToString("C0")</p>
                     <form asp-action="AddToCart" method="post">
                         @Html.AntiForgeryToken()
                         <input type="hidden" name="id" value="@item.ItemId" />

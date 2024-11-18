@@ -25,16 +25,52 @@ namespace OnlineShoppingSite.Models
 
             modelBuilder.Ignore<CartItem>();
 
+            // Seed Categories
             modelBuilder.Entity<Category>().HasData(
                 new Category { CategoryId = 1, Name = "T-Shirts" },
                 new Category { CategoryId = 2, Name = "Hoodies" },
-                new Category { CategoryId = 3, Name = "Accessories" }
+                new Category { CategoryId = 3, Name = "Accessories" },
+                new Category { CategoryId = 4, Name = "Footwear" }
             );
 
+            // Seed Items
             modelBuilder.Entity<Item>().HasData(
-                new Item { ItemId = 1, Name = "Basic T-Shirt", Price = 9.99M, Description = "A basic t-shirt.", ImageUrl = "https://pngimg.com/uploads/tshirt/tshirt_PNG5435.png", CategoryId = 1 },
-                new Item { ItemId = 2, Name = "Cool Hoodie", Price = 19.99M, Description = "A cool hoodie.", ImageUrl = "https://static.vecteezy.com/system/resources/previews/034/969/304/large_2x/ai-generated-t-shirt-mockup-clip-art-free-png.png", CategoryId = 1 },
-                new Item { ItemId = 3, Name = "Stylish Cap", Price = 29.99M, Description = "A stylish cap.", ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/front_white_1_31a53b32-c70b-48ef-8612-d869fc6d5877_750x.jpg?v=1723733410", CategoryId = 2 }
+                new Item
+                {
+                    ItemId = 1,
+                    Name = "Garage T-shirt",
+                    Price = 60M,
+                    Description = "T-shirt in washed black.",
+                    ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/PrintPanelTFrontFFFFFF_750x.jpg?v=1723727728",
+                    CategoryId = 1
+                },
+                new Item
+                {
+                    ItemId = 2,
+                    Name = "Track Hoodie",
+                    Price = 130M,
+                    Description = "Oversized hoodie with distressed stripes.",
+                    ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/front_white_1_31a53b32-c70b-48ef-8612-d869fc6d5877_750x.jpg?v=1723733410",
+                    CategoryId = 2
+                },
+                new Item
+                {
+                    ItemId = 3,
+                    Name = "Glitch Leo Beanie",
+                    Price = 55M,
+                    Description = "Cotton beanie with all-over print.",
+                    ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/FW24_Glitch_Beanie_Camo_LB_FF_1_750x.jpg?v=1726757323",
+                    CategoryId = 3
+                },
+                new Item
+                {
+                    ItemId = 4,
+                    Name = "Vibram® Desert Boots",
+                    Price = 240M,
+                    Description = "Racer Suede Boots with Vibram® outsole.",
+                    ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/SuedeRightSideFFFFFF_1_750x.jpg?v=1723730360",
+                    CategoryId = 4
+                }
             );
 
             modelBuilder.Entity<Order>()

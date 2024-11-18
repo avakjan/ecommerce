@@ -11,8 +11,8 @@ using OnlineShoppingSite.Models;
 namespace OnlineShoppingSite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241113142713_Initial")]
-    partial class Initial
+    [Migration("20241118122338_UpdatePriceColumn")]
+    partial class UpdatePriceColumn
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -242,6 +242,11 @@ namespace OnlineShoppingSite.Migrations
                         {
                             CategoryId = 3,
                             Name = "Accessories"
+                        },
+                        new
+                        {
+                            CategoryId = 4,
+                            Name = "Footwear"
                         });
                 });
 
@@ -268,7 +273,7 @@ namespace OnlineShoppingSite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,0)");
 
                     b.HasKey("ItemId");
 
@@ -281,28 +286,37 @@ namespace OnlineShoppingSite.Migrations
                         {
                             ItemId = 1,
                             CategoryId = 1,
-                            Description = "A basic t-shirt.",
-                            ImageUrl = "https://pngimg.com/uploads/tshirt/tshirt_PNG5435.png",
-                            Name = "Basic T-Shirt",
-                            Price = 9.99m
+                            Description = "T-shirt in washed black.",
+                            ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/PrintPanelTFrontFFFFFF_750x.jpg?v=1723727728",
+                            Name = "Garage T-shirt",
+                            Price = 60m
                         },
                         new
                         {
                             ItemId = 2,
-                            CategoryId = 1,
-                            Description = "A cool hoodie.",
-                            ImageUrl = "https://static.vecteezy.com/system/resources/previews/034/969/304/large_2x/ai-generated-t-shirt-mockup-clip-art-free-png.png",
-                            Name = "Cool Hoodie",
-                            Price = 19.99m
+                            CategoryId = 2,
+                            Description = "Oversized hoodie with distressed stripes.",
+                            ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/front_white_1_31a53b32-c70b-48ef-8612-d869fc6d5877_750x.jpg?v=1723733410",
+                            Name = "Track Hoodie",
+                            Price = 130m
                         },
                         new
                         {
                             ItemId = 3,
-                            CategoryId = 2,
-                            Description = "A stylish cap.",
-                            ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/front_white_1_31a53b32-c70b-48ef-8612-d869fc6d5877_750x.jpg?v=1723733410",
-                            Name = "Stylish Cap",
-                            Price = 29.99m
+                            CategoryId = 3,
+                            Description = "Cotton beanie with all-over print.",
+                            ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/FW24_Glitch_Beanie_Camo_LB_FF_1_750x.jpg?v=1726757323",
+                            Name = "Glitch Leo Beanie",
+                            Price = 55m
+                        },
+                        new
+                        {
+                            ItemId = 4,
+                            CategoryId = 4,
+                            Description = "Racer Suede Boots with Vibram® outsole.",
+                            ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/SuedeRightSideFFFFFF_1_750x.jpg?v=1723730360",
+                            Name = "Vibram® Desert Boots",
+                            Price = 240m
                         });
                 });
 

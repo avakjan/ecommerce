@@ -24,7 +24,7 @@
             <td>@order.OrderId</td>
             <td>@order.OrderDate.ToString("g")</td>
             <td>@order.ShippingDetails.FullName</td>
-            <td>@order.TotalAmount.ToString("C")</td>
+            <td>@order.TotalAmount.ToString("C0")</td>
             <td>@order.Status</td>
             <td>
                 <a asp-action="ViewOrder" asp-route-id="@order.OrderId" class="btn btn-sm btn-info">View</a>

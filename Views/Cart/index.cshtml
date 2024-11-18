@@ -31,9 +31,9 @@ else
                 var item = Model.Items.FirstOrDefault(i => i.ItemId == cartItem.ItemId);
                 <tr>
                     <td>@(item != null ? item.Name : "Item not found")</td>
-                    <td>@(item != null ? item.Price.ToString("C") : "N/A")</td>
+                    <td>@(item != null ? item.Price.ToString("C0") : "N/A")</td>
                     <td>@cartItem.Quantity</td>
-                    <td>@(item != null ? (item.Price * cartItem.Quantity).ToString("C") : "N/A")</td>
+                    <td>@(item != null ? (item.Price * cartItem.Quantity).ToString("C0") : "N/A")</td>
                     <td>
                         <form asp-action="Remove" method="post">
                             @Html.AntiForgeryToken()
@@ -47,7 +47,7 @@ else
     </table>
     <div class="text-right">
         <h4>
-            Total: @Model.TotalAmount.ToString("C")
+            Total: @Model.TotalAmount.ToString("C0")
         </h4>
         <a href="@Url.Action("Checkout", "Cart")" class="btn btn-success">Proceed to Checkout</a>
     </div>

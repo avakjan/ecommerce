@@ -47,15 +47,15 @@
                 <tr>
                     <td>@item.Item.Name</td>
                     <td class="text-right">@item.Quantity</td>
-                    <td class="text-right">@item.UnitPrice.ToString("C")</td>
-                    <td class="text-right">@(item.UnitPrice * item.Quantity).ToString("C")</td>
+                    <td class="text-right">@item.UnitPrice.ToString("C0")</td>
+                    <td class="text-right">@(item.UnitPrice * item.Quantity) €</td>
                 </tr>
             }
             </tbody>
             <tfoot>
                 <tr>
                     <td colspan="3" class="text-right"><strong>Total:</strong></td>
-                    <td class="text-right"><strong>@Model.TotalAmount.ToString("C")</strong></td>
+                    <td class="text-right"><strong>@Model.TotalAmount.ToString("C0")</strong></td>
                 </tr>
             </tfoot>
         </table>

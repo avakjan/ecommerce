@@ -14,7 +14,7 @@ namespace OnlineShoppingSite.Models
         public string Name { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(18,2)")]
+        [Column(TypeName = "decimal(18,0)")]
         public decimal Price { get; set; }
 
         public string Description { get; set; }

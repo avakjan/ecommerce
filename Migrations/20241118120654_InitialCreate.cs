@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OnlineShoppingSite.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -279,7 +279,8 @@ namespace OnlineShoppingSite.Migrations
                 {
                     { 1, "T-Shirts" },
                     { 2, "Hoodies" },
-                    { 3, "Accessories" }
+                    { 3, "Accessories" },
+                    { 4, "Footwear" }
                 });
 
             migrationBuilder.InsertData(
@@ -287,9 +288,10 @@ namespace OnlineShoppingSite.Migrations
                 columns: new[] { "ItemId", "CategoryId", "Description", "ImageUrl", "Name", "Price" },
                 values: new object[,]
                 {
-                    { 1, 1, "A basic t-shirt.", "https://pngimg.com/uploads/tshirt/tshirt_PNG5435.png", "Basic T-Shirt", 9.99m },
-                    { 2, 1, "A cool hoodie.", "https://static.vecteezy.com/system/resources/previews/034/969/304/large_2x/ai-generated-t-shirt-mockup-clip-art-free-png.png", "Cool Hoodie", 19.99m },
-                    { 3, 2, "A stylish cap.", "https://www.racerworldwide.net/cdn/shop/files/front_white_1_31a53b32-c70b-48ef-8612-d869fc6d5877_750x.jpg?v=1723733410", "Stylish Cap", 29.99m }
+                    { 1, 1, "T-shirt in washed black.", "https://www.racerworldwide.net/cdn/shop/files/PrintPanelTFrontFFFFFF_750x.jpg?v=1723727728", "Garage T-shirt", 60m },
+                    { 2, 2, "Oversized hoodie with distressed stripes.", "https://www.racerworldwide.net/cdn/shop/files/TrackHoodie_750x.jpg?v=1723727728", "Track Hoodie", 130m },
+                    { 3, 3, "Cotton beanie with all-over print.", "https://www.racerworldwide.net/cdn/shop/files/GlitchLeoBeanie_750x.jpg?v=1723727728", "Glitch Leo Beanie", 55m },
+                    { 4, 4, "Racer Suede Boots with Vibram® outsole.", "https://www.racerworldwide.net/cdn/shop/files/VibramDesertBoots_750x.jpg?v=1723727728", "Vibram® Desert Boots", 240m }
                 });
 
             migrationBuilder.CreateIndex(

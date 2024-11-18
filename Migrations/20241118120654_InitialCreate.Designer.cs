@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineShoppingSite.Models;
 
@@ -10,9 +11,11 @@ using OnlineShoppingSite.Models;
 namespace OnlineShoppingSite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241118120654_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
@@ -270,7 +273,7 @@ namespace OnlineShoppingSite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,0)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("ItemId");
 
@@ -293,7 +296,7 @@ namespace OnlineShoppingSite.Migrations
                             ItemId = 2,
                             CategoryId = 2,
                             Description = "Oversized hoodie with distressed stripes.",
-                            ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/front_white_1_31a53b32-c70b-48ef-8612-d869fc6d5877_750x.jpg?v=1723733410",
+                            ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/TrackHoodie_750x.jpg?v=1723727728",
                             Name = "Track Hoodie",
                             Price = 130m
                         },
@@ -302,7 +305,7 @@ namespace OnlineShoppingSite.Migrations
                             ItemId = 3,
                             CategoryId = 3,
                             Description = "Cotton beanie with all-over print.",
-                            ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/FW24_Glitch_Beanie_Camo_LB_FF_1_750x.jpg?v=1726757323",
+                            ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/GlitchLeoBeanie_750x.jpg?v=1723727728",
                             Name = "Glitch Leo Beanie",
                             Price = 55m
                         },
@@ -311,7 +314,7 @@ namespace OnlineShoppingSite.Migrations
                             ItemId = 4,
                             CategoryId = 4,
                             Description = "Racer Suede Boots with Vibram® outsole.",
-                            ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/SuedeRightSideFFFFFF_1_750x.jpg?v=1723730360",
+                            ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/VibramDesertBoots_750x.jpg?v=1723727728",
                             Name = "Vibram® Desert Boots",
                             Price = 240m
                         });
