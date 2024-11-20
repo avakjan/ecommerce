@@ -1,12 +1,32 @@
+<!-- views/Items/index.cshtml -->
+
 @model IEnumerable<OnlineShoppingSite.Models.Item>
 
 @{
     ViewData["Title"] = "Shop";
     var categories = ViewBag.Categories as List<OnlineShoppingSite.Models.Category>;
-    int selectedCategory = ViewBag.SelectedCategory ?? 0;
+    int selectedCategoryId = ViewBag.SelectedCategoryId ?? 0;
 }
 
 <h2>Our Products</h2>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <form method="get" asp-action="Index" asp-controller="Items">
+            <div class="form-row align-items-center">
+                <div class="col-auto">
+                    @{
+                        var categoryList = new SelectList(categories ?? new List<OnlineShoppingSite.Models.Category>(), "CategoryId", "Name", selectedCategoryId);
+                    }
+                    @Html.DropDownList("categoryId", categoryList, "All Categories", new { @class = "form-control mb-2" })
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-2">Filter</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 <div class="row">
     @foreach (var item in Model)
@@ -14,14 +34,42 @@
         <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <img src="@item.ImageUrl" class="card-img-top" alt="@item.Name" />
-                <div class="card-body">
+                <div class="card-body d-flex flex-column">
                     <h5 class="card-title">@item.Name</h5>
-                    <p class="card-text"><strong>Category:</strong> @item.Category.Name</p>
+                    <p class="card-text"><strong>Category:</strong> @(item.Category?.Name ?? "Uncategorized")</p>
                     <p class="card-text">@item.Description</p>
                     <p class="card-text font-weight-bold">@item.Price.ToString("C0")</p>
-                    <form asp-action="AddToCart" method="post">
+                    
+                    @* Size Selection *@
+                    <form asp-action="AddToCart" method="post" class="mt-auto">
                         @Html.AntiForgeryToken()
-                        <input type="hidden" name="id" value="@item.ItemId" />
+                        <input type="hidden" name="itemId" value="@item.ItemId" />
+
+                        <div class="form-group">
+                            <label for="sizeSelect_@item.ItemId">Size</label>
+                            <select id="sizeSelect_@item.ItemId" name="sizeId" class="form-control" required>
+                                <option value="">Select Size</option>
+                                @if (item.ItemSizes != null && item.ItemSizes.Any())
+                                {
+                                    @foreach (var size in item.ItemSizes.Select(isz => isz.Size))
+                                    {
+                                        <option value="@size.SizeId">@size.Name</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option disabled>No sizes available</option>
+                                }
+                            </select>
+                            @Html.ValidationMessage("sizeId", "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            <label for="quantity_@item.ItemId">Quantity</label>
+                            <input type="number" name="quantity" value="1" min="1" class="form-control" style="width: 100px;" required />
+                            @Html.ValidationMessage("quantity", "", new { @class = "text-danger" })
+                        </div>
+
                         <button type="submit" class="btn btn-primary">Add to Cart</button>
                         <a href="@Url.Action("Details", "Items", new { id = item.ItemId })" class="btn btn-secondary">View Details</a>
                     </form>

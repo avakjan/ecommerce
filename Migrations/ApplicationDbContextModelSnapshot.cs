@@ -317,6 +317,151 @@ namespace OnlineShoppingSite.Migrations
                         });
                 });
 
+            modelBuilder.Entity("OnlineShoppingSite.Models.ItemSize", b =>
+                {
+                    b.Property<int>("ItemId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SizeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(0);
+
+                    b.HasKey("ItemId", "SizeId");
+
+                    b.HasIndex("SizeId");
+
+                    b.ToTable("ItemSizes");
+
+                    b.HasData(
+                        new
+                        {
+                            ItemId = 1,
+                            SizeId = 1,
+                            Quantity = 50,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 1,
+                            SizeId = 2,
+                            Quantity = 50,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 1,
+                            SizeId = 3,
+                            Quantity = 50,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 1,
+                            SizeId = 4,
+                            Quantity = 50,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 2,
+                            SizeId = 1,
+                            Quantity = 30,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 2,
+                            SizeId = 2,
+                            Quantity = 30,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 2,
+                            SizeId = 3,
+                            Quantity = 30,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 2,
+                            SizeId = 4,
+                            Quantity = 30,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 3,
+                            SizeId = 1,
+                            Quantity = 10,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 3,
+                            SizeId = 2,
+                            Quantity = 10,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 3,
+                            SizeId = 3,
+                            Quantity = 10,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 3,
+                            SizeId = 4,
+                            Quantity = 10,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 4,
+                            SizeId = 5,
+                            Quantity = 20,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 4,
+                            SizeId = 6,
+                            Quantity = 20,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 4,
+                            SizeId = 7,
+                            Quantity = 20,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 4,
+                            SizeId = 8,
+                            Quantity = 20,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 4,
+                            SizeId = 9,
+                            Quantity = 20,
+                            Version = 0
+                        });
+                });
+
             modelBuilder.Entity("OnlineShoppingSite.Models.Order", b =>
                 {
                     b.Property<int>("OrderId")
@@ -327,7 +472,6 @@ namespace OnlineShoppingSite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PaymentIntentId")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PaymentMethod")
@@ -373,6 +517,9 @@ namespace OnlineShoppingSite.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("SizeId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("TEXT");
 
@@ -381,6 +528,8 @@ namespace OnlineShoppingSite.Migrations
                     b.HasIndex("ItemId");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("SizeId");
 
                     b.ToTable("OrderItems");
                 });
@@ -433,6 +582,69 @@ namespace OnlineShoppingSite.Migrations
                     b.HasKey("ShippingDetailsId");
 
                     b.ToTable("ShippingDetails");
+                });
+
+            modelBuilder.Entity("OnlineShoppingSite.Models.Size", b =>
+                {
+                    b.Property<int>("SizeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("SizeId");
+
+                    b.ToTable("Sizes");
+
+                    b.HasData(
+                        new
+                        {
+                            SizeId = 1,
+                            Name = "S"
+                        },
+                        new
+                        {
+                            SizeId = 2,
+                            Name = "M"
+                        },
+                        new
+                        {
+                            SizeId = 3,
+                            Name = "L"
+                        },
+                        new
+                        {
+                            SizeId = 4,
+                            Name = "XL"
+                        },
+                        new
+                        {
+                            SizeId = 5,
+                            Name = "38"
+                        },
+                        new
+                        {
+                            SizeId = 6,
+                            Name = "39"
+                        },
+                        new
+                        {
+                            SizeId = 7,
+                            Name = "40"
+                        },
+                        new
+                        {
+                            SizeId = 8,
+                            Name = "41"
+                        },
+                        new
+                        {
+                            SizeId = 9,
+                            Name = "42"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -495,6 +707,25 @@ namespace OnlineShoppingSite.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("OnlineShoppingSite.Models.ItemSize", b =>
+                {
+                    b.HasOne("OnlineShoppingSite.Models.Item", "Item")
+                        .WithMany("ItemSizes")
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineShoppingSite.Models.Size", "Size")
+                        .WithMany("ItemSizes")
+                        .HasForeignKey("SizeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+
+                    b.Navigation("Size");
+                });
+
             modelBuilder.Entity("OnlineShoppingSite.Models.Order", b =>
                 {
                     b.HasOne("OnlineShoppingSite.Models.ShippingDetails", "ShippingDetails")
@@ -528,9 +759,17 @@ namespace OnlineShoppingSite.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("OnlineShoppingSite.Models.Size", "Size")
+                        .WithMany()
+                        .HasForeignKey("SizeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Item");
 
                     b.Navigation("Order");
+
+                    b.Navigation("Size");
                 });
 
             modelBuilder.Entity("OnlineShoppingSite.Models.Category", b =>
@@ -538,9 +777,19 @@ namespace OnlineShoppingSite.Migrations
                     b.Navigation("Items");
                 });
 
+            modelBuilder.Entity("OnlineShoppingSite.Models.Item", b =>
+                {
+                    b.Navigation("ItemSizes");
+                });
+
             modelBuilder.Entity("OnlineShoppingSite.Models.Order", b =>
                 {
                     b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("OnlineShoppingSite.Models.Size", b =>
+                {
+                    b.Navigation("ItemSizes");
                 });
 #pragma warning restore 612, 618
         }

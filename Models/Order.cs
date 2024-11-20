@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace OnlineShoppingSite.Models
@@ -27,7 +28,8 @@ namespace OnlineShoppingSite.Models
 
         public decimal TotalAmount { get; set; }
 
-        public string PaymentIntentId { get; set; } // Stores the Payment Intent ID
+        [BindNever]
+        public string? PaymentIntentId { get; set; } // Stores the Payment Intent ID
 
         [BindNever]
         public string UserId { get; set; } // Foreign key to ApplicationUser

@@ -1,0 +1,69 @@
+<!-- views/Account/OrderDetails.cshtml -->
+
+@model OnlineShoppingSite.Models.Order
+
+@{
+    ViewData["Title"] = $"Order Details - Order #{Model.OrderId}";
+}
+
+<h2>Order Details - Order #@Model.OrderId</h2>
+
+<h4>Shipping Information</h4>
+<dl class="row">
+    <dt class="col-sm-3">Full Name</dt>
+    <dd class="col-sm-9">@Model.ShippingDetails.FullName</dd>
+
+    <dt class="col-sm-3">Address</dt>
+    <dd class="col-sm-9">
+        @Model.ShippingDetails.AddressLine1<br />
+        @if (!string.IsNullOrEmpty(Model.ShippingDetails.AddressLine2))
+        {
+            @Model.ShippingDetails.AddressLine2<br />
+        }
+        @Model.ShippingDetails.City, @Model.ShippingDetails.State @Model.ShippingDetails.PostalCode<br />
+        @Model.ShippingDetails.Country
+    </dd>
+
+    <dt class="col-sm-3">Phone Number</dt>
+    <dd class="col-sm-9">@Model.ShippingDetails.PhoneNumber</dd>
+</dl>
+
+<h4>Order Items</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th>Size</th>
+            <th class="text-right">Quantity</th>
+            <th class="text-right">Unit Price</th>
+            <th class="text-right">Total</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.OrderItems)
+    {
+        <tr>
+            <td>@item.Item.Name</td>
+            <td>@item.Size.Name</td>
+            <td class="text-right">@item.Quantity</td>
+            <td class="text-right">@item.UnitPrice.ToString("C0")</td>
+            <td class="text-right">@(item.UnitPrice * item.Quantity).ToString("C0")</td>
+        </tr>
+    }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4" class="text-right"><strong>Total:</strong></td>
+            <td class="text-right"><strong>@Model.TotalAmount.ToString("C0")</strong></td>
+        </tr>
+    </tfoot>
+</table>
+
+<h4>Order Details</h4>
+<p>
+    <strong>Order Date:</strong> @Model.OrderDate.ToString("f")<br />
+    <strong>Payment Method:</strong> @Model.PaymentMethod<br />
+    <strong>Status:</strong> @Model.Status
+</p>
+
+<a asp-action="MyOrders" class="btn btn-secondary">Back to My Orders</a>

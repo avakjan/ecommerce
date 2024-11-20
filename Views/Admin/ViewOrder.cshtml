@@ -1,3 +1,5 @@
+<!-- views/Admin/ViewOrder.cshtml -->
+
 @model OnlineShoppingSite.Models.Order
 
 @{
@@ -5,6 +7,7 @@
 }
 
 <h2>Order Details - Order #@Model.OrderId</h2>
+
 <div class="order-details">
     <div class="order-details-shipping">
         <h4>Customer Information</h4>
@@ -17,17 +20,14 @@
             <dd class="col-sm-10">@Model.ShippingDetails.State</dd>
             <dt class="col-sm-2">City</dt>
             <dd class="col-sm-10">@Model.ShippingDetails.City</dd>
-            <dt class="col-sm-2">Address line 1</dt>
+            <dt class="col-sm-2">Address Line 1</dt>
             <dd class="col-sm-10">@Model.ShippingDetails.AddressLine1</dd>
-            <dt class="col-sm-2">Address line 2</dt>
+            <dt class="col-sm-2">Address Line 2</dt>
             <dd class="col-sm-10">@Model.ShippingDetails.AddressLine2</dd>
-            <dt class="col-sm-2">Postal code</dt>
-            <dd class="col-sm-10">@Model.ShippingDetails.PostalCode</dd>
-            <dt class="col-sm-2">Phone number</dt>
-            <dd class="col-sm-10">@Model.ShippingDetails.PhoneNumber</dd>
             <dt class="col-sm-2">Postal Code</dt>
             <dd class="col-sm-10">@Model.ShippingDetails.PostalCode</dd>
-
+            <dt class="col-sm-2">Phone Number</dt>
+            <dd class="col-sm-10">@Model.ShippingDetails.PhoneNumber</dd>
         </dl>
     </div>
     <div class="order-details-items">
@@ -36,8 +36,9 @@
             <thead>
                 <tr>
                     <th>Item</th>
+                    <th>Size</th>
                     <th class="text-right">Quantity</th>
-                    <th class="text-right">Price</th>
+                    <th class="text-right">Unit Price</th>
                     <th class="text-right">Total</th>
                 </tr>
             </thead>
@@ -46,24 +47,22 @@
             {
                 <tr>
                     <td>@item.Item.Name</td>
+                    <td>@item.Size.Name</td>
                     <td class="text-right">@item.Quantity</td>
                     <td class="text-right">@item.UnitPrice.ToString("C0")</td>
-                    <td class="text-right">@(item.UnitPrice * item.Quantity) €</td>
+                    <td class="text-right">@(item.UnitPrice * item.Quantity).ToString("C0")</td>
                 </tr>
             }
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="3" class="text-right"><strong>Total:</strong></td>
+                    <td colspan="4" class="text-right"><strong>Total:</strong></td>
                     <td class="text-right"><strong>@Model.TotalAmount.ToString("C0")</strong></td>
                 </tr>
             </tfoot>
         </table>
     </div>
 </div>
-
-
-
 
 <h4>Order Status</h4>
 <form asp-action="UpdateOrderStatus" method="post">

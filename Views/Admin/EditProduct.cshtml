@@ -1,18 +1,19 @@
+<!-- views/Admin/EditProduct.cshtml -->
+
 @model OnlineShoppingSite.ViewModels.ItemViewModel
 
 @{
-    var isEdit = ViewContext.RouteData.Values["action"].ToString() == "EditProduct";
-    ViewData["Title"] = isEdit ? "Edit Product" : "Create Product";
+    var isEdit = true;
+    ViewData["Title"] = "Edit Product";
 }
 
 <h2>@ViewData["Title"]</h2>
 
-<form asp-action="@ViewContext.RouteData.Values["action"].ToString()" method="post">
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form asp-action="EditProduct" method="post">
     @Html.AntiForgeryToken()
-    @if (isEdit)
-    {
-        <input type="hidden" asp-for="Item.ItemId" />
-    }
+    <input type="hidden" asp-for="Item.ItemId" />
 
     <div class="form-group">
         <label asp-for="Item.Name"></label>
@@ -40,6 +41,7 @@
             "Select Category",
             new { @class = "form-control" }
         )
+        <span asp-validation-for="Item.CategoryId" class="text-danger"></span>
     </div>
 
     <div class="form-group">
@@ -48,8 +50,10 @@
         <span asp-validation-for="Item.ImageUrl" class="text-danger"></span>
     </div>
 
-    <!-- Add other fields as necessary, always prefixed with "Item." -->
-
     <button type="submit" class="btn btn-primary">Save</button>
     <a asp-action="ManageProducts" class="btn btn-secondary">Cancel</a>
 </form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

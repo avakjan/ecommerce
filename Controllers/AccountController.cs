@@ -77,6 +77,27 @@ namespace OnlineShoppingSite.Controllers
             return View(model);
         }
 
+        // GET: Account/OrderDetails/5
+        [Authorize]
+        public async Task<IActionResult> OrderDetails(int id)
+        {
+            var userId = _userManager.GetUserId(User);
+            var order = await _context.Orders
+                .Include(o => o.ShippingDetails)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Item)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Size)
+                .FirstOrDefaultAsync(o => o.OrderId == id && o.UserId == userId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return View(order);
+        }
+
         // POST: Account/Login
         [HttpPost]
         [ValidateAntiForgeryToken]

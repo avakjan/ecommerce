@@ -1,4 +1,6 @@
-@model OnlineShoppingSite.Models.CartViewModel
+<!-- views/Cart/index.cshtml -->
+
+@model OnlineShoppingSite.ViewModels.CartViewModel
 
 @{
     ViewData["Title"] = "Your Cart";
@@ -19,6 +21,7 @@ else
         <thead>
             <tr>
                 <th>Item</th>
+                <th>Size</th>
                 <th>Price</th>
                 <th>Quantity</th>
                 <th>Total</th>
@@ -29,15 +32,18 @@ else
             @foreach (var cartItem in Model.CartItems)
             {
                 var item = Model.Items.FirstOrDefault(i => i.ItemId == cartItem.ItemId);
+                var size = Model.Sizes.FirstOrDefault(s => s.SizeId == cartItem.SizeId);
                 <tr>
                     <td>@(item != null ? item.Name : "Item not found")</td>
+                    <td>@(size != null ? size.Name : "Size not found")</td>
                     <td>@(item != null ? item.Price.ToString("C0") : "N/A")</td>
                     <td>@cartItem.Quantity</td>
                     <td>@(item != null ? (item.Price * cartItem.Quantity).ToString("C0") : "N/A")</td>
                     <td>
-                        <form asp-action="Remove" method="post">
+                        <form asp-action="Remove" method="post" onsubmit="return confirm('Are you sure you want to remove this item?');">
                             @Html.AntiForgeryToken()
-                            <input type="hidden" name="id" value="@cartItem.ItemId" />
+                            <input type="hidden" name="itemId" value="@cartItem.ItemId" />
+                            <input type="hidden" name="sizeId" value="@cartItem.SizeId" />
                             <button type="submit" class="btn btn-danger btn-sm">Remove</button>
                         </form>
                     </td>

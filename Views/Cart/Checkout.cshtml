@@ -1,3 +1,5 @@
+<!-- views/Cart/Checkout.cshtml -->
+
 @using Microsoft.Extensions.Configuration
 @inject IConfiguration Configuration
 @model OnlineShoppingSite.ViewModels.CheckoutViewModel
@@ -65,10 +67,9 @@
             <!-- Payment Method -->
             <div class="form-group">
                 <label asp-for="PaymentMethod"></label>
-                <select asp-for="PaymentMethod" class="form-control">
+                <select asp-for="PaymentMethod" class="form-control" required>
                     <option value="">Select Payment Method</option>
-                    <option>Credit Card</option>
-                    <!-- Add other payment methods if applicable -->
+                    <option value="Credit Card">Credit Card</option>
                 </select>
                 <span asp-validation-for="PaymentMethod" class="text-danger"></span>
             </div>
@@ -83,7 +84,8 @@
             </div>
 
             <!-- Hidden fields -->
-            <input type="hidden" asp-for="PaymentIntentClientSecret" />
+            <input type="hidden" asp-for="PaymentIntentClientSecret" id="PaymentIntentClientSecret" />
+            <input type="hidden" asp-for="PaymentIntentId" />
 
             <!-- Submit Button -->
             <button type="submit" class="btn btn-primary">Place Order</button>
@@ -178,55 +180,46 @@
 
             // Handle form submission
             var form = document.getElementById('payment-form');
-            if (form) {
-                form.addEventListener('submit', function (event) {
-                    event.preventDefault();
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
 
-                    // Disable the submit button to prevent multiple clicks
-                    var submitButton = form.querySelector('button[type="submit"]');
-                    if (submitButton) {
-                        submitButton.disabled = true;
-                        submitButton.textContent = 'Processing...'; // Optional: Change button text
+                // Disable the submit button to prevent multiple clicks
+                var submitButton = form.querySelector('button[type="submit"]');
+                submitButton.disabled = true;
+                submitButton.textContent = 'Processing...';
+
+                // Retrieve the PaymentIntent's client secret from the hidden input
+                var clientSecret = document.getElementById('PaymentIntentClientSecret').value;
+
+                // Confirm the card payment
+                stripe.confirmCardPayment(clientSecret, {
+                    payment_method: {
+                        card: card,
+                        billing_details: {
+                            name: document.querySelector('input[name="ShippingDetails.FullName"]').value,
+                        },
                     }
+                }).then(function (result) {
+                    if (result.error) {
+                        // Show error to your customer
+                        var errorElement = document.getElementById('card-errors');
+                        errorElement.textContent = result.error.message;
 
-                    // Retrieve the PaymentIntent's client secret from the hidden input
-                    var clientSecret = document.getElementById('PaymentIntentClientSecret').value;
-
-                    // Confirm the card payment
-                    stripe.confirmCardPayment(clientSecret, {
-                        payment_method: {
-                            card: card,
-                            billing_details: {
-                                // Include any additional collected billing details
-                                name: document.querySelector('input[name="ShippingDetails.FullName"]').value,
-                            },
-                        }
-                    }).then(function (result) {
-                        if (result.error) {
-                            // Show error to your customer
-                            var errorElement = document.getElementById('card-errors');
-                            errorElement.textContent = result.error.message;
-
-                            // Re-enable the submit button
-                            if (submitButton) {
-                                submitButton.disabled = false;
-                                submitButton.textContent = 'Place Order'; // Reset button text
-                            }
-                        } else {
-                            stripeTokenHandler(result.paymentIntent.id);
-                        }
-                    });
+                        // Re-enable the submit button
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Place Order';
+                    } else {
+                        // Send the paymentIntent.id to your server
+                        stripeTokenHandler(result.paymentIntent.id);
+                    }
                 });
-            } else {
-                console.error("Form with ID 'payment-form' not found.");
-            }
+            });
 
             function stripeTokenHandler(paymentIntentId) {
                 // Insert the PaymentIntent ID into the form so it gets submitted to the server
-                var form = document.getElementById('payment-form');
                 var hiddenInput = document.createElement('input');
                 hiddenInput.setAttribute('type', 'hidden');
-                hiddenInput.setAttribute('name', 'paymentIntentId');
+                hiddenInput.setAttribute('name', 'PaymentIntentId');
                 hiddenInput.setAttribute('value', paymentIntentId);
                 form.appendChild(hiddenInput);
 

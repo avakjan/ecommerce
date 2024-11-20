@@ -1,4 +1,10 @@
+<!-- views/Admin/DeleteCategory.cshtml -->
+
 @model OnlineShoppingSite.Models.Category
+
+@{
+    ViewData["Title"] = "Delete Category";
+}
 
 <h2>Delete Category</h2>
 
@@ -8,7 +14,7 @@
     <h4>@Model.Name</h4>
 </div>
 
-<form asp-action="DeleteCategory" method="post">
+<form asp-action="DeleteCategoryConfirmed" method="post">
     @Html.AntiForgeryToken()
     <input type="hidden" asp-for="CategoryId" />
     <button type="submit" class="btn btn-danger">Delete</button>

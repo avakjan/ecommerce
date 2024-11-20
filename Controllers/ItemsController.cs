@@ -1,9 +1,12 @@
+// Controllers/ItemsController.cs
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using OnlineShoppingSite.Extensions;
 using OnlineShoppingSite.Models;
-using System.Collections.Generic;
+using OnlineShoppingSite.ViewModels;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace OnlineShoppingSite.Controllers
 {
@@ -11,30 +14,45 @@ namespace OnlineShoppingSite.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<ItemsController> _logger;
+        private readonly IMemoryCache _cache;
 
-        public ItemsController(ApplicationDbContext context, ILogger<ItemsController> logger)
+        public ItemsController(ApplicationDbContext context, ILogger<ItemsController> logger, IMemoryCache cache)
         {
             _context = context;
             _logger = logger;
+            _cache = cache;
         }
 
         // GET: Items
-        public async Task<IActionResult> Index(int? categoryId)
+        public async Task<IActionResult> Index(int categoryId = 0)
         {
-            var items = _context.Items.Include(i => i.Category).AsQueryable();
-
-            if (categoryId.HasValue)
+            var categories = await _context.Categories.ToListAsync();
+            if (!_cache.TryGetValue("Categories", out categories))
             {
-                items = items.Where(i => i.CategoryId == categoryId.Value);
-                ViewBag.SelectedCategoryId = categoryId.Value;
+                categories = await _context.Categories.ToListAsync();
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(60));
+
+                _cache.Set("Categories", categories, cacheEntryOptions);
             }
-            else
+            var itemsQuery = _context.Items
+                .Include(i => i.Category)
+                .Include(i => i.ItemSizes)
+                    .ThenInclude(isz => isz.Size)
+                .AsQueryable();
+
+            if (categoryId != 0)
             {
-                ViewBag.SelectedCategoryId = 0; // All categories
+                itemsQuery = itemsQuery.Where(i => i.CategoryId == categoryId);
             }
 
-            var itemList = await items.ToListAsync();
-            return View(itemList);
+            var items = await itemsQuery.ToListAsync();
+
+            // Fetch categories for the filter dropdown
+            ViewBag.Categories = categories;
+            ViewBag.SelectedCategoryId = categoryId;
+
+            return View(items);
         }
 
         // GET: Items/Details/5
@@ -48,6 +66,8 @@ namespace OnlineShoppingSite.Controllers
 
             var item = await _context.Items
                 .Include(i => i.Category)
+                .Include(i => i.ItemSizes)
+                    .ThenInclude(isz => isz.Size)
                 .FirstOrDefaultAsync(m => m.ItemId == id);
 
             if (item == null)
@@ -56,48 +76,69 @@ namespace OnlineShoppingSite.Controllers
                 return NotFound();
             }
 
-            return View(item);
+            var viewModel = new ItemDetailsViewModel
+            {
+                Item = item,
+                SizeId = null, // Default selection
+                Quantity = 1
+            };
+
+            return View(viewModel);
         }
 
         // POST: Items/AddToCart
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddToCart(int id, int quantity = 1)
+        public IActionResult AddToCart(int itemId, int sizeId, int quantity)
         {
-            // Retrieve the item by id
-            var item = _context.Items.FirstOrDefault(i => i.ItemId == id);
-            if (item == null)
+            if (quantity < 1)
             {
-                _logger.LogWarning("AddToCart: Item with ID {ItemId} not found.", id);
-                return NotFound();
+                TempData["Error"] = "Quantity must be at least 1.";
+                return RedirectToAction("Details", new { id = itemId });
             }
 
-            // Retrieve cart from session or create a new one
+            // Fetch the item and size to ensure they exist and have sufficient stock
+            var itemSize = _context.ItemSizes
+                .FirstOrDefault(isz => isz.ItemId == itemId && isz.SizeId == sizeId);
+
+            if (itemSize == null)
+            {
+                TempData["Error"] = "Selected size is not available for this item.";
+                return RedirectToAction("Details", new { id = itemId });
+            }
+
+            if (itemSize.Quantity < quantity)
+            {
+                TempData["Error"] = "Insufficient stock for the selected quantity.";
+                return RedirectToAction("Details", new { id = itemId });
+            }
+
+            // Retrieve the cart from the session
             var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart") ?? new List<CartItem>();
 
-            // Check if item is already in cart
-            var cartItem = cart.FirstOrDefault(c => c.ItemId == id);
+            // Check if item with the same size is already in cart
+            var cartItem = cart.FirstOrDefault(c => c.ItemId == itemId && c.SizeId == sizeId);
             if (cartItem != null)
             {
                 // Increase quantity
                 cartItem.Quantity += quantity;
-                _logger.LogInformation("Increased quantity of ItemId {ItemId} in cart by {Quantity}.", id, quantity);
+                _logger.LogInformation("Increased quantity of ItemId {ItemId} SizeId {SizeId} in cart by {Quantity}.", itemId, sizeId, quantity);
             }
             else
             {
                 // Add new cart item
-                cart.Add(new CartItem { ItemId = id, Quantity = quantity });
-                _logger.LogInformation("Added ItemId {ItemId} to cart with quantity {Quantity}.", id, quantity);
+                cart.Add(new CartItem { ItemId = itemId, SizeId = sizeId, Quantity = quantity });
+                _logger.LogInformation("Added ItemId {ItemId} SizeId {SizeId} to cart with quantity {Quantity}.", itemId, sizeId, quantity);
             }
 
             // Save cart back to session
             HttpContext.Session.SetObjectAsJson("Cart", cart);
 
             // Add a success message
-            TempData["Success"] = $"{item.Name} (Quantity: {quantity}) has been added to your cart.";
+            TempData["Success"] = "Item added to cart successfully.";
 
-            // Redirect back to the item details page or the index
-            return RedirectToAction("Index");
+            // Redirect back to the item details page
+            return RedirectToAction("Details", new { id = itemId });
         }
     }
 }

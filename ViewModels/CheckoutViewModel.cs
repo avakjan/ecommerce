@@ -1,6 +1,8 @@
 // ViewModels/CheckoutViewModel.cs
+
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using OnlineShoppingSite.Models;
 
@@ -8,22 +10,22 @@ namespace OnlineShoppingSite.ViewModels
 {
     public class CheckoutViewModel
     {
-        // Shipping Details
         public ShippingDetails ShippingDetails { get; set; }
 
-        [Required(ErrorMessage = "Payment method is required.")]
-        [Display(Name = "Payment Method")]
+        [Required]
         public string PaymentMethod { get; set; }
 
-        // Payment Intent Client Secret (hidden field)
+        // Hidden field to store the PaymentIntent's Client Secret
         public string PaymentIntentClientSecret { get; set; }
 
-        // Payment Intent ID (hidden field)
-        public string PaymentIntentId { get; set; }
-
-        // Order Summary
+        // Hidden field to store the PaymentIntent ID after confirmation
         [BindNever]
+        public string? PaymentIntentId { get; set; }
+
+        // Collection of Order Items
         public List<OrderItem>? OrderItems { get; set; }
+
+        // Total Amount
         public decimal TotalAmount { get; set; }
     }
 }

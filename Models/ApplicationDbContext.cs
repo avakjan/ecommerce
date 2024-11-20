@@ -1,6 +1,7 @@
+// Models/ApplicationDbContext.cs
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-
+using OnlineShoppingSite.Models;
 
 namespace OnlineShoppingSite.Models
 {
@@ -16,7 +17,8 @@ namespace OnlineShoppingSite.Models
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<ShippingDetails> ShippingDetails { get; set; }
         public DbSet<Category> Categories { get; set; }
-
+        public DbSet<Size> Sizes { get; set; }
+        public DbSet<ItemSize> ItemSizes { get; set; }
 
         // Configure entity relationships and keys
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -24,6 +26,29 @@ namespace OnlineShoppingSite.Models
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Ignore<CartItem>();
+
+            // 1. Configure Composite Key for ItemSize
+            modelBuilder.Entity<ItemSize>()
+                .HasKey(isz => new { isz.ItemId, isz.SizeId });
+
+            // 2. Configure Concurrency Token (Version)
+            modelBuilder.Entity<ItemSize>()
+                .Property(isz => isz.Version)
+                .HasDefaultValue(0)
+                .IsConcurrencyToken();
+
+            // 3. Configure Relationships
+            modelBuilder.Entity<ItemSize>()
+                .HasOne(isz => isz.Item)
+                .WithMany(i => i.ItemSizes)
+                .HasForeignKey(isz => isz.ItemId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ItemSize>()
+                .HasOne(isz => isz.Size)
+                .WithMany(s => s.ItemSizes)
+                .HasForeignKey(isz => isz.SizeId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Seed Categories
             modelBuilder.Entity<Category>().HasData(
@@ -73,6 +98,55 @@ namespace OnlineShoppingSite.Models
                 }
             );
 
+            // Seed Sizes
+            modelBuilder.Entity<Size>().HasData(
+                // Clothing Sizes
+                new Size { SizeId = 1, Name = "S" },
+                new Size { SizeId = 2, Name = "M" },
+                new Size { SizeId = 3, Name = "L" },
+                new Size { SizeId = 4, Name = "XL" },
+                // Footwear Sizes
+                new Size { SizeId = 5, Name = "38" },
+                new Size { SizeId = 6, Name = "39" },
+                new Size { SizeId = 7, Name = "40" },
+                new Size { SizeId = 8, Name = "41" },
+                new Size { SizeId = 9, Name = "42" }
+            );
+
+            // Seed ItemSizes with Version
+            modelBuilder.Entity<ItemSize>().HasData(
+                // Garage T-shirt (ItemId = 1)
+                new ItemSize { ItemId = 1, SizeId = 1, Quantity = 50, Version = 0 },
+                new ItemSize { ItemId = 1, SizeId = 2, Quantity = 50, Version = 0 },
+                new ItemSize { ItemId = 1, SizeId = 3, Quantity = 50, Version = 0 },
+                new ItemSize { ItemId = 1, SizeId = 4, Quantity = 50, Version = 0 },
+
+                // Track Hoodie (ItemId = 2)
+                new ItemSize { ItemId = 2, SizeId = 1, Quantity = 30, Version = 0 },
+                new ItemSize { ItemId = 2, SizeId = 2, Quantity = 30, Version = 0 },
+                new ItemSize { ItemId = 2, SizeId = 3, Quantity = 30, Version = 0 },
+                new ItemSize { ItemId = 2, SizeId = 4, Quantity = 30, Version = 0 },
+
+                // Glitch Leo Beanie (ItemId = 3)
+                new ItemSize { ItemId = 3, SizeId = 1, Quantity = 10, Version = 0 },
+                new ItemSize { ItemId = 3, SizeId = 2, Quantity = 10, Version = 0 },
+                new ItemSize { ItemId = 3, SizeId = 3, Quantity = 10, Version = 0 },
+                new ItemSize { ItemId = 3, SizeId = 4, Quantity = 10, Version = 0 },
+
+                // Vibram® Desert Boots (ItemId = 4)
+                new ItemSize { ItemId = 4, SizeId = 5, Quantity = 20, Version = 0 },
+                new ItemSize { ItemId = 4, SizeId = 6, Quantity = 20, Version = 0 },
+                new ItemSize { ItemId = 4, SizeId = 7, Quantity = 20, Version = 0 },
+                new ItemSize { ItemId = 4, SizeId = 8, Quantity = 20, Version = 0 },
+                new ItemSize { ItemId = 4, SizeId = 9, Quantity = 20, Version = 0 }
+            );
+
+            // Configure other relationships
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(oi => oi.Size)
+                .WithMany()
+                .HasForeignKey(oi => oi.SizeId);
+
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.ShippingDetails)
                 .WithOne()
@@ -88,6 +162,5 @@ namespace OnlineShoppingSite.Models
                 .WithMany()
                 .HasForeignKey(oi => oi.ItemId);
         }
-
     }
 }

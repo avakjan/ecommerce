@@ -11,8 +11,8 @@ using OnlineShoppingSite.Models;
 namespace OnlineShoppingSite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241118120654_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241120215726_Update")]
+    partial class Update
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -273,7 +273,7 @@ namespace OnlineShoppingSite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,0)");
 
                     b.HasKey("ItemId");
 
@@ -296,7 +296,7 @@ namespace OnlineShoppingSite.Migrations
                             ItemId = 2,
                             CategoryId = 2,
                             Description = "Oversized hoodie with distressed stripes.",
-                            ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/TrackHoodie_750x.jpg?v=1723727728",
+                            ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/front_white_1_31a53b32-c70b-48ef-8612-d869fc6d5877_750x.jpg?v=1723733410",
                             Name = "Track Hoodie",
                             Price = 130m
                         },
@@ -305,7 +305,7 @@ namespace OnlineShoppingSite.Migrations
                             ItemId = 3,
                             CategoryId = 3,
                             Description = "Cotton beanie with all-over print.",
-                            ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/GlitchLeoBeanie_750x.jpg?v=1723727728",
+                            ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/FW24_Glitch_Beanie_Camo_LB_FF_1_750x.jpg?v=1726757323",
                             Name = "Glitch Leo Beanie",
                             Price = 55m
                         },
@@ -314,9 +314,154 @@ namespace OnlineShoppingSite.Migrations
                             ItemId = 4,
                             CategoryId = 4,
                             Description = "Racer Suede Boots with Vibram® outsole.",
-                            ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/VibramDesertBoots_750x.jpg?v=1723727728",
+                            ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/SuedeRightSideFFFFFF_1_750x.jpg?v=1723730360",
                             Name = "Vibram® Desert Boots",
                             Price = 240m
+                        });
+                });
+
+            modelBuilder.Entity("OnlineShoppingSite.Models.ItemSize", b =>
+                {
+                    b.Property<int>("ItemId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SizeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(0);
+
+                    b.HasKey("ItemId", "SizeId");
+
+                    b.HasIndex("SizeId");
+
+                    b.ToTable("ItemSizes");
+
+                    b.HasData(
+                        new
+                        {
+                            ItemId = 1,
+                            SizeId = 1,
+                            Quantity = 50,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 1,
+                            SizeId = 2,
+                            Quantity = 50,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 1,
+                            SizeId = 3,
+                            Quantity = 50,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 1,
+                            SizeId = 4,
+                            Quantity = 50,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 2,
+                            SizeId = 1,
+                            Quantity = 30,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 2,
+                            SizeId = 2,
+                            Quantity = 30,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 2,
+                            SizeId = 3,
+                            Quantity = 30,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 2,
+                            SizeId = 4,
+                            Quantity = 30,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 3,
+                            SizeId = 1,
+                            Quantity = 10,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 3,
+                            SizeId = 2,
+                            Quantity = 10,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 3,
+                            SizeId = 3,
+                            Quantity = 10,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 3,
+                            SizeId = 4,
+                            Quantity = 10,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 4,
+                            SizeId = 5,
+                            Quantity = 20,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 4,
+                            SizeId = 6,
+                            Quantity = 20,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 4,
+                            SizeId = 7,
+                            Quantity = 20,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 4,
+                            SizeId = 8,
+                            Quantity = 20,
+                            Version = 0
+                        },
+                        new
+                        {
+                            ItemId = 4,
+                            SizeId = 9,
+                            Quantity = 20,
+                            Version = 0
                         });
                 });
 
@@ -330,7 +475,6 @@ namespace OnlineShoppingSite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PaymentIntentId")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PaymentMethod")
@@ -376,6 +520,9 @@ namespace OnlineShoppingSite.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("SizeId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("TEXT");
 
@@ -384,6 +531,8 @@ namespace OnlineShoppingSite.Migrations
                     b.HasIndex("ItemId");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("SizeId");
 
                     b.ToTable("OrderItems");
                 });
@@ -436,6 +585,69 @@ namespace OnlineShoppingSite.Migrations
                     b.HasKey("ShippingDetailsId");
 
                     b.ToTable("ShippingDetails");
+                });
+
+            modelBuilder.Entity("OnlineShoppingSite.Models.Size", b =>
+                {
+                    b.Property<int>("SizeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("SizeId");
+
+                    b.ToTable("Sizes");
+
+                    b.HasData(
+                        new
+                        {
+                            SizeId = 1,
+                            Name = "S"
+                        },
+                        new
+                        {
+                            SizeId = 2,
+                            Name = "M"
+                        },
+                        new
+                        {
+                            SizeId = 3,
+                            Name = "L"
+                        },
+                        new
+                        {
+                            SizeId = 4,
+                            Name = "XL"
+                        },
+                        new
+                        {
+                            SizeId = 5,
+                            Name = "38"
+                        },
+                        new
+                        {
+                            SizeId = 6,
+                            Name = "39"
+                        },
+                        new
+                        {
+                            SizeId = 7,
+                            Name = "40"
+                        },
+                        new
+                        {
+                            SizeId = 8,
+                            Name = "41"
+                        },
+                        new
+                        {
+                            SizeId = 9,
+                            Name = "42"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -498,6 +710,25 @@ namespace OnlineShoppingSite.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("OnlineShoppingSite.Models.ItemSize", b =>
+                {
+                    b.HasOne("OnlineShoppingSite.Models.Item", "Item")
+                        .WithMany("ItemSizes")
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineShoppingSite.Models.Size", "Size")
+                        .WithMany("ItemSizes")
+                        .HasForeignKey("SizeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+
+                    b.Navigation("Size");
+                });
+
             modelBuilder.Entity("OnlineShoppingSite.Models.Order", b =>
                 {
                     b.HasOne("OnlineShoppingSite.Models.ShippingDetails", "ShippingDetails")
@@ -531,9 +762,17 @@ namespace OnlineShoppingSite.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("OnlineShoppingSite.Models.Size", "Size")
+                        .WithMany()
+                        .HasForeignKey("SizeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Item");
 
                     b.Navigation("Order");
+
+                    b.Navigation("Size");
                 });
 
             modelBuilder.Entity("OnlineShoppingSite.Models.Category", b =>
@@ -541,9 +780,19 @@ namespace OnlineShoppingSite.Migrations
                     b.Navigation("Items");
                 });
 
+            modelBuilder.Entity("OnlineShoppingSite.Models.Item", b =>
+                {
+                    b.Navigation("ItemSizes");
+                });
+
             modelBuilder.Entity("OnlineShoppingSite.Models.Order", b =>
                 {
                     b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("OnlineShoppingSite.Models.Size", b =>
+                {
+                    b.Navigation("ItemSizes");
                 });
 #pragma warning restore 612, 618
         }

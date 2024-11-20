@@ -1,3 +1,6 @@
+<!-- views/Account/MyOrders.cshtml -->
+
+
 @model IEnumerable<OnlineShoppingSite.Models.Order>
 
 @{
@@ -25,7 +28,7 @@
             <td>@order.TotalAmount.ToString("C0")</td>
             <td>@order.Status</td>
             <td>
-                <a asp-action="ViewOrder" asp-route-id="@order.OrderId" class="btn btn-sm btn-info">View</a>
+                <a asp-action="OrderDetails" asp-route-id="@order.OrderId" class="btn btn-sm btn-info">View</a>
             </td>
         </tr>
     }

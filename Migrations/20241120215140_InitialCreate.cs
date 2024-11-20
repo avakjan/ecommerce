@@ -86,6 +86,19 @@ namespace OnlineShoppingSite.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Sizes",
+                columns: table => new
+                {
+                    SizeId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sizes", x => x.SizeId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -198,7 +211,7 @@ namespace OnlineShoppingSite.Migrations
                     ItemId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
                     ImageUrl = table.Column<string>(type: "TEXT", nullable: false),
                     CategoryId = table.Column<int>(type: "INTEGER", nullable: true)
@@ -223,7 +236,7 @@ namespace OnlineShoppingSite.Migrations
                     ShippingDetailsId = table.Column<int>(type: "INTEGER", nullable: false),
                     PaymentMethod = table.Column<string>(type: "TEXT", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "TEXT", nullable: false),
-                    PaymentIntentId = table.Column<string>(type: "TEXT", nullable: false),
+                    PaymentIntentId = table.Column<string>(type: "TEXT", nullable: true),
                     UserId = table.Column<string>(type: "TEXT", nullable: false),
                     Status = table.Column<string>(type: "TEXT", nullable: false)
                 },
@@ -245,6 +258,32 @@ namespace OnlineShoppingSite.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ItemSizes",
+                columns: table => new
+                {
+                    ItemId = table.Column<int>(type: "INTEGER", nullable: false),
+                    SizeId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Quantity = table.Column<int>(type: "INTEGER", nullable: false),
+                    Version = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 0)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ItemSizes", x => new { x.ItemId, x.SizeId });
+                    table.ForeignKey(
+                        name: "FK_ItemSizes_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
+                        principalColumn: "ItemId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ItemSizes_Sizes_SizeId",
+                        column: x => x.SizeId,
+                        principalTable: "Sizes",
+                        principalColumn: "SizeId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OrderItems",
                 columns: table => new
                 {
@@ -252,6 +291,7 @@ namespace OnlineShoppingSite.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     OrderId = table.Column<int>(type: "INTEGER", nullable: false),
                     ItemId = table.Column<int>(type: "INTEGER", nullable: false),
+                    SizeId = table.Column<int>(type: "INTEGER", nullable: false),
                     Quantity = table.Column<int>(type: "INTEGER", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "TEXT", nullable: false)
                 },
@@ -270,6 +310,12 @@ namespace OnlineShoppingSite.Migrations
                         principalTable: "Orders",
                         principalColumn: "OrderId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderItems_Sizes_SizeId",
+                        column: x => x.SizeId,
+                        principalTable: "Sizes",
+                        principalColumn: "SizeId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -284,14 +330,54 @@ namespace OnlineShoppingSite.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Sizes",
+                columns: new[] { "SizeId", "Name" },
+                values: new object[,]
+                {
+                    { 1, "S" },
+                    { 2, "M" },
+                    { 3, "L" },
+                    { 4, "XL" },
+                    { 5, "38" },
+                    { 6, "39" },
+                    { 7, "40" },
+                    { 8, "41" },
+                    { 9, "42" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Items",
                 columns: new[] { "ItemId", "CategoryId", "Description", "ImageUrl", "Name", "Price" },
                 values: new object[,]
                 {
                     { 1, 1, "T-shirt in washed black.", "https://www.racerworldwide.net/cdn/shop/files/PrintPanelTFrontFFFFFF_750x.jpg?v=1723727728", "Garage T-shirt", 60m },
-                    { 2, 2, "Oversized hoodie with distressed stripes.", "https://www.racerworldwide.net/cdn/shop/files/TrackHoodie_750x.jpg?v=1723727728", "Track Hoodie", 130m },
-                    { 3, 3, "Cotton beanie with all-over print.", "https://www.racerworldwide.net/cdn/shop/files/GlitchLeoBeanie_750x.jpg?v=1723727728", "Glitch Leo Beanie", 55m },
-                    { 4, 4, "Racer Suede Boots with Vibram® outsole.", "https://www.racerworldwide.net/cdn/shop/files/VibramDesertBoots_750x.jpg?v=1723727728", "Vibram® Desert Boots", 240m }
+                    { 2, 2, "Oversized hoodie with distressed stripes.", "https://www.racerworldwide.net/cdn/shop/files/front_white_1_31a53b32-c70b-48ef-8612-d869fc6d5877_750x.jpg?v=1723733410", "Track Hoodie", 130m },
+                    { 3, 3, "Cotton beanie with all-over print.", "https://www.racerworldwide.net/cdn/shop/files/FW24_Glitch_Beanie_Camo_LB_FF_1_750x.jpg?v=1726757323", "Glitch Leo Beanie", 55m },
+                    { 4, 4, "Racer Suede Boots with Vibram® outsole.", "https://www.racerworldwide.net/cdn/shop/files/SuedeRightSideFFFFFF_1_750x.jpg?v=1723730360", "Vibram® Desert Boots", 240m }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ItemSizes",
+                columns: new[] { "ItemId", "SizeId", "Quantity" },
+                values: new object[,]
+                {
+                    { 1, 1, 50 },
+                    { 1, 2, 50 },
+                    { 1, 3, 50 },
+                    { 1, 4, 50 },
+                    { 2, 1, 30 },
+                    { 2, 2, 30 },
+                    { 2, 3, 30 },
+                    { 2, 4, 30 },
+                    { 3, 1, 10 },
+                    { 3, 2, 10 },
+                    { 3, 3, 10 },
+                    { 3, 4, 10 },
+                    { 4, 5, 20 },
+                    { 4, 6, 20 },
+                    { 4, 7, 20 },
+                    { 4, 8, 20 },
+                    { 4, 9, 20 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -337,6 +423,11 @@ namespace OnlineShoppingSite.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ItemSizes_SizeId",
+                table: "ItemSizes",
+                column: "SizeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderItems_ItemId",
                 table: "OrderItems",
                 column: "ItemId");
@@ -345,6 +436,11 @@ namespace OnlineShoppingSite.Migrations
                 name: "IX_OrderItems_OrderId",
                 table: "OrderItems",
                 column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItems_SizeId",
+                table: "OrderItems",
+                column: "SizeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_ShippingDetailsId",
@@ -377,6 +473,9 @@ namespace OnlineShoppingSite.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "ItemSizes");
+
+            migrationBuilder.DropTable(
                 name: "OrderItems");
 
             migrationBuilder.DropTable(
@@ -387,6 +486,9 @@ namespace OnlineShoppingSite.Migrations
 
             migrationBuilder.DropTable(
                 name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "Sizes");
 
             migrationBuilder.DropTable(
                 name: "Categories");

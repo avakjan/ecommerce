@@ -1,3 +1,5 @@
+<!-- views/Admin/ManageProducts.cshtml -->
+
 @model IEnumerable<OnlineShoppingSite.Models.Item>
 
 @{
@@ -29,6 +31,7 @@
             <td>
                 <a asp-action="EditProduct" asp-route-id="@item.ItemId" class="btn btn-sm btn-warning">Edit</a>
                 <a asp-action="DeleteProduct" asp-route-id="@item.ItemId" class="btn btn-sm btn-danger">Delete</a>
+                <a asp-action="AssignSizesToItem" asp-route-id="@item.ItemId" class="btn btn-sm btn-info">Assign Sizes</a>
             </td>
         </tr>
     }

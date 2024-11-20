@@ -1,4 +1,5 @@
 // Models/Item.cs
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
@@ -7,6 +8,11 @@ namespace OnlineShoppingSite.Models
 {
     public class Item
     {
+        public Item()
+        {
+            ItemSizes = new List<ItemSize>();
+        }
+
         public int ItemId { get; set; }
 
         [Required]
@@ -25,5 +31,7 @@ namespace OnlineShoppingSite.Models
         
         [ValidateNever]
         public Category Category { get; set; }
+
+        public ICollection<ItemSize> ItemSizes { get; set; }
     }
 }

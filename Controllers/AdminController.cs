@@ -39,6 +39,18 @@ namespace OnlineShoppingSite.Controllers
             return View(viewModel);
         }
 
+        // GET: Admin/ManageSizes
+        public async Task<IActionResult> ManageSizes()
+        {
+            var sizes = await _context.Sizes.ToListAsync();
+            return View(sizes);
+        }
+
+        // GET: Admin/CreateSize
+        public IActionResult CreateSize()
+        {
+            return View();
+        }
 
         // POST: Admin/CreateProduct
         [HttpPost]
@@ -56,6 +68,20 @@ namespace OnlineShoppingSite.Controllers
             // Repopulate the categories in case of an error
             viewModel.Categories = new SelectList(_context.Categories, "CategoryId", "Name");
             return View(viewModel);
+        }
+
+        // POST: Admin/CreateSize
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateSize(Size size)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Sizes.Add(size);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(ManageSizes));
+            }
+            return View(size);
         }
 
         // GET: Admin/EditProduct/5
@@ -77,6 +103,58 @@ namespace OnlineShoppingSite.Controllers
             {
                 Item = item,
                 Categories = new SelectList(_context.Categories, "CategoryId", "Name", item.CategoryId)
+            };
+
+            return View(viewModel);
+        }
+
+        // GET: Admin/EditSize/5
+        public async Task<IActionResult> EditSize(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var size = await _context.Sizes.FindAsync(id);
+            if (size == null)
+            {
+                return NotFound();
+            }
+            return View(size);
+        }
+
+        // GET: Admin/AssignSizesToItem/5
+        public async Task<IActionResult> AssignSizesToItem(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var item = await _context.Items
+                                     .Include(i => i.ItemSizes)
+                                     .ThenInclude(isz => isz.Size)
+                                     .FirstOrDefaultAsync(i => i.ItemId == id);
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            var allSizes = await _context.Sizes.ToListAsync();
+
+            var viewModel = new ItemSizeViewModel
+            {
+                ItemId = item.ItemId,
+                ItemName = item.Name,
+                SizeAssignments = allSizes.Select(s => new ItemSizeViewModel.ItemSizeAssignment
+                {
+                    SizeId = s.SizeId,
+                    SizeName = s.Name,
+                    Quantity = item.ItemSizes.FirstOrDefault(isz => isz.SizeId == s.SizeId)?.Quantity ?? 0,
+                    IsSelected = item.ItemSizes.Any(isz => isz.SizeId == s.SizeId)
+                }).ToList()
             };
 
             return View(viewModel);
@@ -118,6 +196,90 @@ namespace OnlineShoppingSite.Controllers
             return View(viewModel);
         }
 
+        // POST: Admin/EditSize/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditSize(int id, Size size)
+        {
+            if (id != size.SizeId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(size);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!SizeExists(size.SizeId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(ManageSizes));
+            }
+            return View(size);
+        }
+
+        // POST: Admin/AssignSizesToItem/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignSizesToItem(ItemSizeViewModel model)
+        {
+            var item = await _context.Items
+                                     .Include(i => i.ItemSizes)
+                                     .FirstOrDefaultAsync(i => i.ItemId == model.ItemId);
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            foreach (var sizeAssignment in model.SizeAssignments)
+            {
+                var itemSize = item.ItemSizes.FirstOrDefault(isz => isz.SizeId == sizeAssignment.SizeId);
+
+                if (sizeAssignment.IsSelected)
+                {
+                    if (itemSize == null)
+                    {
+                        // Add new ItemSize
+                        item.ItemSizes.Add(new ItemSize
+                        {
+                            SizeId = sizeAssignment.SizeId,
+                            Quantity = sizeAssignment.Quantity
+                        });
+                    }
+                    else
+                    {
+                        // Update existing quantity
+                        itemSize.Quantity = sizeAssignment.Quantity;
+                    }
+                }
+                else
+                {
+                    if (itemSize != null)
+                    {
+                        // Remove ItemSize
+                        _context.ItemSizes.Remove(itemSize);
+                    }
+                }
+            }
+
+            await _context.SaveChangesAsync();
+            _logger.LogInformation("Sizes assigned/updated for ItemId {ItemId}.", model.ItemId);
+
+            return RedirectToAction(nameof(ManageProducts));
+        }
+
         // GET: Admin/DeleteProduct/5
         public async Task<IActionResult> DeleteProduct(int? id)
         {
@@ -136,6 +298,24 @@ namespace OnlineShoppingSite.Controllers
             return View(item);
         }
 
+        // GET: Admin/DeleteSize/5
+        public async Task<IActionResult> DeleteSize(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var size = await _context.Sizes
+                .FirstOrDefaultAsync(m => m.SizeId == id);
+            if (size == null)
+            {
+                return NotFound();
+            }
+
+            return View(size);
+        }
+
         // POST: Admin/DeleteProduct/5
         [HttpPost, ActionName("DeleteProduct")]
         [ValidateAntiForgeryToken]
@@ -147,9 +327,25 @@ namespace OnlineShoppingSite.Controllers
             return RedirectToAction(nameof(ManageProducts));
         }
 
+        // POST: Admin/DeleteSize/5
+        [HttpPost, ActionName("DeleteSize")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteSizeConfirmed(int id)
+        {
+            var size = await _context.Sizes.FindAsync(id);
+            _context.Sizes.Remove(size);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(ManageSizes));
+        }
+
         private bool ItemExists(int id)
         {
             return _context.Items.Any(e => e.ItemId == id);
+        }
+
+        private bool SizeExists(int id)
+        {
+            return _context.Sizes.Any(e => e.SizeId == id);
         }
 
         // GET: Admin/BulkUploadProducts

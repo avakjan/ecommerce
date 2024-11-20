@@ -1,20 +1,19 @@
+<!-- views/Admin/EditCategory.cshtml -->
+
 @model OnlineShoppingSite.Models.Category
 
 @{
-    var isEdit = ViewContext.ActionDescriptor.RouteValues["action"] == "EditCategory";
-    ViewData["Title"] = isEdit ? "Edit Category" : "Create Category";
+    var isEdit = true;
+    ViewData["Title"] = "Edit Category";
 }
 
 <h2>@ViewData["Title"]</h2>
 
 <div asp-validation-summary="All" class="text-danger"></div>
 
-<form asp-action='@ViewContext.RouteData.Values["action"]' method="post">
+<form asp-action="EditCategory" method="post">
     @Html.AntiForgeryToken()
-    @if (isEdit)
-    {
-        <input type="hidden" asp-for="CategoryId" />
-    }
+    <input type="hidden" asp-for="CategoryId" />
 
     <div class="form-group">
         <label asp-for="Name"></label>

@@ -1,0 +1,44 @@
+<!-- views/Admin/AssignSizesToItem.cshtml -->
+
+@model OnlineShoppingSite.ViewModels.ItemSizeViewModel
+
+@{
+    ViewData["Title"] = $"Assign Sizes to {Model.ItemName}";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="AssignSizesToItem" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="ItemId" />
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Size</th>
+                <th>Quantity</th>
+                <th>Assign</th>
+            </tr>
+        </thead>
+        <tbody>
+        @for (int i = 0; i < Model.SizeAssignments.Count; i++)
+        {
+            var sizeAssignment = Model.SizeAssignments[i];
+            <tr>
+                <td>@sizeAssignment.SizeName</td>
+                <td>
+                    <input type="number" name="SizeAssignments[@i].Quantity" value="@sizeAssignment.Quantity" class="form-control" />
+                </td>
+                <td>
+                    <input type="checkbox" name="SizeAssignments[@i].IsSelected" @(sizeAssignment.IsSelected ? "checked" : "") />
+                    <input type="hidden" name="SizeAssignments[@i].SizeId" value="@sizeAssignment.SizeId" />
+                    <input type="hidden" name="SizeAssignments[@i].SizeName" value="@sizeAssignment.SizeName" />
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-primary">Save Assignments</button>
+    <a asp-action="ManageProducts" class="btn btn-secondary">Cancel</a>
+</form>
