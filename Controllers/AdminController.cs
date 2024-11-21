@@ -421,6 +421,8 @@ namespace OnlineShoppingSite.Controllers
                 .Include(o => o.ShippingDetails)
                 .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.Item)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Size)
                 .FirstOrDefaultAsync(o => o.OrderId == id);
 
             if (order == null)

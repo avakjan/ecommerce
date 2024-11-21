@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 
 namespace OnlineShoppingSite.Controllers
 {
@@ -268,7 +269,7 @@ namespace OnlineShoppingSite.Controllers
                     {
                         if (itemSize.Quantity < cartItem.Quantity)
                         {
-                            ModelState.AddModelError("", $"Insufficient quantity for {itemSize.Item.Name} (Size: {itemSize.Size.Name}).");
+                            ModelState.AddModelError("", $"Not enough items in stock for {itemSize.Item.Name} (Size: {itemSize.Size.Name}).");
                             _logger.LogWarning("Checkout POST action: Insufficient quantity for ItemId {ItemId} SizeId {SizeId}. Requested: {Requested}, Available: {Available}.",
                                 cartItem.ItemId, cartItem.SizeId, cartItem.Quantity, itemSize.Quantity);
                             return View(model);
@@ -423,6 +424,51 @@ namespace OnlineShoppingSite.Controllers
             {
                 _logger.LogWarning("Attempted to remove item with ID {ItemId} and SizeId {SizeId} which was not found in cart.", itemId, sizeId);
             }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateQuantities(CartViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                // Retrieve cart from session
+                var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart") ?? new List<CartItem>();
+
+                // Rebuild the view model
+                var itemIds = cart.Select(c => c.ItemId).ToList();
+                var sizeIds = cart.Select(c => c.SizeId).Distinct().ToList();
+
+                model.Items = _context.Items
+                    .Include(i => i.ItemSizes)
+                        .ThenInclude(isz => isz.Size)
+                    .Where(i => itemIds.Contains(i.ItemId))
+                    .ToList();
+
+                model.Sizes = _context.Sizes
+                    .Where(s => sizeIds.Contains(s.SizeId))
+                    .ToList();
+
+                // Return the view with the rebuilt model
+                return View("Index", model);
+            }
+
+            // Update quantities
+            foreach (var updatedItem in model.CartItems)
+            {
+                var cartItem = cart.FirstOrDefault(ci => ci.ItemId == updatedItem.ItemId && ci.SizeId == updatedItem.SizeId);
+                if (cartItem != null)
+                {
+                    // Ensure the quantity is at least 1
+                    cartItem.Quantity = updatedItem.Quantity > 0 ? updatedItem.Quantity : 1;
+                }
+            }
+
+            // Save the updated cart back to session
+            HttpContext.Session.SetObjectAsJson("Cart", cart);
+
+            // Redirect to the cart index action
             return RedirectToAction("Index");
         }
         

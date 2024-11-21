@@ -36,8 +36,8 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="Quantity"></label>
-                <input asp-for="Quantity" type="number" min="1" class="form-control" style="width: 100px;" required />
+                <label asp-for="Quantity" style="display:none;"></label>
+                <input asp-for="Quantity" type="hidden" value="1" />
                 @Html.ValidationMessageFor(m => m.Quantity, "", new { @class = "text-danger" })
             </div>
 

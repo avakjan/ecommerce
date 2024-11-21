@@ -50,7 +50,7 @@
                     <td>@item.Size.Name</td>
                     <td class="text-right">@item.Quantity</td>
                     <td class="text-right">@item.UnitPrice.ToString("C0")</td>
-                    <td class="text-right">@(item.UnitPrice * item.Quantity).ToString("C0")</td>
+                    <td class="text-right">@((item.UnitPrice * item.Quantity).ToString("C0"))</td>
                 </tr>
             }
             </tbody>

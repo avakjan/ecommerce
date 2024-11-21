@@ -109,7 +109,7 @@ namespace OnlineShoppingSite.Controllers
 
             if (itemSize.Quantity < quantity)
             {
-                TempData["Error"] = "Insufficient stock for the selected quantity.";
+                TempData["Error"] = "This size is out of stock.";
                 return RedirectToAction("Details", new { id = itemId });
             }
 
