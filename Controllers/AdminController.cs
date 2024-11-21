@@ -235,12 +235,28 @@ namespace OnlineShoppingSite.Controllers
         public async Task<IActionResult> AssignSizesToItem(ItemSizeViewModel model)
         {
             var item = await _context.Items
-                                     .Include(i => i.ItemSizes)
-                                     .FirstOrDefaultAsync(i => i.ItemId == model.ItemId);
+                                    .Include(i => i.ItemSizes)
+                                    .FirstOrDefaultAsync(i => i.ItemId == model.ItemId);
 
             if (item == null)
             {
                 return NotFound();
+            }
+
+            // Remove ItemSizes that are no longer selected
+            var selectedSizeIds = model.SizeAssignments
+                                    .Where(sa => sa.IsSelected)
+                                    .Select(sa => sa.SizeId)
+                                    .ToList();
+
+            var itemSizesToRemove = item.ItemSizes
+                                        .Where(isz => !selectedSizeIds.Contains(isz.SizeId))
+                                        .ToList();
+
+            foreach (var itemSize in itemSizesToRemove)
+            {
+                item.ItemSizes.Remove(itemSize);
+                _context.ItemSizes.Remove(itemSize);
             }
 
             foreach (var sizeAssignment in model.SizeAssignments)
@@ -252,22 +268,28 @@ namespace OnlineShoppingSite.Controllers
                     if (itemSize == null)
                     {
                         // Add new ItemSize
-                        item.ItemSizes.Add(new ItemSize
+                        var newItemSize = new ItemSize
                         {
+                            ItemId = item.ItemId,
                             SizeId = sizeAssignment.SizeId,
                             Quantity = sizeAssignment.Quantity
-                        });
+                        };
+                        item.ItemSizes.Add(newItemSize);
+                        _context.ItemSizes.Add(newItemSize); // Add to context
                     }
                     else
                     {
                         // Update existing quantity
                         itemSize.Quantity = sizeAssignment.Quantity;
+                        _context.Entry(itemSize).State = EntityState.Modified; // Mark as modified
                     }
                 }
-                else
-                {
+            }
 
-                }
+            foreach (var assignment in model.SizeAssignments)
+            {
+                _logger.LogInformation("SizeId: {SizeId}, Quantity: {Quantity}, IsSelected: {IsSelected}",
+                    assignment.SizeId, assignment.Quantity, assignment.IsSelected);
             }
 
             await _context.SaveChangesAsync();
@@ -275,6 +297,7 @@ namespace OnlineShoppingSite.Controllers
 
             return RedirectToAction(nameof(ManageProducts));
         }
+
 
         // GET: Admin/DeleteProduct/5
         public async Task<IActionResult> DeleteProduct(int? id)
