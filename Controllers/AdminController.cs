@@ -266,11 +266,7 @@ namespace OnlineShoppingSite.Controllers
                 }
                 else
                 {
-                    if (itemSize != null)
-                    {
-                        // Remove ItemSize
-                        _context.ItemSizes.Remove(itemSize);
-                    }
+
                 }
             }
 

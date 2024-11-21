@@ -431,11 +431,10 @@ namespace OnlineShoppingSite.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult UpdateQuantities(CartViewModel model)
         {
+            // Retrieve cart from session
+            var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart") ?? new List<CartItem>();
             if (!ModelState.IsValid)
             {
-                // Retrieve cart from session
-                var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart") ?? new List<CartItem>();
-
                 // Rebuild the view model
                 var itemIds = cart.Select(c => c.ItemId).ToList();
                 var sizeIds = cart.Select(c => c.SizeId).Distinct().ToList();

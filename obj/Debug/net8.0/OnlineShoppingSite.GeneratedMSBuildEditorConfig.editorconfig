@@ -9,131 +9,131 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = OnlineShoppingSite
 build_property.RootNamespace = OnlineShoppingSite
-build_property.ProjectDir = c:\Users\German\Desktop\OnlineShoppingSite\
+build_property.ProjectDir = C:\Users\German\Desktop\OnlineShoppingSite\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = c:\Users\German\Desktop\OnlineShoppingSite
+build_property.MSBuildProjectDirectory = C:\Users\German\Desktop\OnlineShoppingSite
 build_property._RazorSourceGeneratorDebug = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Account/AccessDenied.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Account/AccessDenied.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxBY2Nlc3NEZW5pZWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Account/Login.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Account/MyOrders.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Account/MyOrders.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxNeU9yZGVycy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Account/OrderDetails.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Account/OrderDetails.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxPcmRlckRldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Account/Register.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Account/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/AssignSizesToItem.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/AssignSizesToItem.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQXNzaWduU2l6ZXNUb0l0ZW0uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/BulkUploadProducts.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/BulkUploadProducts.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQnVsa1VwbG9hZFByb2R1Y3RzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/CreateCategory.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/CreateCategory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ3JlYXRlQ2F0ZWdvcnkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/CreateProduct.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/CreateProduct.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ3JlYXRlUHJvZHVjdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/Dashboard.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/DeleteCategory.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/DeleteCategory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGVsZXRlQ2F0ZWdvcnkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/DeleteProduct.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/DeleteProduct.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGVsZXRlUHJvZHVjdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/EditCategory.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/EditCategory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdENhdGVnb3J5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/EditProduct.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/EditProduct.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdFByb2R1Y3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/ManageCategories.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/ManageCategories.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTWFuYWdlQ2F0ZWdvcmllcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/ManageOrders.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/ManageOrders.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTWFuYWdlT3JkZXJzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/ManageProducts.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/ManageProducts.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTWFuYWdlUHJvZHVjdHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/ViewOrder.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Admin/ViewOrder.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cVmlld09yZGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Cart/Checkout.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Cart/Checkout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxDaGVja291dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Cart/index.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Cart/index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxpbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Cart/OrderConfirmation.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Cart/OrderConfirmation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxPcmRlckNvbmZpcm1hdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Home/Index.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Home/Privacy.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Items/Details.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Items/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSXRlbXNcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Items/index.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Items/index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSXRlbXNcaW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Shared/Error.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/_ViewImports.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/_ViewStart.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/German/Desktop/OnlineShoppingSite/Views/Shared/_Layout.cshtml]
+[C:/Users/German/Desktop/OnlineShoppingSite/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-vtuce4rl4c
