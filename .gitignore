@@ -7,3 +7,32 @@ obj/Debug/net8.0/OnlineShoppingSite.dll
 obj/Debug/net8.0/OnlineShoppingSite.sourcelink.json
 obj/Debug/net8.0/ref/OnlineShoppingSite.dll
 obj/Debug/net8.0/refint/OnlineShoppingSite.dll
+# .NET specific
+bin/
+obj/
+*.user
+*.suo
+*.lock.json
+project.lock.json
+*.vs/
+
+# Node.js specific
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# React specific
+build/
+dist/
+.env
+.DS_Store
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Others
+*.log
