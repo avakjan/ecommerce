@@ -1,9 +1,77 @@
-bin/Debug/net8.0/OnlineShoppingSite.exe
-bin/Debug/net8.0/OnlineShoppingSite.pdb
-obj/Debug/net8.0/apphost.exe
-obj/Debug/net8.0/OnlineShoppingSite.AssemblyInfoInputs.cache
-obj/Debug/net8.0/OnlineShoppingSite.csproj.CoreCompileInputs.cache
-obj/Debug/net8.0/OnlineShoppingSite.dll
-obj/Debug/net8.0/OnlineShoppingSite.sourcelink.json
-obj/Debug/net8.0/ref/OnlineShoppingSite.dll
-obj/Debug/net8.0/refint/OnlineShoppingSite.dll
+# ============================
+# .NET & Visual Studio
+# ============================
+
+# Build results
+bin/
+obj/
+out/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Mono Auto Generated Files
+mono_crash.*
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Visual Studio Code settings
+.vscode/
+
+# Rider settings
+.idea/
+
+# Other IDEs
+*.sublime-project
+*.sublime-workspace
+
+# ============================
+# Node.js
+# ============================
+
+# Dependencies
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Optional npm cache directory
+.npm/
+
+# Optional eslint cache
+.eslintcache
+
+# Jest
+/coverage/
+
+# ============================
+# React
+# ============================
+
+# Build output
+build/
+dist/
+
+# Environment variables
+.env
+
+# macOS
+.DS_Store
+
+# ============================
+# Others
+# ============================
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/
