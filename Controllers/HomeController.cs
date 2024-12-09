@@ -1,32 +1,30 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using OnlineShoppingSite.Models;
-using OnlineShoppingSite.ViewModels;
+using Microsoft.Extensions.Logging;
 
-namespace OnlineShoppingSite.Controllers;
-
-public class HomeController : Controller
+namespace OnlineShoppingSite.Controllers.Api
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class HomeController : ControllerBase
     {
-        _logger = logger;
-    }
+        private readonly ILogger<HomeController> _logger;
+        public HomeController(ILogger<HomeController> logger)
+        {
+            _logger = logger;
+        }
 
-    public IActionResult Index()
-    {
-        return View();
-    }
+        [HttpGet("status")]
+        public IActionResult Status()
+        {
+            // Just return a status check
+            return Ok(new { status = "API is running" });
+        }
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        [HttpGet("error")]
+        public IActionResult Error()
+        {
+            // If you need an error endpoint
+            return Problem("An error occurred.");
+        }
     }
 }

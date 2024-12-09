@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "aMwtPd/VIqw=",
+  "dgSpecHash": "mR435BTRDqM=",
   "success": true,
   "projectFilePath": "C:\\Users\\German\\Desktop\\online shop\\ecommerce\\OnlineShoppingSite.csproj",
   "expectedPackageFiles": [
@@ -10,6 +10,7 @@
     "C:\\Users\\German\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\8.0.10\\microsoft.aspnetcore.identity.entityframeworkcore.8.0.10.nupkg.sha512",
     "C:\\Users\\German\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\8.0.10\\microsoft.aspnetcore.jsonpatch.8.0.10.nupkg.sha512",
     "C:\\Users\\German\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\8.0.10\\microsoft.aspnetcore.mvc.newtonsoftjson.8.0.10.nupkg.sha512",
+    "C:\\Users\\German\\.nuget\\packages\\microsoft.aspnetcore.spaproxy\\8.0.0\\microsoft.aspnetcore.spaproxy.8.0.0.nupkg.sha512",
     "C:\\Users\\German\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
     "C:\\Users\\German\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\3.3.3\\microsoft.codeanalysis.analyzers.3.3.3.nupkg.sha512",
     "C:\\Users\\German\\.nuget\\packages\\microsoft.codeanalysis.common\\4.5.0\\microsoft.codeanalysis.common.4.5.0.nupkg.sha512",

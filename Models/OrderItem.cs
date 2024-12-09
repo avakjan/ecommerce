@@ -10,7 +10,7 @@ namespace OnlineShoppingSite.Models
 
         public int ItemId { get; set; }
         public Item Item { get; set; }
-        public int SizeId { get; set; } // Foreign key to Size
+        public int? SizeId { get; set; } // Foreign key to Size, nullable for items without sizes
         public Size Size { get; set; }
 
         public int Quantity { get; set; }

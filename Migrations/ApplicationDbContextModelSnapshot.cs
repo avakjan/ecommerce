@@ -264,6 +264,9 @@ namespace OnlineShoppingSite.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsFeatured")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -285,6 +288,7 @@ namespace OnlineShoppingSite.Migrations
                             CategoryId = 1,
                             Description = "T-shirt in washed black.",
                             ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/PrintPanelTFrontFFFFFF_750x.jpg?v=1723727728",
+                            IsFeatured = false,
                             Name = "Garage T-shirt",
                             Price = 60m
                         },
@@ -294,6 +298,7 @@ namespace OnlineShoppingSite.Migrations
                             CategoryId = 2,
                             Description = "Oversized hoodie with distressed stripes.",
                             ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/front_white_1_31a53b32-c70b-48ef-8612-d869fc6d5877_750x.jpg?v=1723733410",
+                            IsFeatured = false,
                             Name = "Track Hoodie",
                             Price = 130m
                         },
@@ -303,6 +308,7 @@ namespace OnlineShoppingSite.Migrations
                             CategoryId = 3,
                             Description = "Cotton beanie with all-over print.",
                             ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/FW24_Glitch_Beanie_Camo_LB_FF_1_750x.jpg?v=1726757323",
+                            IsFeatured = false,
                             Name = "Glitch Leo Beanie",
                             Price = 55m
                         },
@@ -312,6 +318,7 @@ namespace OnlineShoppingSite.Migrations
                             CategoryId = 4,
                             Description = "Racer Suede Boots with Vibram® outsole.",
                             ImageUrl = "https://www.racerworldwide.net/cdn/shop/files/SuedeRightSideFFFFFF_1_750x.jpg?v=1723730360",
+                            IsFeatured = false,
                             Name = "Vibram® Desert Boots",
                             Price = 240m
                         });

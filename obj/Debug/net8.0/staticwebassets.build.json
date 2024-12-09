@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "aE7Ome2lswa4C39f0idxuYr71pnkxX7JJHTuNgTdKYM=",
+  "Hash": "QwI8nOf7xmN0ezEDCpJl+4QE/fxnFi/ITTJ+wd9t1NM=",
   "Source": "OnlineShoppingSite",
   "BasePath": "_content/OnlineShoppingSite",
   "Mode": "Default",
@@ -10,1189 +10,425 @@
     {
       "Name": "OnlineShoppingSite\\wwwroot",
       "Source": "OnlineShoppingSite",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\German\\Desktop\\online shop\\ecommerce\\wwwroot\\",
       "BasePath": "_content/OnlineShoppingSite",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\obj\\Debug\\net8.0\\scopedcss\\bundle\\OnlineShoppingSite.styles.css",
+      "Identity": "C:\\Users\\German\\Desktop\\online shop\\ecommerce\\wwwroot\\.gitkeep",
       "SourceId": "OnlineShoppingSite",
-      "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\German\\Desktop\\online shop\\ecommerce\\wwwroot\\",
       "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "OnlineShoppingSite.styles.css",
+      "RelativePath": "#[.{fingerprint}]?.gitkeep",
       "AssetKind": "All",
-      "AssetMode": "CurrentProject",
+      "AssetMode": "All",
       "AssetRole": "Primary",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
       "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ApplicationBundle",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "lv5tvmajl9",
+      "Integrity": "AbpHGcgLb+kRsJGnwFEktk7uzpZOCcBY74+YBdrKVGs=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\obj\\Debug\\net8.0\\scopedcss\\bundle\\OnlineShoppingSite.styles.css"
+      "OriginalItemSpec": "wwwroot\\.gitkeep"
     },
     {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\OnlineShoppingSite.bundle.scp.css",
+      "Identity": "C:\\Users\\German\\Desktop\\online shop\\ecommerce\\wwwroot\\css\\.gitkeep",
       "SourceId": "OnlineShoppingSite",
-      "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\German\\Desktop\\online shop\\ecommerce\\wwwroot\\",
       "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "OnlineShoppingSite.bundle.scp.css",
+      "RelativePath": "css/#[.{fingerprint}]?.gitkeep",
       "AssetKind": "All",
-      "AssetMode": "Reference",
+      "AssetMode": "All",
       "AssetRole": "Primary",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
       "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ProjectBundle",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "lv5tvmajl9",
+      "Integrity": "AbpHGcgLb+kRsJGnwFEktk7uzpZOCcBY74+YBdrKVGs=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\OnlineShoppingSite.bundle.scp.css"
+      "OriginalItemSpec": "wwwroot\\css\\.gitkeep"
     },
     {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\css\\site.css",
+      "Identity": "C:\\Users\\German\\Desktop\\online shop\\ecommerce\\wwwroot\\images\\.gitkeep",
       "SourceId": "OnlineShoppingSite",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\German\\Desktop\\online shop\\ecommerce\\wwwroot\\",
       "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "css/site.css",
+      "RelativePath": "images/#[.{fingerprint}]?.gitkeep",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeBehavior": "",
       "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
+      "Fingerprint": "lv5tvmajl9",
+      "Integrity": "AbpHGcgLb+kRsJGnwFEktk7uzpZOCcBY74+YBdrKVGs=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\site.css"
+      "OriginalItemSpec": "wwwroot\\images\\.gitkeep"
     },
     {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\favicon.ico",
+      "Identity": "C:\\Users\\German\\Desktop\\online shop\\ecommerce\\wwwroot\\js\\.gitkeep",
       "SourceId": "OnlineShoppingSite",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\German\\Desktop\\online shop\\ecommerce\\wwwroot\\",
       "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "favicon.ico",
+      "RelativePath": "js/#[.{fingerprint}]?.gitkeep",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeBehavior": "",
       "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
+      "Fingerprint": "lv5tvmajl9",
+      "Integrity": "AbpHGcgLb+kRsJGnwFEktk7uzpZOCcBY74+YBdrKVGs=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\favicon.ico"
+      "OriginalItemSpec": "wwwroot\\js\\.gitkeep"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": ".gitkeep",
+      "AssetFile": "C:\\Users\\German\\Desktop\\online shop\\ecommerce\\wwwroot\\.gitkeep",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/octet-stream"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"AbpHGcgLb+kRsJGnwFEktk7uzpZOCcBY74+YBdrKVGs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Dec 2024 20:27:40 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-AbpHGcgLb+kRsJGnwFEktk7uzpZOCcBY74+YBdrKVGs="
+        }
+      ]
     },
     {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\js\\site.js",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "js/site.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\js\\site.js"
+      "Route": ".lv5tvmajl9.gitkeep",
+      "AssetFile": "C:\\Users\\German\\Desktop\\online shop\\ecommerce\\wwwroot\\.gitkeep",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/octet-stream"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"AbpHGcgLb+kRsJGnwFEktk7uzpZOCcBY74+YBdrKVGs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Dec 2024 20:27:40 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "lv5tvmajl9"
+        },
+        {
+          "Name": "label",
+          "Value": ".gitkeep"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-AbpHGcgLb+kRsJGnwFEktk7uzpZOCcBY74+YBdrKVGs="
+        }
+      ]
     },
     {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
+      "Route": "css/.gitkeep",
+      "AssetFile": "C:\\Users\\German\\Desktop\\online shop\\ecommerce\\wwwroot\\css\\.gitkeep",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/octet-stream"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"AbpHGcgLb+kRsJGnwFEktk7uzpZOCcBY74+YBdrKVGs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Dec 2024 20:27:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-AbpHGcgLb+kRsJGnwFEktk7uzpZOCcBY74+YBdrKVGs="
+        }
+      ]
     },
     {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.css.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
+      "Route": "css/.lv5tvmajl9.gitkeep",
+      "AssetFile": "C:\\Users\\German\\Desktop\\online shop\\ecommerce\\wwwroot\\css\\.gitkeep",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/octet-stream"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"AbpHGcgLb+kRsJGnwFEktk7uzpZOCcBY74+YBdrKVGs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Dec 2024 20:27:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "lv5tvmajl9"
+        },
+        {
+          "Name": "label",
+          "Value": "css/.gitkeep"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-AbpHGcgLb+kRsJGnwFEktk7uzpZOCcBY74+YBdrKVGs="
+        }
+      ]
     },
     {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.min.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
+      "Route": "images/.gitkeep",
+      "AssetFile": "C:\\Users\\German\\Desktop\\online shop\\ecommerce\\wwwroot\\images\\.gitkeep",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/octet-stream"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"AbpHGcgLb+kRsJGnwFEktk7uzpZOCcBY74+YBdrKVGs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Dec 2024 20:27:43 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-AbpHGcgLb+kRsJGnwFEktk7uzpZOCcBY74+YBdrKVGs="
+        }
+      ]
     },
     {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.min.css.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
+      "Route": "images/.lv5tvmajl9.gitkeep",
+      "AssetFile": "C:\\Users\\German\\Desktop\\online shop\\ecommerce\\wwwroot\\images\\.gitkeep",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/octet-stream"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"AbpHGcgLb+kRsJGnwFEktk7uzpZOCcBY74+YBdrKVGs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Dec 2024 20:27:43 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "lv5tvmajl9"
+        },
+        {
+          "Name": "label",
+          "Value": "images/.gitkeep"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-AbpHGcgLb+kRsJGnwFEktk7uzpZOCcBY74+YBdrKVGs="
+        }
+      ]
     },
     {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.rtl.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
+      "Route": "js/.gitkeep",
+      "AssetFile": "C:\\Users\\German\\Desktop\\online shop\\ecommerce\\wwwroot\\js\\.gitkeep",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/octet-stream"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"AbpHGcgLb+kRsJGnwFEktk7uzpZOCcBY74+YBdrKVGs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Dec 2024 20:27:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-AbpHGcgLb+kRsJGnwFEktk7uzpZOCcBY74+YBdrKVGs="
+        }
+      ]
     },
     {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.css.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.min.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.min.css.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.css.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.min.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.min.css.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap.css.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap.min.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap.min.css.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap.rtl.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap.rtl.css.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap.rtl.min.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/css/bootstrap.rtl.min.css.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/js/bootstrap.bundle.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/js/bootstrap.bundle.js.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/js/bootstrap.bundle.min.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/js/bootstrap.bundle.min.js.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/js/bootstrap.esm.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/js/bootstrap.esm.js.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/js/bootstrap.esm.min.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/js/bootstrap.esm.min.js.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/js/bootstrap.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/js/bootstrap.js.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/js/bootstrap.min.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/dist/js/bootstrap.min.js.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\bootstrap\\LICENSE",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/bootstrap/LICENSE",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\LICENSE"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/jquery-validation-unobtrusive/LICENSE.txt",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/jquery-validation/dist/additional-methods.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/jquery-validation/dist/additional-methods.min.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/jquery-validation/dist/jquery.validate.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/jquery-validation/dist/jquery.validate.min.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/jquery-validation/LICENSE.md",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\jquery-validation\\LICENSE.md"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\jquery\\dist\\jquery.js",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/jquery/dist/jquery.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\jquery\\dist\\jquery.js"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/jquery/dist/jquery.min.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\jquery\\dist\\jquery.min.js"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/jquery/dist/jquery.min.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\jquery\\dist\\jquery.min.map"
-    },
-    {
-      "Identity": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\lib\\jquery\\LICENSE.txt",
-      "SourceId": "OnlineShoppingSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\wwwroot\\",
-      "BasePath": "_content/OnlineShoppingSite",
-      "RelativePath": "lib/jquery/LICENSE.txt",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\jquery\\LICENSE.txt"
+      "Route": "js/.lv5tvmajl9.gitkeep",
+      "AssetFile": "C:\\Users\\German\\Desktop\\online shop\\ecommerce\\wwwroot\\js\\.gitkeep",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/octet-stream"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"AbpHGcgLb+kRsJGnwFEktk7uzpZOCcBY74+YBdrKVGs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Dec 2024 20:27:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "lv5tvmajl9"
+        },
+        {
+          "Name": "label",
+          "Value": "js/.gitkeep"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-AbpHGcgLb+kRsJGnwFEktk7uzpZOCcBY74+YBdrKVGs="
+        }
+      ]
     }
   ]
 }

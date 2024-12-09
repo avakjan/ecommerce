@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../axiosConfig';
 
 const api = axios.create({
   baseURL: '/api',
@@ -25,8 +25,8 @@ api.interceptors.request.use(
 export const productsApi = {
   getAll: (categoryId) => api.get(`/items${categoryId ? `?categoryId=${categoryId}` : ''}`),
   getById: (id) => api.get(`/items/${id}`),
-  getFeatured: () => api.get('/home/featured-products'),
-  search: (query) => api.get(`/home/search?query=${query}`)
+  getFeatured: () => api.get('/items/featured'),
+  search: (query) => api.get(`/items/search?query=${query}`)
 };
 
 export const cartApi = {
@@ -53,6 +53,26 @@ export const ordersApi = {
 
 export const categoriesApi = {
   getAll: () => api.get('/home/categories')
+};
+
+export const adminApi = {
+  // Users
+  getAllUsers: () => api.get('/admin/users'),
+  updateUser: (userId, userData) => api.put(`/admin/users/${userId}`, userData),
+  deleteUser: (userId) => api.delete(`/admin/users/${userId}`),
+  
+  // Products
+  createProduct: (productData) => api.post('/admin/products', productData),
+  updateProduct: (productId, productData) => api.put(`/admin/products/${productId}`, productData),
+  deleteProduct: (productId) => api.delete(`/admin/products/${productId}`),
+  
+  // Categories
+  createCategory: (categoryData) => api.post('/admin/categories', categoryData),
+  updateCategory: (categoryId, categoryData) => api.put(`/admin/categories/${categoryId}`, categoryData),
+  deleteCategory: (categoryId) => api.delete(`/admin/categories/${categoryId}`),
+  
+  // Orders
+  updateOrderStatus: (orderId, status) => api.put(`/admin/orders/${orderId}/status`, { status })
 };
 
 export default api;

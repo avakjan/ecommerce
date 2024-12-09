@@ -43,6 +43,15 @@ builder.Services.AddSession(options =>
 // If you need to access HttpContext in services, add IHttpContextAccessor
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ReactApp",
+        builder => builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
+
 var app = builder.Build();
 
 var stripeSettings = builder.Configuration.GetSection("Stripe").Get<StripeSettings>();
@@ -78,6 +87,8 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles(); // Serve static files
 
+app.UseCors("ReactApp");
+
 app.UseRequestLocalization(localizationOptions);
 
 app.UseRouting(); // Enable routing
@@ -90,6 +101,8 @@ app.UseAuthorization(); // Enable authorization
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}"); // Default route
+    pattern: "api/{controller}/{action=Index}/{id?}");
+
+app.MapFallbackToFile("index.html");
 
 app.Run(); // Run the application

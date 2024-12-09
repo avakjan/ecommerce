@@ -70,7 +70,7 @@ export const CartProvider = ({ children }) => {
     updateQuantity,
     removeItem,
     checkout,
-    itemCount: cart.items.reduce((total, item) => total + item.quantity, 0)
+    itemCount: cart.items && cart.items.reduce((total, item) => total + item.quantity, 0) || 0
   };
 
   return (

@@ -1,88 +1,69 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
-import { authApi } from '../services/api';
+// src/context/AuthContext.js
+import React, { createContext, useState, useEffect } from 'react';
+import axios from '../axiosConfig'; // Corrected path
+import { useNavigate } from 'react-router-dom';
 
-const AuthContext = createContext(null);
+// Create Context
+export const AuthContext = createContext();
 
+// Provider Component
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null); // { email: '', role: '' }
+  const navigate = useNavigate(); // Hook used inside component
 
   useEffect(() => {
-    checkAuth();
-  }, []);
-
-  const checkAuth = async () => {
-    try {
+    // Check if user is authenticated by verifying token
+    const verifyToken = async () => {
       const token = localStorage.getItem('token');
       if (token) {
-        const response = await authApi.getProfile();
-        setUser(response.data);
+        try {
+          // Optionally, verify token with a backend endpoint
+          // For demonstration, we'll assume the token is valid and decode it
+          // You can use libraries like jwt-decode to extract user info from token
+          // Here, we'll fetch user details from a protected endpoint
+          const response = await axios.get('/api/account/myorders'); // Adjust endpoint as needed
+          
+          // Assuming response is successful, set authentication state
+          setIsAuthenticated(true);
+          
+          // Fetch user details (you might need a separate endpoint)
+          // For demonstration, we'll set a static user role
+          setUser({ email: 'user@example.com', role: 'User' }); // Replace with actual data
+        } catch (error) {
+          console.error('Token verification failed:', error);
+          localStorage.removeItem('token');
+          setIsAuthenticated(false);
+          setUser(null);
+          navigate('/login'); // Redirect to login on failure
+        }
       }
-    } catch (error) {
-      console.error('Auth check failed:', error);
-      localStorage.removeItem('token');
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
-  const login = async (credentials) => {
-    try {
-      const response = await authApi.login(credentials);
-      const { token, user } = response.data;
-      localStorage.setItem('token', token);
-      setUser(user);
-      return true;
-    } catch (error) {
-      console.error('Login failed:', error);
-      throw error;
-    }
-  };
+    verifyToken();
+  }, [navigate]);
 
-  const register = async (userData) => {
-    try {
-      const response = await authApi.register(userData);
-      const { token, user } = response.data;
-      localStorage.setItem('token', token);
-      setUser(user);
-      return true;
-    } catch (error) {
-      console.error('Registration failed:', error);
-      throw error;
-    }
+  const login = (token, userData) => {
+    localStorage.setItem('token', token);
+    setUser(userData); // e.g., { email: 'user@example.com', role: 'Admin' }
+    setIsAuthenticated(true);
   };
 
   const logout = async () => {
     try {
-      await authApi.logout();
-      localStorage.removeItem('token');
-      setUser(null);
+      await axios.post('/api/account/logout');
     } catch (error) {
       console.error('Logout failed:', error);
-      throw error;
     }
-  };
-
-  const value = {
-    user,
-    loading,
-    login,
-    register,
-    logout,
-    isAuthenticated: !!user
+    localStorage.removeItem('token');
+    setUser(null);
+    setIsAuthenticated(false);
+    navigate('/');
   };
 
   return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
+    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+      {children}
     </AuthContext.Provider>
   );
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
 };
