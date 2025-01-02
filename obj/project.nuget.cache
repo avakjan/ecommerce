@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "aMwtPd/VIqw=",
+  "dgSpecHash": "w2HxFRd6zT8=",
   "success": true,
-  "projectFilePath": "C:\\Users\\German\\Desktop\\online shop\\ecommerce\\OnlineShoppingSite.csproj",
+  "projectFilePath": "C:\\Users\\German\\Desktop\\OnlineShoppingSite\\OnlineShoppingSite.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\German\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\German\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\8.0.10\\microsoft.aspnetcore.cryptography.internal.8.0.10.nupkg.sha512",

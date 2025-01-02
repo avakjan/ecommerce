@@ -8,14 +8,19 @@ using Microsoft.AspNetCore.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews(options =>
-{
-    options.Filters.Add<OnlineShoppingSite.Filters.CategoriesActionFilter>();
-})
-.AddNewtonsoftJson();
+// 1. AddControllers() instead of AddControllersWithViews()
+// 2. Remove the CategoriesActionFilter from global filters
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options =>
+    {
+        // This ignores circular references
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+    });
 
+// Configure Stripe
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
+// Configure Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
@@ -26,30 +31,47 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Account/AccessDenied";
 });
 
+// Memory caching
 builder.Services.AddMemoryCache();
 
 // Configure SQLite with connection string
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=online_shopping.db"));
 
+builder.Services.AddDistributedMemoryCache();
+
 // Configure session
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout
-    options.Cookie.HttpOnly = true; // Prevent JavaScript access to session cookie
-    options.Cookie.IsEssential = true; // Make the session cookie essential
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
 });
 
-// If you need to access HttpContext in services, add IHttpContextAccessor
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactLocalhost", policyBuilder =>
+    {
+        // Adjust as needed:
+        policyBuilder
+            .WithOrigins("http://localhost:3000") // or "https://localhost:3000"
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials(); // If you're using cookies or session
+    });
+});
+
+// If you need to access HttpContext in services
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
+// Stripe
 var stripeSettings = builder.Configuration.GetSection("Stripe").Get<StripeSettings>();
 StripeConfiguration.ApiKey = stripeSettings.SecretKey;
 
+// Optional: Setup localization (currently set to French)
 var defaultCulture = new CultureInfo("fr-FR");
-
 var localizationOptions = new RequestLocalizationOptions
 {
     DefaultRequestCulture = new RequestCulture(defaultCulture),
@@ -64,32 +86,33 @@ using (var scope = app.Services.CreateScope())
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
     var context = services.GetRequiredService<ApplicationDbContext>();
 
+    // Seed roles/users if needed
     await SeedData.InitializeAsync(userManager, roleManager);
 }
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error"); // Use custom error page in production
+    app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 
-app.UseStaticFiles(); // Serve static files
+// If you still need to serve static files (e.g., images), keep this:
+app.UseStaticFiles();
 
 app.UseRequestLocalization(localizationOptions);
 
-app.UseRouting(); // Enable routing
+app.UseRouting();
 
-app.UseSession(); // Enable session before authorization
+app.UseCors("AllowReactLocalhost");
 
+app.UseSession();  // still using session
 app.UseAuthentication();
+app.UseAuthorization();
 
-app.UseAuthorization(); // Enable authorization
+// 3. Use attribute-based routing instead of a default MVC route
+app.MapControllers();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}"); // Default route
-
-app.Run(); // Run the application
+app.Run();
