@@ -65,6 +65,8 @@ namespace OnlineShoppingSite.Controllers
                     ItemId = item.ItemId,
                     Name = item.Name,
                     Price = item.Price,
+                    Description = item.Description,
+                    ImageUrl = item.ImageUrl,
                     CategoryName = item.Category != null ? item.Category.Name : null,
                     Sizes = item.ItemSizes
                         .Select(isz => isz.Size.Name) // e.g. "S", "M", "L", etc.
@@ -120,6 +122,8 @@ namespace OnlineShoppingSite.Controllers
                 ItemId = item.ItemId,
                 Name = item.Name,
                 Price = item.Price,
+                Description = item.Description,
+                ImageUrl = item.ImageUrl,
                 CategoryName = item.Category?.Name,
                 Sizes = item.ItemSizes
                     .Select(isz => isz.Size.Name)

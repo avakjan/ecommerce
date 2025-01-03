@@ -147,3 +147,9 @@ C:\Users\German\Desktop\OnlineShoppingSite\obj\Debug\net8.0\ref\OnlineShoppingSi
 C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\OnlineShoppingSite.staticwebassets.endpoints.json
 C:\Users\German\Desktop\OnlineShoppingSite\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 C:\Users\German\Desktop\OnlineShoppingSite\obj\Debug\net8.0\staticwebassets\msbuild.OnlineShoppingSite.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\out\web.config
+C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\out\appsettings.Development.json
+C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\out\appsettings.json
+C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\out\OnlineShoppingSite.deps.json
+C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\out\OnlineShoppingSite.runtimeconfig.json
+C:\Users\German\Desktop\OnlineShoppingSite\bin\Debug\net8.0\out\OnlineShoppingSite.staticwebassets.endpoints.json
