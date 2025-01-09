@@ -117,20 +117,22 @@ namespace OnlineShoppingSite.Controllers
             }
 
             // Convert to ItemDto
-            var dto = new ItemDto
+        var itemDto = new
+        {
+            itemId = item.ItemId,
+            name = item.Name,
+            description = item.Description,
+            imageUrl = item.ImageUrl,
+            price = item.Price,
+            categoryName = item.Category?.Name,
+            sizes = item.ItemSizes.Select(isz => new
             {
-                ItemId = item.ItemId,
-                Name = item.Name,
-                Price = item.Price,
-                Description = item.Description,
-                ImageUrl = item.ImageUrl,
-                CategoryName = item.Category?.Name,
-                Sizes = item.ItemSizes
-                    .Select(isz => isz.Size.Name)
-                    .ToList()
-            };
+                sizeId = isz.SizeId,
+                name = isz.Size.Name
+            }).ToList()
+        };
 
-            return Ok(dto);
+            return Ok(itemDto);
         }
 
         /// <summary>

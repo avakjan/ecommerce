@@ -49,7 +49,6 @@ namespace OnlineShoppingSite.Controllers
             var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart") ?? new List<CartItem>();
             _logger.LogInformation("Cart has {ItemCount} items.", cart.Count);
 
-            // If we want to also return product info, fetch from DB
             if (cart.Any())
             {
                 var itemIds = cart.Select(c => c.ItemId).Distinct().ToList();
@@ -72,16 +71,28 @@ namespace OnlineShoppingSite.Controllers
                     Sizes = sizes
                 };
 
+                // Calculate TotalAmount
+                decimal totalAmount = 0;
+                foreach (var cartItem in cart)
+                {
+                    var item = items.FirstOrDefault(i => i.ItemId == cartItem.ItemId);
+                    if (item != null)
+                    {
+                        totalAmount += item.Price * cartItem.Quantity;
+                    }
+                }
+                cartViewModel.TotalAmount = totalAmount;
+
                 return Ok(cartViewModel);
             }
             else
             {
-                // Return an empty cart
                 var emptyViewModel = new CartViewModel
                 {
                     CartItems = new List<CartItem>(),
                     Items = new List<Item>(),
-                    Sizes = new List<Size>()
+                    Sizes = new List<Size>(),
+                    TotalAmount = 0
                 };
                 return Ok(emptyViewModel);
             }
