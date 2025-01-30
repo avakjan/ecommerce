@@ -1,3 +1,4 @@
+// Controllers/CartController.cs
 using Microsoft.AspNetCore.Mvc;
 using OnlineShoppingSite.Models;
 using OnlineShoppingSite.Extensions;
@@ -10,24 +11,22 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 
 namespace OnlineShoppingSite.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
-    public class CartController : ControllerBase
+    [Route("[controller]")]
+    public class CartController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<CartController> _logger;
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public CartController(
-            ApplicationDbContext context,
-            ILogger<CartController> logger,
-            IConfiguration configuration,
-            UserManager<ApplicationUser> userManager)
+        public CartController(ApplicationDbContext context, ILogger<CartController> logger, IConfiguration configuration, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _logger = logger;
@@ -38,52 +37,28 @@ namespace OnlineShoppingSite.Controllers
             StripeConfiguration.ApiKey = _configuration["Stripe:SecretKey"];
         }
 
-        /// <summary>
-        /// Retrieve the current cart items from Session and return as JSON.
-        /// </summary>
-        /// <returns>JSON list of CartItems plus item/size info.</returns>
-        // GET: api/cart
-        [HttpGet]
-        public IActionResult GetCart()
+        [HttpGet("Index")]
+        public IActionResult Index()
         {
             var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart") ?? new List<CartItem>();
-            _logger.LogInformation("Cart has {ItemCount} items.", cart.Count);
+            _logger.LogInformation("Cart Index action called. Cart has {ItemCount} items.", cart.Count);
 
             if (cart.Any())
             {
-                var itemIds = cart.Select(c => c.ItemId).Distinct().ToList();
-                var sizeIds = cart.Select(c => c.SizeId).Distinct().ToList();
-
-                var items = _context.Items
-                    .Include(i => i.ItemSizes)
-                        .ThenInclude(isz => isz.Size)
-                    .Where(i => itemIds.Contains(i.ItemId))
-                    .ToList();
-
-                var sizes = _context.Sizes
-                    .Where(s => sizeIds.Contains(s.SizeId))
-                    .ToList();
-
-                var cartViewModel = new CartViewModel
+                var viewModel = new CartViewModel
                 {
                     CartItems = cart,
-                    Items = items,
-                    Sizes = sizes
+                    Items = _context.Items
+                                .Include(i => i.ItemSizes)
+                                    .ThenInclude(isz => isz.Size)
+                                .Where(i => cart.Select(c => c.ItemId).Contains(i.ItemId))
+                                .ToList(),
+                    Sizes = _context.Sizes
+                                .Where(s => cart.Select(c => c.SizeId).Contains(s.SizeId))
+                                .ToList()
                 };
 
-                // Calculate TotalAmount
-                decimal totalAmount = 0;
-                foreach (var cartItem in cart)
-                {
-                    var item = items.FirstOrDefault(i => i.ItemId == cartItem.ItemId);
-                    if (item != null)
-                    {
-                        totalAmount += item.Price * cartItem.Quantity;
-                    }
-                }
-                cartViewModel.TotalAmount = totalAmount;
-
-                return Ok(cartViewModel);
+                return Ok(viewModel);
             }
             else
             {
@@ -91,175 +66,209 @@ namespace OnlineShoppingSite.Controllers
                 {
                     CartItems = new List<CartItem>(),
                     Items = new List<Item>(),
-                    Sizes = new List<Size>(),
-                    TotalAmount = 0
+                    Sizes = new List<Size>()
                 };
                 return Ok(emptyViewModel);
             }
         }
 
-        /// <summary>
-        /// Initiates checkout flow by validating cart items, creating a PaymentIntent, etc.
-        /// </summary>
-        /// <returns>Checkout information (PaymentIntent client secret, total, items, etc.)</returns>
-        // GET: api/cart/checkout
-        [HttpGet("checkout")]
-        public async Task<IActionResult> StartCheckout()
+        public async Task<IActionResult> Checkout()
         {
+            // Retrieve cart from session
             var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart") ?? new List<CartItem>();
+
             if (!cart.Any())
             {
                 _logger.LogWarning("Checkout attempted with empty cart.");
-                return BadRequest(new { Error = "Your cart is empty." });
+                return BadRequest(new { error = "Your cart is empty." });
             }
 
+            // Extract all ItemIds and SizeIds from the cart
             var itemIds = cart.Select(c => c.ItemId).ToList();
             var sizeIds = cart.Select(c => c.SizeId).Distinct().ToList();
 
+            // Fetch all corresponding Items and Sizes from the database
             var items = await _context.Items
-                .Include(i => i.ItemSizes).ThenInclude(isz => isz.Size)
-                .Where(i => itemIds.Contains(i.ItemId))
-                .ToListAsync();
+                                      .Include(i => i.ItemSizes)
+                                      .ThenInclude(isz => isz.Size)
+                                      .Where(i => itemIds.Contains(i.ItemId))
+                                      .ToListAsync();
 
             var sizes = await _context.Sizes
-                .Where(s => sizeIds.Contains(s.SizeId))
-                .ToListAsync();
+                                       .Where(s => sizeIds.Contains(s.SizeId))
+                                       .ToListAsync();
 
             // Check if any Items or Sizes are missing
             var missingItemIds = itemIds.Except(items.Select(i => i.ItemId)).ToList();
             var missingSizeIds = sizeIds.Except(sizes.Select(s => s.SizeId)).ToList();
+
             if (missingItemIds.Any() || missingSizeIds.Any())
             {
-                _logger.LogWarning(
-                    "Checkout: Missing items or sizes. MissingItemIds: {MissingItemIds}, MissingSizeIds: {MissingSizeIds}",
-                    string.Join(", ", missingItemIds), string.Join(", ", missingSizeIds)
-                );
-                return BadRequest(new { Error = "Some items or sizes in your cart are no longer available." });
+                _logger.LogWarning("Checkout GET action: Missing Items or Sizes. MissingItemIds: {MissingItemIds}, MissingSizeIds: {MissingSizeIds}",
+                    string.Join(", ", missingItemIds), string.Join(", ", missingSizeIds));
+                return BadRequest(new { error = "Some items or sizes in your cart are no longer available." });
             }
 
-            // Validate stock
+            // Validate quantities
             foreach (var cartItem in cart)
             {
                 var item = items.FirstOrDefault(i => i.ItemId == cartItem.ItemId);
-                if (item == null) continue;
-
                 var itemSize = item.ItemSizes.FirstOrDefault(isz => isz.SizeId == cartItem.SizeId);
-                if (itemSize == null || itemSize.Quantity < cartItem.Quantity)
+                if (itemSize.Quantity < cartItem.Quantity)
                 {
-                    _logger.LogWarning(
-                        "Insufficient quantity for ItemId {ItemId}, SizeId {SizeId}. Requested: {Req}, Available: {Avail}",
-                        cartItem.ItemId, cartItem.SizeId, cartItem.Quantity, itemSize?.Quantity ?? 0
-                    );
-                    return BadRequest(new { Error = $"Insufficient quantity for {item.Name} (SizeId: {cartItem.SizeId})." });
+                    _logger.LogWarning("Checkout GET action: Insufficient quantity for ItemId {ItemId} SizeId {SizeId}. Requested: {Requested}, Available: {Available}.",
+                        cartItem.ItemId, cartItem.SizeId, cartItem.Quantity, itemSize.Quantity);
+                    return BadRequest(new { error = $"Insufficient quantity for {item.Name} (Size: {itemSize.Size.Name})." });
                 }
             }
 
-            // Calculate total
-            decimal totalAmount = cart.Sum(c =>
-            {
-                var item = items.FirstOrDefault(i => i.ItemId == c.ItemId);
-                return item != null ? item.Price * c.Quantity : 0;
-            });
+            // Calculate TotalAmount
+            decimal totalAmount = cart.Sum(c => 
+                {
+                    var item = items.FirstOrDefault(i => i.ItemId == c.ItemId);
+                    return item != null ? item.Price * c.Quantity : 0;
+                });
 
-            // Stripe requires a minimum of 0.50
+            // Validate that TotalAmount is at least 0.50€ (Stripe requirement for Payment Intents)
             if (totalAmount < 0.50m)
             {
-                _logger.LogWarning("Order total {TotalAmount} is below minimum (0.50).", totalAmount);
-                return BadRequest(new { Error = "Order total must be at least 0.50€." });
+                _logger.LogWarning("Checkout GET action: Order total {TotalAmount} is below minimum.", totalAmount);
+                return BadRequest(new { error = "Order total must be at least 0.50€." });
             }
 
-            // Create a PaymentIntent
+            // Create Payment Intent
             var paymentIntentClientSecret = await CreateStripePaymentIntentAsync(totalAmount);
+
             if (string.IsNullOrEmpty(paymentIntentClientSecret))
             {
-                return StatusCode(500, new { Error = "Unable to create payment intent. Try again later." });
+                return BadRequest(new { error = "Unable to process payment at this time. Please try again later." });
             }
 
-            // Return a summary of the checkout
-            var checkoutSummary = new
+            // Create the ViewModel
+            var viewModel = new CheckoutViewModel
             {
-                CartItems = cart,
-                TotalAmount = totalAmount,
-                PaymentIntentClientSecret = paymentIntentClientSecret
-            };
-            return Ok(checkoutSummary);
-        }
-
-        /// <summary>
-        /// Finalizes the checkout: updates inventory, saves the order, clears cart, etc.
-        /// Must be called after the payment is confirmed on the client side (Stripe).
-        /// </summary>
-        // POST: api/cart/checkout
-        [HttpPost("checkout")]
-        [Authorize]
-        public async Task<IActionResult> CompleteCheckout([FromBody] CheckoutViewModel model)
-        {
-            _logger.LogInformation("Checkout POST action called.");
-
-            var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart") ?? new List<CartItem>();
-            var userId = _userManager.GetUserId(User);
-
-            if (!cart.Any())
-            {
-                _logger.LogWarning("Checkout POST action: cart is empty.");
-                return BadRequest(new { Error = "Your cart is empty." });
-            }
-
-            // Rebuild OrderItems from cart
-            model.OrderItems = cart
-                .Select(c => new OrderItem
+                ShippingDetails = new ShippingDetails(),
+                PaymentMethod = "Credit Card",
+                OrderItems = cart.Select(c => new OrderItem
                 {
                     ItemId = c.ItemId,
                     SizeId = c.SizeId,
+                    Item = items.FirstOrDefault(i => i.ItemId == c.ItemId),
                     Quantity = c.Quantity,
-                    UnitPrice = 0 // will fill in below
-                })
-                .ToList();
+                    UnitPrice = items.FirstOrDefault(i => i.ItemId == c.ItemId)?.Price ?? 0
+                }).ToList(),
+                TotalAmount = totalAmount,
+                PaymentIntentClientSecret = paymentIntentClientSecret
+            };
 
-            // Fetch items for price info / stock checks
+            _logger.LogInformation("Checkout GET action called. Order total amount: {TotalAmount}", viewModel.TotalAmount);
+
+            return Ok(viewModel);
+        }
+
+        [HttpPost("Checkout")]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> Checkout([FromBody] CheckoutViewModel model)
+        {
+            _logger.LogInformation("Checkout POST action called.");
+
+            // Retrieve cart from session
+            var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart") ?? new List<CartItem>();
+            var userId = _userManager.GetUserId(User);
+            _logger.LogInformation("Cart retrieved from session. Cart has {ItemCount} items.", cart.Count);
+
+            // Check if cart is empty
+            if (!cart.Any())
+            {
+                _logger.LogWarning("Checkout POST action: cart is empty.");
+                return BadRequest(new { error = "Your cart is empty." });
+            }
+
+            // Reconstruct OrderItems from cart
+            model.OrderItems = cart.Select(c => new OrderItem
+            {
+                ItemId = c.ItemId,
+                SizeId = c.SizeId,
+                Quantity = c.Quantity,
+                UnitPrice = 0 // set later after fetching items
+            }).ToList();
+
+            // Fetch all Items and Sizes from the database
             var itemIds = cart.Select(c => c.ItemId).ToList();
             var sizeIds = cart.Select(c => c.SizeId).Distinct().ToList();
 
             var items = await _context.Items
-                .Include(i => i.ItemSizes).ThenInclude(isz => isz.Size)
-                .Where(i => itemIds.Contains(i.ItemId))
-                .ToListAsync();
+                                    .Include(i => i.ItemSizes)
+                                        .ThenInclude(isz => isz.Size)
+                                    .Where(i => itemIds.Contains(i.ItemId))
+                                    .ToListAsync();
 
             var sizes = await _context.Sizes
-                .Where(s => sizeIds.Contains(s.SizeId))
-                .ToListAsync();
+                                    .Where(s => sizeIds.Contains(s.SizeId))
+                                    .ToListAsync();
 
-            // Check missing items/sizes
+            // Check if any Items or Sizes are missing
             var missingItemIds = itemIds.Except(items.Select(i => i.ItemId)).ToList();
             var missingSizeIds = sizeIds.Except(sizes.Select(s => s.SizeId)).ToList();
+
             if (missingItemIds.Any() || missingSizeIds.Any())
             {
                 _logger.LogWarning(
-                    "Checkout POST: Missing items or sizes. MissingItemIds: {MissingItemIds}, MissingSizeIds: {MissingSizeIds}",
-                    string.Join(", ", missingItemIds), string.Join(", ", missingSizeIds)
+                    "Checkout POST action: Missing Items or Sizes. MissingItemIds: {MissingItemIds}, MissingSizeIds: {MissingSizeIds}",
+                    string.Join(", ", missingItemIds),
+                    string.Join(", ", missingSizeIds)
                 );
-                return BadRequest(new { Error = "Some items or sizes in your cart are no longer available." });
+
+                // Rebuild order items with only the existing items
+                model.OrderItems = cart
+                    .Where(c => items.Any(i => i.ItemId == c.ItemId))
+                    .Select(c => new OrderItem
+                    {
+                        ItemId = c.ItemId,
+                        SizeId = c.SizeId,
+                        Quantity = c.Quantity,
+                        UnitPrice = items.FirstOrDefault(i => i.ItemId == c.ItemId)?.Price ?? 0
+                    })
+                    .ToList();
+
+                model.TotalAmount = model.OrderItems.Sum(oi => oi.UnitPrice * oi.Quantity);
+                _logger.LogInformation("After removing missing items, OrderTotalAmount: {TotalAmount}", model.TotalAmount);
+
+                return BadRequest(new
+                {
+                    error = "Some items or sizes in your cart are no longer available.",
+                    updatedCart = model
+                });
             }
 
-            // Validate stock & decrement
+            // Validate quantities and update inventory
             try
             {
                 foreach (var cartItem in cart)
                 {
                     var itemSize = await _context.ItemSizes
-                        .Where(isz => isz.ItemId == cartItem.ItemId && isz.SizeId == cartItem.SizeId)
-                        .FirstOrDefaultAsync();
+                        .FirstOrDefaultAsync(isz => isz.ItemId == cartItem.ItemId && isz.SizeId == cartItem.SizeId);
 
-                    if (itemSize == null || itemSize.Quantity < cartItem.Quantity)
+                    // If the itemSize doesn't exist OR not enough stock
+                    if (itemSize == null)
+                    {
+                        _logger.LogWarning("ItemSize not found (ItemId={ItemId}, SizeId={SizeId}).", cartItem.ItemId, cartItem.SizeId);
+                        return BadRequest(new { error = "Some items in your cart no longer exist." });
+                    }
+                    if (itemSize.Quantity < cartItem.Quantity)
                     {
                         _logger.LogWarning(
-                            "Not enough items in stock for ItemId {ItemId} SizeId {SizeId}. Req: {Req}, Avail: {Avail}",
-                            cartItem.ItemId, cartItem.SizeId, cartItem.Quantity, itemSize?.Quantity ?? 0
+                            "Insufficient quantity for ItemId {ItemId} SizeId {SizeId}. Requested: {Requested}, Available: {Available}.",
+                            cartItem.ItemId, cartItem.SizeId, cartItem.Quantity, itemSize.Quantity
                         );
-                        return BadRequest(new { Error = "Not enough items in stock." });
+                        return BadRequest(new
+                        {
+                            error = $"Not enough items in stock for {itemSize.Item?.Name} (Size: {itemSize.Size?.Name})."
+                        });
                     }
 
-                    // Decrement quantity
+                    // If stock is okay, reduce the quantity
                     itemSize.Quantity -= cartItem.Quantity;
                     _context.ItemSizes.Update(itemSize);
                 }
@@ -270,27 +279,35 @@ namespace OnlineShoppingSite.Controllers
             catch (DbUpdateConcurrencyException ex)
             {
                 _logger.LogError(ex, "Concurrency error while updating inventory.");
-                return StatusCode(409, new { Error = "A concurrency error occurred. Please try again." });
+                return BadRequest(new { error = "A concurrency error occurred. Please try again." });
             }
 
-            // Fill in UnitPrice from DB items
+            // Update UnitPrice for each OrderItem
             foreach (var orderItem in model.OrderItems)
             {
                 var item = items.FirstOrDefault(i => i.ItemId == orderItem.ItemId);
-                if (item != null) orderItem.UnitPrice = item.Price;
+                if (item != null)
+                {
+                    orderItem.UnitPrice = item.Price;
+                }
             }
 
-            // Calculate final total
-            decimal calculatedTotal = model.OrderItems.Sum(oi => oi.UnitPrice * oi.Quantity);
-            model.TotalAmount = calculatedTotal;
+            // Calculate TotalAmount
+            model.TotalAmount = model.OrderItems.Sum(oi => oi.UnitPrice * oi.Quantity);
 
+            // Check ModelState validity
             if (!ModelState.IsValid)
             {
-                _logger.LogWarning("ModelState invalid in CompleteCheckout. Returning validation errors.");
-                return BadRequest(ModelState);
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .Where(e => !string.IsNullOrWhiteSpace(e));
+
+                _logger.LogWarning("ModelState is invalid. Errors: {Errors}", string.Join("; ", errors));
+                return BadRequest(new { error = "Validation errors occurred.", details = errors });
             }
 
-            // Create & save the order
+            // Create and save the Order
             var order = new Order
             {
                 ShippingDetails = model.ShippingDetails,
@@ -301,143 +318,190 @@ namespace OnlineShoppingSite.Controllers
                 Status = "Pending"
             };
 
-            // Save shipping details
+            // TODO: Payment processing logic here (assume success for now)
+
+            // Save ShippingDetails
             _context.ShippingDetails.Add(order.ShippingDetails);
             await _context.SaveChangesAsync();
-            _logger.LogInformation("Shipping details saved with ID: {Id}", order.ShippingDetails.ShippingDetailsId);
+            _logger.LogInformation("Shipping details saved with ID: {ShippingDetailsId}", order.ShippingDetails.ShippingDetailsId);
 
-            // Attach shipping details ID
+            // Assign ShippingDetailsId to the order and save the order
             order.ShippingDetailsId = order.ShippingDetails.ShippingDetailsId;
-
-            // Save order
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
             _logger.LogInformation("Order saved with ID: {OrderId}", order.OrderId);
 
-            // Clear cart from session
+            // Clear the cart
             HttpContext.Session.Remove("Cart");
-            _logger.LogInformation("Cart cleared from session after checkout.");
+            _logger.LogInformation("Cart cleared from session.");
 
-            // Return the created order info
-            return Ok(new { Message = "Checkout complete", OrderId = order.OrderId });
+            // Return success response
+            return Ok(new
+            {
+                message = "Order placed successfully.",
+                orderId = order.OrderId
+            });
         }
-
-        /// <summary>
-        /// Returns details of a single order (for confirmation or display).
-        /// </summary>
-        // GET: api/cart/orderConfirmation/{id}
-        [HttpGet("orderConfirmation/{id}")]
+        
+        [HttpGet("OrderConfirmation/{id}")]
         [Authorize]
         public async Task<IActionResult> OrderConfirmation(int id)
         {
-            _logger.LogInformation("OrderConfirmation called with OrderId: {OrderId}", id);
+            _logger.LogInformation("OrderConfirmation action called with OrderId: {OrderId}", id);
 
+            // Retrieve the current user's ID
             var currentUserId = _userManager.GetUserId(User);
             if (string.IsNullOrEmpty(currentUserId))
             {
-                _logger.LogWarning("User not logged in or user ID not found.");
-                return Unauthorized(new { Error = "User not logged in." });
+                _logger.LogWarning("OrderConfirmation: Unable to retrieve current user ID.");
+                return Unauthorized(); // or Redirect to login
             }
 
+            // Fetch the order, including related data
             var order = await _context.Orders
                 .Include(o => o.ShippingDetails)
-                .Include(o => o.OrderItems).ThenInclude(oi => oi.Item)
-                .Include(o => o.OrderItems).ThenInclude(oi => oi.Size)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Item)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Size) // Include Size
                 .FirstOrDefaultAsync(o => o.OrderId == id);
 
             if (order == null)
             {
-                _logger.LogWarning("Order {OrderId} not found.", id);
-                return NotFound(new { Error = "Order not found." });
+                _logger.LogWarning("OrderConfirmation: Order not found with ID: {OrderId}", id);
+                return NotFound();
             }
 
+            // Check if the order belongs to the current user
             if (order.UserId != currentUserId)
             {
-                _logger.LogWarning("User {UserId} attempted to access Order {OrderId} belonging to {OrderUserId}.",
+                _logger.LogWarning("OrderConfirmation: User {UserId} attempted to access Order {OrderId} belonging to User {OrderUserId}.",
                     currentUserId, id, order.UserId);
-                return Forbid();
+                return Forbid(); // Returns 403 Forbidden
             }
 
             return Ok(order);
         }
 
-        /// <summary>
-        /// Removes an item from the cart by ItemId & SizeId.
-        /// </summary>
-        // DELETE: api/cart/item?itemId=xxx&sizeId=yyy
-        [HttpDelete("item")]
-        public IActionResult RemoveItemFromCart([FromQuery] int itemId, [FromQuery] int sizeId)
+
+        [HttpPost("Remove")]
+        [ValidateAntiForgeryToken]
+        public IActionResult Remove(int itemId, int sizeId)
         {
             var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart") ?? new List<CartItem>();
+
+            // Find the cart item by ItemId and SizeId
             var cartItem = cart.FirstOrDefault(c => c.ItemId == itemId && c.SizeId == sizeId);
 
-            if (cartItem == null)
+            if (cartItem != null)
             {
-                _logger.LogWarning("Attempted to remove item {ItemId} size {SizeId} not in cart.", itemId, sizeId);
-                return NotFound(new { Error = "Item not found in cart." });
+                cart.Remove(cartItem);
+                HttpContext.Session.SetObjectAsJson("Cart", cart);
+                _logger.LogInformation("Item with ID {ItemId} and SizeId {SizeId} removed from cart.", itemId, sizeId);
+
+                return Ok(new
+                {
+                    message = "Item removed from cart successfully",
+                    itemId = itemId,
+                    sizeId = sizeId
+                });
             }
+            else
+            {
+                _logger.LogWarning("Attempted to remove item with ID {ItemId} and SizeId {SizeId} which was not found in cart.", itemId, sizeId);
 
-            cart.Remove(cartItem);
-            HttpContext.Session.SetObjectAsJson("Cart", cart);
-            _logger.LogInformation("Removed item {ItemId}, size {SizeId} from cart.", itemId, sizeId);
-
-            return Ok(new { Message = "Item removed from cart." });
+                return NotFound(new 
+                {
+                    error = "Item not found in cart.",
+                    itemId = itemId,
+                    sizeId = sizeId
+                });
+            }
         }
 
-        /// <summary>
-        /// Updates item quantities in the cart. 
-        /// Expects a CartViewModel with updated CartItems in JSON.
-        /// </summary>
-        // PUT: api/cart/quantities
-        [HttpPut("quantities")]
+        [HttpPost("UpdateQuantities")]
+        [ValidateAntiForgeryToken]
         public IActionResult UpdateQuantities([FromBody] CartViewModel model)
         {
-            // Grab the session cart
+            // Retrieve cart from session
             var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart") ?? new List<CartItem>();
+            if (!ModelState.IsValid)
+            {
+                // Collect validation errors
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .Where(msg => !string.IsNullOrWhiteSpace(msg));
 
-            // Update each item’s quantity
+                _logger.LogWarning("UpdateQuantities called with invalid ModelState. Errors: {Errors}", string.Join("; ", errors));
+
+                return BadRequest(new 
+                { 
+                    error = "Invalid model data.", 
+                    details = errors 
+                });
+            }
+
+            // Update quantities
             foreach (var updatedItem in model.CartItems)
             {
-                var existing = cart.FirstOrDefault(ci => ci.ItemId == updatedItem.ItemId && ci.SizeId == updatedItem.SizeId);
-                if (existing != null)
+                var cartItem = cart.FirstOrDefault(ci => ci.ItemId == updatedItem.ItemId && ci.SizeId == updatedItem.SizeId);
+                if (cartItem != null)
                 {
-                    // Ensure at least 1
-                    existing.Quantity = updatedItem.Quantity > 0 ? updatedItem.Quantity : 1;
+                    // Ensure the quantity is at least 1
+                    cartItem.Quantity = updatedItem.Quantity > 0 ? updatedItem.Quantity : 1;
+                }
+                else
+                {
+                    _logger.LogWarning(
+                        "UpdateQuantities: No matching cart item found for ItemId {ItemId}, SizeId {SizeId}. " +
+                        "Cannot update quantity.",
+                        updatedItem.ItemId, updatedItem.SizeId
+                    );
                 }
             }
 
-            // Save back to session
+            // Save the updated cart back to session
             HttpContext.Session.SetObjectAsJson("Cart", cart);
+            _logger.LogInformation("Cart quantities updated successfully.");
 
-            _logger.LogInformation("Cart quantities updated for {Count} items.", model.CartItems.Count);
-            return Ok(new { Message = "Cart quantities updated." });
+            // Redirect to the cart index action
+            return Ok(new 
+            {
+                message = "Quantities updated successfully.",
+                updatedCart = cart
+            });
         }
-
-        #region Private Helper Methods
-
+        
         /// <summary>
-        /// Creates a Stripe Payment Intent and returns its Client Secret if successful.
+        /// Creates a Stripe Payment Intent for the specified amount and currency.
         /// </summary>
+        /// <param name="amount">Total amount in EUR.</param>
+        /// <param name="currency">Currency code (default is "eur").</param>
+        /// <returns>Client secret of the Payment Intent if successful; otherwise, null.</returns>
         private async Task<string> CreateStripePaymentIntentAsync(decimal amount, string currency = "eur")
         {
             try
             {
                 if (amount < 0.50m)
                 {
-                    _logger.LogError("Stripe Error: Amount {Amount} < 0.50", amount);
+                    _logger.LogError("Stripe Error: Amount {Amount} is less than the minimum required.", amount);
                     return null;
                 }
 
                 var options = new PaymentIntentCreateOptions
                 {
-                    Amount = (long)(amount * 100), // Convert to cents
+                    Amount = (long)(amount * 100), // Amount in cents
                     Currency = currency,
-                    PaymentMethodTypes = new List<string> { "card" },
-                    Description = "Order Payment"
+                    PaymentMethodTypes = new List<string>
+                    {
+                        "card",
+                    },
+                    Description = "Order Payment",
                 };
 
                 var service = new PaymentIntentService();
-                var paymentIntent = await service.CreateAsync(options);
+                PaymentIntent paymentIntent = await service.CreateAsync(options);
 
                 return paymentIntent.ClientSecret;
             }
@@ -452,7 +516,5 @@ namespace OnlineShoppingSite.Controllers
                 return null;
             }
         }
-
-        #endregion
     }
 }
