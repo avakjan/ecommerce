@@ -1,3 +1,4 @@
+// Controllers/AccountController.cs
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -5,14 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using OnlineShoppingSite.Models;
 using OnlineShoppingSite.ViewModels;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace OnlineShoppingSite.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AccountController : ControllerBase
+    public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -31,13 +31,12 @@ namespace OnlineShoppingSite.Controllers
             _context = context;
         }
 
-        // POST: api/Account/Register
+        // POST: Account/Register
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                // Return validation errors
                 return BadRequest(ModelState);
             }
 
@@ -46,25 +45,52 @@ namespace OnlineShoppingSite.Controllers
 
             if (result.Succeeded)
             {
-                // Optionally assign roles here, e.g.: await _userManager.AddToRoleAsync(user, "User");
-
-                // Sign in the user immediately (optional; depends on your flow)
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                _logger.LogInformation("User registered and signed in.");
-
-                // Return a 201 Created with user data or a success message
-                return Created("", new { Message = "Registration successful", User = user.Email });
+                _logger.LogInformation("User created a new account with password.");
+                // Optionally sign in the user or send confirmation email, etc.
+                return Ok(new { message = "Registration successful." });
             }
-
-            // If creation failed, return the errors
+            
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError(string.Empty, error.Description);
+                ModelState.AddModelError("", error.Description);
             }
+
             return BadRequest(ModelState);
         }
 
-        // POST: api/Account/Login
+        // GET: Account/Login
+        [HttpGet("login")]
+        public IActionResult Login([FromQuery] string returnUrl = null)
+        {
+            var model = new LoginViewModel { ReturnUrl = returnUrl };
+            return Ok(model);
+        }
+
+        // GET: Account/OrderDetails/5
+        [HttpGet("orderDetails/{id}")]
+        [Authorize]
+        public async Task<IActionResult> OrderDetails(int id)
+        {
+            var userId = _userManager.GetUserId(User);
+
+            var order = await _context.Orders
+                .Include(o => o.ShippingDetails)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Item)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Size)
+                .FirstOrDefaultAsync(o => o.OrderId == id && o.UserId == userId);
+
+            if (order == null)
+            {
+                _logger.LogWarning("OrderDetails: Order with ID {OrderId} not found for user {UserId}.", id, userId);
+                return NotFound(new { error = "Order not found." });
+            }
+
+            return Ok(order);
+        }
+
+        // POST: api/account/login
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginViewModel model)
         {
@@ -73,6 +99,7 @@ namespace OnlineShoppingSite.Controllers
                 return BadRequest(ModelState);
             }
 
+            // Attempt to sign in the user. Note: lockoutOnFailure is set to false.
             var result = await _signInManager.PasswordSignInAsync(
                 model.Email,
                 model.Password,
@@ -82,72 +109,55 @@ namespace OnlineShoppingSite.Controllers
             if (result.Succeeded)
             {
                 _logger.LogInformation("User logged in.");
-                // Return success message or user data
-                return Ok(new { Message = "Login successful", Email = model.Email });
+
+                // Determine the returnUrl. If the provided URL is not local, use a default.
+                string returnUrl = (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                                    ? model.ReturnUrl
+                                    : "/home/index";
+
+                return Ok(new 
+                { 
+                    message = "Login successful.",
+                    returnUrl 
+                });
             }
 
             if (result.IsLockedOut)
             {
                 _logger.LogWarning("User account locked out.");
-                return Unauthorized(new { Error = "Account locked out." });
+                // HTTP 423 Locked
+                return StatusCode(423, new { error = "User account locked out." });
             }
 
-            return Unauthorized(new { Error = "Invalid login attempt." });
+            // If login fails for any other reason
+            return BadRequest(new { error = "Invalid login attempt." });
         }
 
-        // POST: api/Account/Logout
-        [Authorize]
+        // POST: Account/Logout
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
 
-            return Ok(new { Message = "Logout successful." });
+            return Ok(new { message = "User logged out successfully." });
         }
 
-        // GET: api/Account/OrderDetails/5
-        [Authorize]
-        [HttpGet("orderdetails/{id}")]
-        public async Task<IActionResult> OrderDetails(int id)
-        {
-            var userId = _userManager.GetUserId(User);
-            var order = await _context.Orders
-                .Include(o => o.ShippingDetails)
-                .Include(o => o.OrderItems).ThenInclude(oi => oi.Item)
-                .Include(o => o.OrderItems).ThenInclude(oi => oi.Size)
-                .FirstOrDefaultAsync(o => o.OrderId == id && o.UserId == userId);
-
-            if (order == null)
-            {
-                return NotFound(new { Error = "Order not found" });
-            }
-
-            return Ok(order);
-        }
-
-        // GET: api/Account/MyOrders
-        [Authorize]
+        // GET: Account/MyOrders
         [HttpGet("myorders")]
+        [Authorize]
         public async Task<IActionResult> MyOrders()
         {
             var userId = _userManager.GetUserId(User);
+
             var orders = await _context.Orders
                 .Where(o => o.UserId == userId)
                 .Include(o => o.ShippingDetails)
-                .Include(o => o.OrderItems).ThenInclude(oi => oi.Item)
-                .Include(o => o.OrderItems).ThenInclude(oi => oi.Size)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Item)
                 .ToListAsync();
 
             return Ok(orders);
-        }
-
-        // GET: api/Account/AccessDenied
-        // (Rarely used in pure API scenarios, but included for completeness.)
-        [HttpGet("accessdenied")]
-        public IActionResult AccessDenied()
-        {
-            return Forbid(); 
         }
     }
 }

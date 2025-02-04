@@ -5,15 +5,8 @@ using OnlineShoppingSite.Extensions;
 using Microsoft.EntityFrameworkCore;
 using OnlineShoppingSite.ViewModels;
 using Stripe;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Authorization;
-using Newtonsoft.Json;
 
 namespace OnlineShoppingSite.Controllers
 {
