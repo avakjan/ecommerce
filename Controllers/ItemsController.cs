@@ -5,12 +5,13 @@ using Microsoft.Extensions.Caching.Memory;
 using OnlineShoppingSite.Models;
 using OnlineShoppingSite.Extensions;
 using OnlineShoppingSite.ViewModels;
+using OnlineShoppingSite.Models.Requests;
 
 namespace OnlineShoppingSite.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ItemsController : Controller
+    public class ItemsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<ItemsController> _logger;

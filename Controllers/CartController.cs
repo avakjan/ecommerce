@@ -12,7 +12,7 @@ namespace OnlineShoppingSite.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CartController : Controller
+    public class CartController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<CartController> _logger;
