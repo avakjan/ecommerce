@@ -2,14 +2,16 @@ using OnlineShoppingSite.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using OnlineShoppingSite.ViewModels;
+using OnlineShoppingSite.Models.Requests;
+
 
 namespace OnlineShoppingSite.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = "Admin")]
-    [Route("api/[controller]")]
     public class AdminController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -21,132 +23,202 @@ namespace OnlineShoppingSite.Controllers
             _logger = logger;
         }
 
-        // GET: api/Admin/products
-        // This replaces ManageProducts()
-        [HttpGet("products")]
-        public async Task<IActionResult> GetProducts()
+        // GET: api/Admin/GetProduct/{id}
+        [HttpGet("GetProduct/{id}")]
+        public async Task<IActionResult> GetProduct(int id)
         {
-            var products = await _context.Items.ToListAsync();
-            return Ok(products); // Returns JSON
+            var product = await _context.Items.FindAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return Ok(product);
         }
 
-        // POST: api/Admin/products
-        // This replaces CreateProduct (POST)
-        [HttpPost("products")]
+        // GET: api/Admin/GetSize/{id}
+        [HttpGet("GetSize/{id}")]
+        public async Task<IActionResult> GetSize(int id)
+        {
+            var size = await _context.Sizes.FindAsync(id);
+            if (size == null)
+            {
+                return NotFound();
+            }
+            return Ok(size);
+        }
+
+        // GET: api/Admin/GetCategory/{id}
+        [HttpGet("GetCategory/{id}")]
+        public async Task<IActionResult> GetCategory(int id)
+        {
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null)
+            {
+                return NotFound(new { message = $"Category with ID {id} not found." });
+            }
+            return Ok(category);
+        }
+
+        // POST: api/Admin/CreateProduct
+        [HttpPost("CreateProduct")]
         public async Task<IActionResult> CreateProduct([FromBody] ItemViewModel viewModel)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
-
+            }
+            
             _context.Items.Add(viewModel.Item);
             await _context.SaveChangesAsync();
 
-            // 201 Created with the new item’s info
-            return CreatedAtAction(nameof(GetProductById),
-                new { id = viewModel.Item.ItemId },
-                viewModel.Item);
+            // Return HTTP 201 Created, pointing to the GetProduct action
+            return CreatedAtAction(nameof(GetProduct), new { id = viewModel.Item.ItemId }, viewModel.Item);
         }
 
-        // GET: api/Admin/products/{id}
-        // A helper endpoint to fetch a single product by ID
-        [HttpGet("products/{id}")]
-        public async Task<IActionResult> GetProductById(int id)
+        // POST: api/Admin/CreateSize
+        [HttpPost("CreateSize")]
+        public async Task<IActionResult> CreateSize([FromBody] Size size)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _context.Sizes.Add(size);
+            await _context.SaveChangesAsync();
+
+            // Return HTTP 201 Created, pointing to the GetSize action.
+            return CreatedAtAction(nameof(GetSize), new { id = size.SizeId }, size);
+        }
+
+        // GET: api/Admin/GetProductForEdit/5
+        [HttpGet("GetProductForEdit/{id}")]
+        public async Task<IActionResult> GetProductForEdit(int id)
         {
             var item = await _context.Items.FindAsync(id);
             if (item == null)
-                return NotFound(new { Error = "Product not found" });
+            {
+                return NotFound();
+            }
 
-            return Ok(item);
+            // Get a list of categories to populate a dropdown in React.
+            var categories = await _context.Categories
+                .Select(c => new { c.CategoryId, c.Name })
+                .ToListAsync();
+
+            var result = new 
+            {
+                item,
+                categories
+            };
+
+            return Ok(result);
         }
 
-        // PUT: api/Admin/products/{id}
-        // This replaces EditProduct (POST)
-        [HttpPut("products/{id}")]
-        public async Task<IActionResult> UpdateProduct(int id, [FromBody] ItemViewModel viewModel)
+        // GET: api/Admin/GetSizeForEdit/5
+        [HttpGet("GetSizeForEdit/{id}")]
+        public async Task<IActionResult> GetSizeForEdit(int id)
         {
-            if (id != viewModel.Item.ItemId)
-                return BadRequest(new { Error = "ID mismatch" });
+            var size = await _context.Sizes.FindAsync(id);
+            if (size == null)
+            {
+                return NotFound();
+            }
+            return Ok(size);
+        }
 
+        // GET: api/Admin/GetSizeAssignmentsForItem/5
+        [HttpGet("GetSizeAssignmentsForItem/{id}")]
+        public async Task<IActionResult> GetSizeAssignmentsForItem(int id)
+        {
+            var item = await _context.Items
+                                    .Include(i => i.ItemSizes)
+                                    .ThenInclude(isz => isz.Size)
+                                    .FirstOrDefaultAsync(i => i.ItemId == id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            var allSizes = await _context.Sizes.ToListAsync();
+
+            var result = new
+            {
+                ItemId = item.ItemId,
+                ItemName = item.Name,
+                SizeAssignments = allSizes.Select(s => new 
+                {
+                    SizeId = s.SizeId,
+                    SizeName = s.Name,
+                    Quantity = item.ItemSizes.FirstOrDefault(isz => isz.SizeId == s.SizeId)?.Quantity ?? 0,
+                    IsSelected = item.ItemSizes.Any(isz => isz.SizeId == s.SizeId)
+                }).ToList()
+            };
+
+            return Ok(result);
+        }
+
+
+        // PUT: api/Admin/EditProduct/5
+        [HttpPut("EditProduct/{id}")]
+        public async Task<IActionResult> EditProduct(int id, [FromBody] ItemViewModel viewModel)
+        {
+            // Check if the id in the URL matches the id in the model
+            if (id != viewModel.Item.ItemId)
+            {
+                return BadRequest(new { message = "ID mismatch" });
+            }
+
+            // Validate the incoming model
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             try
             {
+                // Update the product in the database
                 _context.Update(viewModel.Item);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
+                // If the item doesn't exist, return a NotFound result
                 if (!ItemExists(viewModel.Item.ItemId))
-                    return NotFound(new { Error = "Product does not exist" });
-                throw;
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
             }
 
-            return Ok(new { Message = "Product updated successfully" });
+            return Ok(viewModel.Item);
         }
 
-        // DELETE: api/Admin/products/{id}
-        // This replaces DeleteProduct (POST)
-        [HttpDelete("products/{id}")]
-        public async Task<IActionResult> DeleteProduct(int id)
+        // Helper method to check if an item exists
+        private bool ItemExists(int id)
         {
-            var item = await _context.Items.FindAsync(id);
-            if (item == null)
-                return NotFound(new { Error = "Product not found" });
-
-            _context.Items.Remove(item);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { Message = "Product deleted successfully" });
+            return _context.Items.Any(e => e.ItemId == id);
         }
 
-        // GET: api/Admin/sizes
-        // This replaces ManageSizes()
-        [HttpGet("sizes")]
-        public async Task<IActionResult> GetSizes()
+
+        // PUT: api/Admin/EditSize/5
+        [HttpPut("EditSize/{id}")]
+        public async Task<IActionResult> EditSize(int id, [FromBody] Size size)
         {
-            var sizes = await _context.Sizes.ToListAsync();
-            return Ok(sizes);
-        }
-
-        // POST: api/Admin/sizes
-        // This replaces CreateSize (POST)
-        [HttpPost("sizes")]
-        public async Task<IActionResult> CreateSize([FromBody] Size size)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            _context.Sizes.Add(size);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetSizeById), 
-                new { id = size.SizeId }, 
-                size);
-        }
-
-        // GET: api/Admin/sizes/{id}
-        // Helper to get a single size
-        [HttpGet("sizes/{id}")]
-        public async Task<IActionResult> GetSizeById(int id)
-        {
-            var size = await _context.Sizes.FindAsync(id);
-            if (size == null)
-                return NotFound(new { Error = "Size not found" });
-
-            return Ok(size);
-        }
-
-        // PUT: api/Admin/sizes/{id}
-        // This replaces EditSize (POST)
-        [HttpPut("sizes/{id}")]
-        public async Task<IActionResult> UpdateSize(int id, [FromBody] Size size)
-        {
+            // Check if the ID from the URL matches the ID in the body.
             if (id != size.SizeId)
-                return BadRequest(new { Error = "ID mismatch" });
+            {
+                return BadRequest(new { message = "ID mismatch" });
+            }
 
+            // Validate the incoming model.
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             try
             {
@@ -156,51 +228,49 @@ namespace OnlineShoppingSite.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 if (!SizeExists(size.SizeId))
-                    return NotFound(new { Error = "Size does not exist" });
-                throw;
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
             }
 
-            return Ok(new { Message = "Size updated successfully" });
+            // Return the updated size object as JSON.
+            return Ok(size);
         }
 
-        // DELETE: api/Admin/sizes/{id}
-        // This replaces DeleteSize (POST)
-        [HttpDelete("sizes/{id}")]
-        public async Task<IActionResult> DeleteSize(int id)
+        // Helper method to check if a Size exists.
+        private bool SizeExists(int id)
         {
-            var size = await _context.Sizes.FindAsync(id);
-            if (size == null)
-                return NotFound(new { Error = "Size not found" });
-
-            _context.Sizes.Remove(size);
-            await _context.SaveChangesAsync();
-            return Ok(new { Message = "Size deleted successfully" });
+            return _context.Sizes.Any(e => e.SizeId == id);
         }
 
-        // POST: api/Admin/products/{itemId}/assignSizes
-        // This replaces AssignSizesToItem (POST)
-        [HttpPost("products/{itemId}/assignSizes")]
-        public async Task<IActionResult> AssignSizesToItem(int itemId, [FromBody] ItemSizeViewModel model)
+        // POST: api/Admin/AssignSizesToItem
+        [HttpPost("AssignSizesToItem")]
+        public async Task<IActionResult> AssignSizesToItem([FromBody] ItemSizeViewModel model)
         {
-            if (itemId != model.ItemId)
-                return BadRequest(new { Error = "ID mismatch" });
-
+            // Retrieve the item along with its current size assignments
             var item = await _context.Items
-                .Include(i => i.ItemSizes)
-                .FirstOrDefaultAsync(i => i.ItemId == model.ItemId);
+                                    .Include(i => i.ItemSizes)
+                                    .FirstOrDefaultAsync(i => i.ItemId == model.ItemId);
 
             if (item == null)
-                return NotFound(new { Error = "Item not found" });
+            {
+                return NotFound(new { message = $"Item with ID {model.ItemId} not found." });
+            }
 
-            // Remove ItemSizes that are no longer selected
+            // Determine which sizes are currently selected
             var selectedSizeIds = model.SizeAssignments
-                .Where(sa => sa.IsSelected)
-                .Select(sa => sa.SizeId)
-                .ToList();
+                                    .Where(sa => sa.IsSelected)
+                                    .Select(sa => sa.SizeId)
+                                    .ToList();
 
+            // Remove any ItemSizes that are no longer selected
             var itemSizesToRemove = item.ItemSizes
-                .Where(isz => !selectedSizeIds.Contains(isz.SizeId))
-                .ToList();
+                                        .Where(isz => !selectedSizeIds.Contains(isz.SizeId))
+                                        .ToList();
 
             foreach (var itemSize in itemSizesToRemove)
             {
@@ -208,177 +278,147 @@ namespace OnlineShoppingSite.Controllers
                 _context.ItemSizes.Remove(itemSize);
             }
 
-            // Add/update selected sizes
-            foreach (var assignment in model.SizeAssignments)
+            // Add or update size assignments based on the incoming data
+            foreach (var sizeAssignment in model.SizeAssignments)
             {
-                var itemSize = item.ItemSizes
-                    .FirstOrDefault(isz => isz.SizeId == assignment.SizeId);
+                var itemSize = item.ItemSizes.FirstOrDefault(isz => isz.SizeId == sizeAssignment.SizeId);
 
-                if (assignment.IsSelected)
+                if (sizeAssignment.IsSelected)
                 {
                     if (itemSize == null)
                     {
-                        // Add new ItemSize
+                        // Add a new ItemSize record
                         var newItemSize = new ItemSize
                         {
                             ItemId = item.ItemId,
-                            SizeId = assignment.SizeId,
-                            Quantity = assignment.Quantity
+                            SizeId = sizeAssignment.SizeId,
+                            Quantity = sizeAssignment.Quantity
                         };
                         item.ItemSizes.Add(newItemSize);
                         _context.ItemSizes.Add(newItemSize);
                     }
                     else
                     {
-                        // Update existing quantity
-                        itemSize.Quantity = assignment.Quantity;
+                        // Update the quantity for an existing size assignment
+                        itemSize.Quantity = sizeAssignment.Quantity;
                         _context.Entry(itemSize).State = EntityState.Modified;
                     }
                 }
             }
 
+            // Log each assignment for debugging purposes
+            foreach (var assignment in model.SizeAssignments)
+            {
+                _logger.LogInformation("SizeId: {SizeId}, Quantity: {Quantity}, IsSelected: {IsSelected}",
+                    assignment.SizeId, assignment.Quantity, assignment.IsSelected);
+            }
+
             await _context.SaveChangesAsync();
             _logger.LogInformation("Sizes assigned/updated for ItemId {ItemId}.", model.ItemId);
 
-            return Ok(new { Message = "Sizes successfully assigned/updated." });
+            // Return a JSON response indicating success
+            return Ok(new { message = "Sizes assigned/updated successfully.", itemId = model.ItemId });
         }
 
-        // GET: api/Admin/orders
-        // This replaces ManageOrders()
-        [HttpGet("orders")]
-        public async Task<IActionResult> GetOrders()
+        // DELETE: api/Admin/DeleteProduct/5
+        [HttpDelete("DeleteProduct/{id}")]
+        public async Task<IActionResult> DeleteProduct(int id)
         {
-            var orders = await _context.Orders
-                .Include(o => o.ShippingDetails)
-                .Include(o => o.OrderItems).ThenInclude(oi => oi.Item)
-                .ToListAsync();
-            return Ok(orders);
+            var item = await _context.Items.FindAsync(id);
+            if (item == null)
+            {
+                return NotFound(new { message = $"Product with id {id} not found." });
+            }
+
+            _context.Items.Remove(item);
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Product deleted successfully.", productId = id });
         }
 
-        // GET: api/Admin/orders/{id}
-        // This replaces ViewOrder()
-        [HttpGet("orders/{id}")]
-        public async Task<IActionResult> GetOrderById(int id)
+        // DELETE: api/Admin/DeleteSize/5
+        [HttpDelete("DeleteSize/{id}")]
+        public async Task<IActionResult> DeleteSize(int id)
+        {
+            var size = await _context.Sizes.FindAsync(id);
+            if (size == null)
+            {
+                return NotFound(new { message = $"Size with id {id} not found." });
+            }
+            
+            _context.Sizes.Remove(size);
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Size deleted successfully.", sizeId = id });
+        }
+
+        // GET: api/Admin/ViewOrder/5
+        [HttpGet("ViewOrder/{id}")]
+        public async Task<IActionResult> ViewOrder(int id)
         {
             var order = await _context.Orders
                 .Include(o => o.ShippingDetails)
-                .Include(o => o.OrderItems).ThenInclude(oi => oi.Item)
-                .Include(o => o.OrderItems).ThenInclude(oi => oi.Size)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Item)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Size)
                 .FirstOrDefaultAsync(o => o.OrderId == id);
 
             if (order == null)
-                return NotFound(new { Error = "Order not found" });
+            {
+                return NotFound(new { message = $"Order with ID {id} not found." });
+            }
 
             return Ok(order);
         }
 
-        // POST: api/Admin/orders/{id}/updateStatus
-        // This replaces UpdateOrderStatus()
-        [HttpPost("orders/{id}/updateStatus")]
-        public async Task<IActionResult> UpdateOrderStatus(int id, [FromQuery] string status)
+        // PUT: api/Admin/UpdateOrderStatus/5
+        [HttpPut("UpdateOrderStatus/{id}")]
+        public async Task<IActionResult> UpdateOrderStatus(int id, [FromBody] UpdateOrderStatusRequest request)
         {
+            // Find the order by id
             var order = await _context.Orders.FindAsync(id);
             if (order == null)
-                return NotFound(new { Error = "Order not found" });
+            {
+                return NotFound(new { message = $"Order with ID {id} not found." });
+            }
 
-            order.Status = status;
+            // Update the order's status
+            order.Status = request.Status;
             _context.Update(order);
             await _context.SaveChangesAsync();
 
-            return Ok(new { Message = $"Order status updated to {status}" });
+            // Return a JSON response indicating success, along with the updated order
+            return Ok(new { message = "Order status updated successfully.", order });
         }
 
-        // POST: api/Admin/products/bulkUpload
-        // This replaces BulkUploadProducts() (POST)
-        // Example CSV format:
-        // Name,Price,Description,ImageUrl
-        [HttpPost("products/bulkUpload")]
-        public async Task<IActionResult> BulkUploadProducts(IFormFile file)
-        {
-            if (file == null || file.Length == 0)
-                return BadRequest(new { Error = "Please upload a valid CSV file." });
-
-            try
-            {
-                using var stream = new StreamReader(file.OpenReadStream());
-                string headerLine = await stream.ReadLineAsync(); // skip the header line if any
-
-                while (!stream.EndOfStream)
-                {
-                    string? line = await stream.ReadLineAsync();
-                    if (string.IsNullOrEmpty(line)) continue;
-
-                    var values = line.Split(',');
-
-                    // You may wish to handle invalid rows more gracefully
-                    var item = new Item
-                    {
-                        Name = values[0],
-                        Price = decimal.Parse(values[1]),
-                        Description = values[2],
-                        ImageUrl = values[3]
-                        // Map other fields as necessary
-                    };
-                    _context.Items.Add(item);
-                }
-
-                await _context.SaveChangesAsync();
-                return Ok(new { Message = "Bulk upload completed successfully" });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error during bulk upload.");
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new { Error = "An error occurred during bulk upload." });
-            }
-        }
-
-        // GET: api/Admin/categories
-        // This replaces ManageCategories()
-        [HttpGet("categories")]
-        public async Task<IActionResult> GetCategories()
-        {
-            var categories = await _context.Categories.ToListAsync();
-            return Ok(categories);
-        }
-
-        // POST: api/Admin/categories
-        // This replaces CreateCategory (POST)
-        [HttpPost("categories")]
+        // POST: api/Admin/CreateCategory
+        [HttpPost("CreateCategory")]
         public async Task<IActionResult> CreateCategory([FromBody] Category category)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetCategoryById),
-                new { id = category.CategoryId },
-                category);
+            // Assuming you have a GetCategory endpoint to retrieve a category by its ID.
+            return CreatedAtAction(nameof(GetCategory), new { id = category.CategoryId }, category);
         }
 
-        // GET: api/Admin/categories/{id}
-        [HttpGet("categories/{id}")]
-        public async Task<IActionResult> GetCategoryById(int id)
-        {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
-                return NotFound(new { Error = "Category not found" });
-
-            return Ok(category);
-        }
-
-        // PUT: api/Admin/categories/{id}
-        // This replaces EditCategory (POST)
-        [HttpPut("categories/{id}")]
-        public async Task<IActionResult> UpdateCategory(int id, [FromBody] Category category)
+        // PUT: api/Admin/EditCategory/5
+        [HttpPut("EditCategory/{id}")]
+        public async Task<IActionResult> EditCategory(int id, [FromBody] Category category)
         {
             if (id != category.CategoryId)
-                return BadRequest(new { Error = "ID mismatch" });
+            {
+                return BadRequest(new { message = "ID mismatch." });
+            }
 
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             try
             {
@@ -388,44 +428,38 @@ namespace OnlineShoppingSite.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 if (!CategoryExists(category.CategoryId))
-                    return NotFound(new { Error = "Category does not exist" });
-                throw;
+                {
+                    return NotFound(new { message = $"Category with ID {category.CategoryId} not found." });
+                }
+                else
+                {
+                    throw;
+                }
             }
 
-            return Ok(new { Message = "Category updated successfully" });
+            return Ok(category);
         }
 
-        // DELETE: api/Admin/categories/{id}
-        // This replaces DeleteCategory (POST)
-        [HttpDelete("categories/{id}")]
+        // Helper method to check if a category exists.
+        private bool CategoryExists(int id)
+        {
+            return _context.Categories.Any(c => c.CategoryId == id);
+        }
+
+        // DELETE: api/Admin/DeleteCategory/5
+        [HttpDelete("DeleteCategory/{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             var category = await _context.Categories.FindAsync(id);
             if (category == null)
-                return NotFound(new { Error = "Category not found" });
+            {
+                return NotFound(new { message = $"Category with ID {id} not found." });
+            }
 
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
-            return Ok(new { Message = "Category deleted successfully" });
+
+            return Ok(new { message = "Category deleted successfully.", categoryId = id });
         }
-
-        #region Private Helpers
-
-        private bool ItemExists(int id)
-        {
-            return _context.Items.Any(e => e.ItemId == id);
-        }
-
-        private bool SizeExists(int id)
-        {
-            return _context.Sizes.Any(e => e.SizeId == id);
-        }
-
-        private bool CategoryExists(int id)
-        {
-            return _context.Categories.Any(e => e.CategoryId == id);
-        }
-
-        #endregion
     }
 }
