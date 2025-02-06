@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace OnlineShoppingSite.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class CartController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

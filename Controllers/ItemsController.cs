@@ -6,6 +6,7 @@ using OnlineShoppingSite.Models;
 using OnlineShoppingSite.Extensions;
 using OnlineShoppingSite.ViewModels;
 using OnlineShoppingSite.Models.Requests;
+using OnlineShoppingSite.DTOs;
 
 namespace OnlineShoppingSite.Controllers
 {
@@ -28,18 +29,16 @@ namespace OnlineShoppingSite.Controllers
         [HttpGet]
         public async Task<IActionResult> GetItems([FromQuery] int categoryId = 0)
         {
-            // Try to get the cached categories
-            if (!_cache.TryGetValue("Categories", out var categories))
+            // Cache categories if needed (you might also want to project them)
+            if (!_cache.TryGetValue("Categories", out List<Category> cachedCategories))
             {
-                categories = await _context.Categories.ToListAsync();
-
+                cachedCategories = await _context.Categories.ToListAsync();
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
                     .SetSlidingExpiration(TimeSpan.FromMinutes(60));
-
-                _cache.Set("Categories", categories, cacheEntryOptions);
+                _cache.Set("Categories", cachedCategories, cacheEntryOptions);
             }
 
-            // Build the query for items
+            // Build the query and project into DTOs
             var itemsQuery = _context.Items
                 .Include(i => i.Category)
                 .Include(i => i.ItemSizes)
@@ -51,9 +50,34 @@ namespace OnlineShoppingSite.Controllers
                 itemsQuery = itemsQuery.Where(i => i.CategoryId == categoryId);
             }
 
-            var items = await itemsQuery.ToListAsync();
+            var items = await itemsQuery.Select(item => new ItemDto
+            {
+                ItemId = item.ItemId,
+                Name = item.Name,
+                Price = item.Price,
+                Description = item.Description,
+                ImageUrl = item.ImageUrl,
+                CategoryId = item.CategoryId,
+                Category = new CategoryDto
+                {
+                    CategoryId = item.Category.CategoryId,
+                    Name = item.Category.Name
+                },
+                ItemSizes = item.ItemSizes.Select(isz => new ItemSizeDto
+                {
+                    SizeId = isz.SizeId,
+                    SizeName = isz.Size.Name,
+                    Quantity = isz.Quantity
+                }).ToList()
+            }).ToListAsync();
 
-            // Return a JSON response with the data
+            // Project categories if needed (this is optional if your frontend needs a separate category list)
+            var categories = cachedCategories.Select(cat => new CategoryDto
+            {
+                CategoryId = cat.CategoryId,
+                Name = cat.Name
+            }).ToList();
+
             return Ok(new
             {
                 items,

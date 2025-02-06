@@ -27,7 +27,7 @@ namespace OnlineShoppingSite.Models
 
         public string ImageUrl { get; set; }
 
-        public int? CategoryId { get; set; }
+        public int CategoryId { get; set; }
         
         [ValidateNever]
         public Category Category { get; set; }

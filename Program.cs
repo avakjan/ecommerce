@@ -8,8 +8,32 @@ using Microsoft.AspNetCore.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. AddControllers() instead of AddControllersWithViews()
-// 2. Remove the CategoriesActionFilter from global filters
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:3000")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod()
+                                .AllowCredentials();
+                      });
+});
+
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = ".OnlineShoppingSite.Session";
+    options.IdleTimeout = TimeSpan.FromHours(1);
+    options.Cookie.IsEssential = true;
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Ensure HTTPS
+    options.Cookie.SameSite = SameSiteMode.None; // Required for cross-origin
+});
+
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {
@@ -38,28 +62,6 @@ builder.Services.AddMemoryCache();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=online_shopping.db"));
 
-builder.Services.AddDistributedMemoryCache();
-
-// Configure session
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
-});
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowReactLocalhost", policyBuilder =>
-    {
-        // Adjust as needed:
-        policyBuilder
-            .WithOrigins("http://localhost:3000") // or "https://localhost:3000"
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials(); // If you're using cookies or session
-    });
-});
 
 // If you need to access HttpContext in services
 builder.Services.AddHttpContextAccessor();
@@ -99,14 +101,14 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors(MyAllowSpecificOrigins);
+
 // If you still need to serve static files (e.g., images), keep this:
 app.UseStaticFiles();
 
 app.UseRequestLocalization(localizationOptions);
 
 app.UseRouting();
-
-app.UseCors("AllowReactLocalhost");
 
 app.UseSession();  // still using session
 app.UseAuthentication();
